@@ -1,0 +1,21 @@
+[
+{
+  "modid": "ModInvokers",
+  "name": "The Invokers",
+  "description": "This is a mod which inspired by a dota hero Inovker, you can cast magic spells by switch the press a squence of key bindings.",
+  "version": "@VERSION@@BUILD_NUM@",
+  "mcversion": "1.5.2",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "tinysnake"
+  ],
+  "credits": "By tinysnake, with support with his girlfriend Giovanna!",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]
