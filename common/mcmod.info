@@ -1,10 +1,10 @@
 [
 {
-  "modid": "ModInvokers",
-  "name": "The Invokers",
+  "modid": "theinvoker",
+  "name": "The Invoker",
   "description": "This is a mod which inspired by a dota hero Inovker, you can cast magic spells by switch the press a squence of key bindings.",
   "version": "@VERSION@@BUILD_NUM@",
-  "mcversion": "1.5.2",
+  "mcversion": "@MC_VERSION@",
   "url": "",
   "updateUrl": "",
   "authors": [
