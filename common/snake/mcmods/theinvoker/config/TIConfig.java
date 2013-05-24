@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker;
+package snake.mcmods.theinvoker.config;
 
 import java.io.File;
 
