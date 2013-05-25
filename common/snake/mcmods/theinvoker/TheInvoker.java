@@ -6,6 +6,7 @@ import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.constants.TIGlobal;
 import snake.mcmods.theinvoker.handlers.EventCenter;
+import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.proxy.CommonProxy;
 import snake.mcmods.theinvoker.utils.others.CreativeTabTI;
 import cpw.mods.fml.common.Mod;
@@ -44,12 +45,13 @@ public class TheInvoker
     public void init(FMLInitializationEvent e)
     {
         TIBlocks.init();
+        TIItems.init();
         
         proxy.registerRenderers();
         
-        Lang.loadLocalizedFiles();
-        
         MinecraftForge.EVENT_BUS.register(new EventCenter());
+        
+        Lang.loadLocalizedFiles();
     }
     
     @PostInit

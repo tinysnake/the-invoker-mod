@@ -1,2 +1,2 @@
-tile.totem.name=图腾
+item.totem_soul_attractive.name=摄魂图腾
 text.welcome=您安装了召唤者MOD.

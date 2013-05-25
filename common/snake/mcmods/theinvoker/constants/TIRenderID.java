@@ -1,6 +1,6 @@
 package snake.mcmods.theinvoker.constants;
 
-public class TIRenderIDs
+public class TIRenderID
 {
     public static int TOTEM;
 }
