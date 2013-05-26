@@ -10,8 +10,9 @@ public class TIItems
 
     public static void init()
     {
-        totemSoulAttractive = new ItemTotem(TIItemID.ITEM_TOTEM, ItemTotem.TYPE_SOUL_ATTRACTIVE);
-        
+        totemSoulAttractive = new ItemTotem(TIItemID.ITEM_TOTEM,
+                ItemTotem.TotemType.TYPE_SOUL_ATTRACTIVE, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE);
+
         GameRegistry.registerItem(totemSoulAttractive, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE);
     }
 }

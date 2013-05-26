@@ -9,5 +9,6 @@ public class TIBlocks
     public static void init()
     {
         totem = new BlockTotem(TIBlockID.TOTEM);
+        
     }
 }
