@@ -30,7 +30,6 @@ public class ClientProxy extends CommonProxy
             tt.yCoord=p.y;
             tt.zCoord=p.z;
             tt.setDirection(p.direction);
-            tt.setIsGhostBlock(p.isGhostBlock);
         }
     }
 }

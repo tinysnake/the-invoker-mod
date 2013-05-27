@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.constants.TIGlobal;
-import snake.mcmods.theinvoker.constants.TIName;
 import snake.mcmods.theinvoker.constants.TIRenderID;
 import snake.mcmods.theinvoker.items.ItemTotem;
 import snake.mcmods.theinvoker.items.TIItems;
@@ -28,12 +28,25 @@ public class BlockTotem extends BlockContainer
         this.setHardness(2.5F);
         this.setLightValue(7);
     }
-    
+
+    private Icon[] blockIcons;
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID+":"+TIName.BLOCK_TOTEM);
+        blockIcons = new Icon[ItemTotem.NAMES.length - 1];
+        for (int i = 1; i < blockIcons.length; i++)
+        {
+            blockIcons[i - 1] = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + ItemTotem.NAMES[i]);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIcon(int side, int metadata)
+    {
+        return blockIcons[metadata - 1];
     }
 
     @Override
@@ -47,7 +60,7 @@ public class BlockTotem extends BlockContainer
     {
         return false;
     }
-    
+
     @Override
     public int getRenderType()
     {
@@ -63,9 +76,13 @@ public class BlockTotem extends BlockContainer
     @Override
     public int idDropped(int metadata, Random par2Random, int fortuneLvl)
     {
-        if(metadata==ItemTotem.TotemType.TYPE_SOUL_ATTRACTIVE.toMetadata())
-            return TIItems.totemSoulAttractive.itemID;
-        return 0;
+        return TIItems.totem.itemID;
+    }
+
+    @Override
+    public int damageDropped(int metadata)
+    {
+        return metadata;
     }
 
     @Override
@@ -77,7 +94,7 @@ public class BlockTotem extends BlockContainer
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z)
     {
-        return super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
+        return y >= 255 ? false : world.doesBlockHaveSolidTopSurface(x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
     }
 
     @Override
@@ -85,35 +102,33 @@ public class BlockTotem extends BlockContainer
             ItemStack itemStack)
     {
         TileTotem te = (TileTotem) world.getBlockTileEntity(x, y, z);
-        int metaData = world.getBlockMetadata(x, y, z);
-        te.setIsGhostBlock(metaData == ItemTotem.TotemType.TYPE_GHOST.toMetadata());
         int face = MathHelper
                 .floor_double((double) (entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         switch (face)
         {
             case 0:
-                te.setDirection((byte)2);
+                te.setDirection((byte) 2);
                 break;
             case 1:
-                te.setDirection((byte)5);
+                te.setDirection((byte) 5);
                 break;
             case 2:
-                te.setDirection((byte)3);
+                te.setDirection((byte) 3);
                 break;
             case 3:
-                te.setDirection((byte)4);
+                te.setDirection((byte) 4);
                 break;
         }
     }
-    
+
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        if(metadata==ItemTotem.TotemType.TYPE_GHOST.toMetadata())
+        if (metadata == ItemTotem.TotemType.TYPE_GHOST.toMetadata())
         {
-            //is ghost block, look for the totem blow it.
-            if(world.getBlockId(x, y-1,z)!=this.blockID&&neighborBlockID==this.blockID)
+            // is ghost block, look for the totem blow it.
+            if (world.getBlockId(x, y - 1, z) != this.blockID && neighborBlockID == this.blockID)
             {
                 world.setBlockToAir(x, y, z);
             }
@@ -121,25 +136,25 @@ public class BlockTotem extends BlockContainer
         else
         {
             boolean drop = false;
-            //is the actual block, look for the ghost block above it.
-            if(world.getBlockId(x, y+1,z)!=this.blockID&&neighborBlockID==this.blockID&&!world.isRemote)
+            // is the actual block, look for the ghost block above it.
+            if (world.getBlockId(x, y + 1, z) != this.blockID && neighborBlockID == this.blockID && !world.isRemote)
             {
-                drop=true;
+                drop = true;
             }
-            if(!world.doesBlockHaveSolidTopSurface(x,y-1,z))
+            if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z))
             {
-                if(world.getBlockId(x, y+1, z)==this.blockID)
+                if (world.getBlockId(x, y + 1, z) == this.blockID)
                 {
-                    world.setBlockToAir(x, y+1, z);
+                    world.setBlockToAir(x, y + 1, z);
                 }
             }
-            
-            if(drop==true)
+
+            if (drop == true)
             {
                 world.setBlockToAir(x, y, z);
                 this.dropBlockAsItem(world, x, y, z, metadata, 0);
             }
-            
+
         }
     }
 }

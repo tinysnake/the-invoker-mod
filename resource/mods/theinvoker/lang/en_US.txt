@@ -1,3 +1,6 @@
 itemGroup.theinvoker=召唤者
 item.totem_soul_attractive.name=摄魂图腾
+item.totem_soul.name=灵魂图腾
+item.totem_rune.name=符印图腾
+item.totem_massacre.name=劫戮图腾
 text.welcome=您安装了召唤者MOD.

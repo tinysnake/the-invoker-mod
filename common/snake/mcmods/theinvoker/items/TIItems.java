@@ -6,13 +6,12 @@ import snake.mcmods.theinvoker.constants.TIName;
 
 public class TIItems
 {
-    public static ItemTotem totemSoulAttractive;
+    public static ItemTotem totem;
 
     public static void init()
     {
-        totemSoulAttractive = new ItemTotem(TIItemID.ITEM_TOTEM,
-                ItemTotem.TotemType.TYPE_SOUL_ATTRACTIVE, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE);
+        totem = new ItemTotem(TIItemID.ITEM_TOTEM);
 
-        GameRegistry.registerItem(totemSoulAttractive, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE);
+        GameRegistry.registerItem(totem,TIName.ITEM_TOTEM);
     }
 }

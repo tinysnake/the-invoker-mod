@@ -6,16 +6,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 public class EventCenter
 {
     @ForgeSubscribe
-    public void handlePlayerJoinWorld(EntityJoinWorldEvent e)
+    public void handlePlayerJoinWorldEvent(EntityJoinWorldEvent e)
     {
         EntityPlayer p = Minecraft.getMinecraft().thePlayer;
         if(e.entity== p)
         {
             p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
         }
+    }
+    
+    @ForgeSubscribe
+    public void handleEntityDropsEvent(LivingDropsEvent e)
+    {
+        //e.entityLiving.worldObj.getbl
     }
 }

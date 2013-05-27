@@ -1,31 +1,19 @@
 package snake.mcmods.theinvoker.tileentities;
 
-import snake.mcmods.theinvoker.net.PacketTypeHandler;
-import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import snake.mcmods.theinvoker.net.PacketTypeHandler;
+import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
 
 public class TileTotem extends TileEntity
 {
-    protected byte _direction;
-    protected boolean _isGhostBlock;
-    
     public TileTotem()
     {
         _direction = 2;
-        _isGhostBlock=true;
     }
-
-    public boolean getIsGhostBlock()
-    {
-        return _isGhostBlock;
-    }
-
-    public void setIsGhostBlock(boolean val)
-    {
-        _isGhostBlock = val;
-    }
+    
+    protected byte _direction;
 
     public byte getDirection()
     {
@@ -40,7 +28,7 @@ public class TileTotem extends TileEntity
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketTypeHandler.serialize(new PacketTotemUpdate(xCoord, yCoord, zCoord, getDirection(), getIsGhostBlock()));
+        return PacketTypeHandler.serialize(new PacketTotemUpdate(xCoord, yCoord, zCoord, getDirection()));
     }
     
     @Override
@@ -49,8 +37,6 @@ public class TileTotem extends TileEntity
         super.readFromNBT(nbtCompound);
         if(nbtCompound.hasKey("direction"))
             setDirection(nbtCompound.getByte("direction"));
-        if(nbtCompound.hasKey("isGhostBlock"))
-            setIsGhostBlock(nbtCompound.getBoolean("isGhostBlock"));
     }
     
     @Override
@@ -58,6 +44,10 @@ public class TileTotem extends TileEntity
     {
         super.writeToNBT(nbtCompound);
         nbtCompound.setByte("direction", getDirection());
-        nbtCompound.setBoolean("isGhostBlock",getIsGhostBlock());
+    }
+    
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
     }
 }

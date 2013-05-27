@@ -1,47 +1,100 @@
 package snake.mcmods.theinvoker.items;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.constants.TIBlockID;
+import snake.mcmods.theinvoker.constants.TIGlobal;
+import snake.mcmods.theinvoker.constants.TIName;
 
 public class ItemTotem extends ItemTIBase
 {
-    public enum TotemType{
+    public static final String[] NAMES =
+    { "", TIName.ITEM_TOTEM_SOUL_ATTRACTIVE,
+            TIName.ITEM_TOTEM_SOUL, TIName.ITEM_TOTEM_RUNE, TIName.ITEM_TOTEM_MASSACRE };
+
+    public enum TotemType
+    {
         TYPE_GHOST(0),
-        TYPE_SOUL_ATTRACTIVE(1);
-        
+        TYPE_SOUL_ATTRACTIVE(1),
+        TYPE_SOUL(2),
+        TYPE_RUNE(3),
+        TYPE_MASSACRE(4);
+
         TotemType(int md)
         {
             _metadata = md;
         }
-        
+
         private int _metadata;
+
         public int toMetadata()
         {
             return _metadata;
         }
     }
 
-    public ItemTotem(int id,TotemType type, String name)
+    public ItemTotem(int id)
     {
         super(id);
-        _type = type;
+        // _type = type;
         this.setHasSubtypes(true);
         this.setMaxStackSize(4);
         this.setCreativeTab(TheInvoker.tab);
         this.setMaxDamage(0);
-        this.setUnlocalizedName(name);
     }
-    
+
     private TotemType _type;
-    
+
     public TotemType getTotemType()
     {
         return _type;
+    }
+
+    private Icon[] itemIcons = new Icon[NAMES.length];
+
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        int dmg = itemStack.getItemDamage();
+        return "item." + NAMES[dmg];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Icon getIconFromDamage(int damageVal)
+    {
+        return itemIcons[damageVal];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IconRegister iconRegister)
+    {
+        for (int i = 0; i < NAMES.length; i++)
+        {
+            itemIcons[i] = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + NAMES[i]);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(int itemID, CreativeTabs tab, List list)
+    {
+        for (int i = 1; i < NAMES.length; i++)
+        {
+            list.add(new ItemStack(itemID, 1, i));
+        }
     }
 
     @Override
@@ -55,10 +108,10 @@ public class ItemTotem extends ItemTIBase
         if (world.canPlaceEntityOnSide(TIBlockID.TOTEM, vx, vy, vz, true, side, entityPlayer,
                 itemStack))
         {
-            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.totem.blockID, this.getTotemType().toMetadata(), 2);
+            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.totem.blockID, itemStack.getItemDamage(), 4);
             if (isSet)
             {
-                world.setBlock(vx, vy + 1, vz, TIBlocks.totem.blockID, TotemType.TYPE_GHOST.toMetadata(), 2);
+                world.setBlock(vx, vy + 1, vz, TIBlocks.totem.blockID, TotemType.TYPE_GHOST.toMetadata(), 4);
 
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy, vz, entityPlayer, itemStack);
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy + 1, vz, entityPlayer, itemStack);

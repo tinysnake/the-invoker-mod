@@ -6,6 +6,7 @@ import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.constants.TIGlobal;
 import snake.mcmods.theinvoker.handlers.EventCenter;
+import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.net.PacketHandler;
 import snake.mcmods.theinvoker.proxy.CommonProxy;
@@ -20,6 +21,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = TIGlobal.MOD_ID, name = TIGlobal.MOD_NAME, version = TIGlobal.VERSION)
 @NetworkMod(serverSideRequired = true, clientSideRequired = false, channels =
@@ -50,6 +53,8 @@ public class TheInvoker
         proxy.registerTileEntities();
         
         proxy.initRenderingStuff();
+        
+        TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
 
         MinecraftForge.EVENT_BUS.register(new EventCenter());
 

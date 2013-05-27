@@ -13,21 +13,19 @@ public class PacketTotemUpdate extends PacketTI
     {
         super(PacketTypeHandler.TOTEM, true);
     }
-    public PacketTotemUpdate(int x, int y, int z, byte direction, boolean isGhostBlock)
+    public PacketTotemUpdate(int x, int y, int z, byte direction)
     {
         super(PacketTypeHandler.TOTEM, true);
         this.x = x;
         this.y = y;
         this.z = z;
         this.direction = direction;
-        this.isGhostBlock = isGhostBlock;
     }
 
     public int x;
     public int y;
     public int z;
     public byte direction;
-    public boolean isGhostBlock;
 
     @Override
     protected void writeData(DataOutputStream dos) throws IOException
@@ -36,7 +34,6 @@ public class PacketTotemUpdate extends PacketTI
         dos.writeInt(y);
         dos.writeInt(z);
         dos.writeByte(direction);
-        dos.writeBoolean(isGhostBlock);
     }
 
     @Override
@@ -46,7 +43,6 @@ public class PacketTotemUpdate extends PacketTI
         y = dis.readInt();
         z = dis.readInt();
         direction = dis.readByte();
-        isGhostBlock = dis.readBoolean();
     }
 
     @Override
