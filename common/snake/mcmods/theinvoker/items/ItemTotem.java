@@ -2,8 +2,6 @@ package snake.mcmods.theinvoker.items;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,33 +14,14 @@ import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.constants.TIBlockID;
 import snake.mcmods.theinvoker.constants.TIGlobal;
 import snake.mcmods.theinvoker.constants.TIName;
+import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTotem extends ItemTIBase
 {
     public static final String[] NAMES =
-    { "", TIName.ITEM_TOTEM_SOUL_ATTRACTIVE,
-            TIName.ITEM_TOTEM_SOUL, TIName.ITEM_TOTEM_RUNE, TIName.ITEM_TOTEM_MASSACRE };
-
-    public enum TotemType
-    {
-        TYPE_GHOST(0),
-        TYPE_SOUL_ATTRACTIVE(1),
-        TYPE_SOUL(2),
-        TYPE_RUNE(3),
-        TYPE_MASSACRE(4);
-
-        TotemType(int md)
-        {
-            _metadata = md;
-        }
-
-        private int _metadata;
-
-        public int toMetadata()
-        {
-            return _metadata;
-        }
-    }
+    { "", TIName.ITEM_TOTEM_SOUL, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE, TIName.ITEM_TOTEM_RUNE, TIName.ITEM_TOTEM_MASSACRE };
 
     public ItemTotem(int id)
     {
@@ -52,13 +31,6 @@ public class ItemTotem extends ItemTIBase
         this.setMaxStackSize(4);
         this.setCreativeTab(TheInvoker.tab);
         this.setMaxDamage(0);
-    }
-
-    private TotemType _type;
-
-    public TotemType getTotemType()
-    {
-        return _type;
     }
 
     private Icon[] itemIcons = new Icon[NAMES.length];
@@ -89,6 +61,8 @@ public class ItemTotem extends ItemTIBase
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings(
+    { "all" })
     public void getSubItems(int itemID, CreativeTabs tab, List list)
     {
         for (int i = 1; i < NAMES.length; i++)
@@ -111,7 +85,7 @@ public class ItemTotem extends ItemTIBase
             boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.totem.blockID, itemStack.getItemDamage(), 4);
             if (isSet)
             {
-                world.setBlock(vx, vy + 1, vz, TIBlocks.totem.blockID, TotemType.TYPE_GHOST.toMetadata(), 4);
+                world.setBlock(vx, vy + 1, vz, TIBlocks.totem.blockID, TotemType.TYPE_GHOST.getMetadata(), 4);
 
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy, vz, entityPlayer, itemStack);
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy + 1, vz, entityPlayer, itemStack);

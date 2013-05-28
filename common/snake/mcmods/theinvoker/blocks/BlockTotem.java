@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.constants.TIGlobal;
 import snake.mcmods.theinvoker.constants.TIRenderID;
+import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
 import snake.mcmods.theinvoker.items.ItemTotem;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
@@ -36,7 +38,7 @@ public class BlockTotem extends BlockContainer
     public void registerIcons(IconRegister iconRegister)
     {
         blockIcons = new Icon[ItemTotem.NAMES.length - 1];
-        for (int i = 1; i < blockIcons.length; i++)
+        for (int i = 1; i < ItemTotem.NAMES.length; i++)
         {
             blockIcons[i - 1] = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + ItemTotem.NAMES[i]);
         }
@@ -46,7 +48,9 @@ public class BlockTotem extends BlockContainer
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int metadata)
     {
-        return blockIcons[metadata - 1];
+        if(metadata==0)
+            return null;
+        return blockIcons[metadata-1];
     }
 
     @Override
@@ -125,7 +129,7 @@ public class BlockTotem extends BlockContainer
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        if (metadata == ItemTotem.TotemType.TYPE_GHOST.toMetadata())
+        if (metadata == TotemType.TYPE_GHOST.getMetadata())
         {
             // is ghost block, look for the totem blow it.
             if (world.getBlockId(x, y - 1, z) != this.blockID && neighborBlockID == this.blockID)
@@ -156,5 +160,11 @@ public class BlockTotem extends BlockContainer
             }
 
         }
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random rdm) {
+        
     }
 }

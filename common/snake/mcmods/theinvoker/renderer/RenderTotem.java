@@ -1,12 +1,13 @@
 package snake.mcmods.theinvoker.renderer;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import snake.mcmods.theinvoker.constants.Textures;
+import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
 import snake.mcmods.theinvoker.items.ItemTotem;
 import snake.mcmods.theinvoker.models.ModelTotem;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
@@ -20,31 +21,31 @@ public class RenderTotem extends TileEntitySpecialRenderer
 
     private ModelTotem model;
 
+    @SuppressWarnings("incomplete-switch")
     @Override
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f)
     {
         TileTotem tt = (TileTotem) tileentity;
         int metadata = tt.getBlockMetadata();
-        if (metadata == ItemTotem.TotemType.TYPE_GHOST.toMetadata())
+        if (metadata == TotemType.TYPE_GHOST.getMetadata())
             return;
         String textureFileName = ItemTotem.NAMES[metadata];
-        ForgeDirection dir = ForgeDirection.getOrientation(tt.getDirection());
         float angle = 0F;
-        if (dir == ForgeDirection.NORTH)
+        
+        switch(tt.getDirection())
         {
-            angle = 0F;
-        }
-        else if (dir == ForgeDirection.WEST)
-        {
-            angle = 90F;
-        }
-        else if (dir == ForgeDirection.SOUTH)
-        {
-            angle = 180F;
-        }
-        else if (dir == ForgeDirection.EAST)
-        {
-            angle = 270F;
+            case NORTH:
+                angle = 0F;
+                break;
+            case SOUTH:
+                angle = 180F;
+                break;
+            case EAST:
+                angle = 270F;
+                break;
+            case WEST:
+                angle = 90F;
+                break;
         }
 
         // GL11.glDisable(GL11.GL_CULL_FACE);
