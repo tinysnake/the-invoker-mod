@@ -41,7 +41,7 @@ public class TotemMisc
         //rune
         8,
         //massacre
-        6
+        4
     };
     
     public static int getEffectiveRangeByMetadata(TotemType metadata)

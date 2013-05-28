@@ -1,8 +1,6 @@
 package snake.mcmods.theinvoker.tileentities;
 
-import java.util.List;
-
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -12,7 +10,6 @@ import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
 import snake.mcmods.theinvoker.logic.TotemLogicHandler;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
-import snake.mcmods.theinvoker.utils.CoordHelper;
 
 public class TileTotem extends TileEntity
 {
@@ -23,6 +20,7 @@ public class TileTotem extends TileEntity
 
     protected ForgeDirection _direction;
     private boolean init;
+    private int expClearTimer;
 
     private void init()
     {
@@ -48,13 +46,19 @@ public class TileTotem extends TileEntity
         _direction = ForgeDirection.getOrientation(dir);
     }
 
-    public int getEffectiveDirection()
+    public int getEffectiveRange()
     {
         return TotemMisc.getEffectiveRangeByMetadata(TotemType.getType(this.blockMetadata));
     }
 
+    public boolean isEntityInRange(Entity e)
+    {
+        return this.getDistanceFrom(e.posX, e.posY, e.posZ) / 16F <= getEffectiveRange();
+    }
+
     @Override
-    public void updateEntity() {
+    public void updateEntity()
+    {
         super.updateEntity();
         if (!init && !isInvalid())
         {
@@ -77,7 +81,8 @@ public class TileTotem extends TileEntity
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketTypeHandler.serialize(new PacketTotemUpdate(xCoord, yCoord, zCoord, getDirection().ordinal()));
+        return PacketTypeHandler.serialize(new PacketTotemUpdate(xCoord, yCoord, zCoord,
+                getDirection().ordinal()));
     }
 
     @Override

@@ -12,7 +12,7 @@ public class ForgeTickHandler implements ITickHandler
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        //TotemLogicHandler.INSTANCE.debug();
+        TotemLogicHandler.INSTANCE.update();
     }
 
     @Override
