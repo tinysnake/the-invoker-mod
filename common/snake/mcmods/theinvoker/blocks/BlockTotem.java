@@ -105,6 +105,7 @@ public class BlockTotem extends BlockContainer
             ItemStack itemStack)
     {
         TileTotem te = (TileTotem) world.getBlockTileEntity(x, y, z);
+        te.setOwnerName(entityLiving.getEntityName());
         int face = MathHelper
                 .floor_double((double) (entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         switch (face)

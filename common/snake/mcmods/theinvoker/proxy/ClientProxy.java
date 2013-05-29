@@ -31,6 +31,7 @@ public class ClientProxy extends CommonProxy
             tt.yCoord=p.y;
             tt.zCoord=p.z;
             tt.setDirection(ForgeDirection.getOrientation(p.direction));
+            tt.setOwnerName(p.ownerName);
         }
     }
 }

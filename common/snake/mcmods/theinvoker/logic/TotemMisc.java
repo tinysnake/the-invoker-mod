@@ -33,35 +33,20 @@ public class TotemMisc
         return TOTEM_EFFECTIVE_RANGES[metadata.ordinal()];
     }
 
-    public static void dropItems(EntityLiving e, TileTotem tt)
+    public static void dropItems(EntityLiving e, TileTotem tt, boolean doDropRune)
     {
         Random rand = e.worldObj.rand;
         int shardDrops = 0;
         int runeDrops = 0;
+        TotemType totemType = tt.getType();
         RuneType runeType = RuneMisc.getPossibleTypeOfRuneDrop(rand, tt);
 
-        switch (tt.getType())
+        shardDrops = RuneMisc.getSoulShardDropBy(rand, totemType);
+        if(doDropRune)
         {
-            case TYPE_GHOST:
-                return;
-            case TYPE_SOUL:
-                shardDrops = rand.nextInt(3) + 2;
-                runeDrops = 0;
-                break;
-            case TYPE_SOUL_ATTRACTIVE:
-                shardDrops = rand.nextInt(2);
-                runeDrops = rand.nextInt(1) + 1;
-                break;
-            case TYPE_MASSACRE:
-                shardDrops = 0;
-                runeDrops = 0;
-                break;
-            case TYPE_RUNE_DARKNESS:
-            case TYPE_RUNE_FIRE:
-            case TYPE_RUNE_ICE:
-            case TYPE_RUNE_WIND:
-                shardDrops = 0;
-                RuneType ttRuneType = RuneMisc.getRuneTypeFrom(tt.getType());
+            if(tt.getType().isSomeKindOfRuneTotem())
+            {
+                RuneType ttRuneType = RuneMisc.getRuneTypeFrom(totemType);
                 if (runeType != ttRuneType)
                 {
                     if (RuneMisc.getExtraDropChanceOfTotemRune(rand))
@@ -72,14 +57,13 @@ public class TotemMisc
                 }
                 else
                 {
-                    runeDrops = rand.nextInt(3) + 1;
+                    runeDrops = RuneMisc.getRuneDropBy(rand, totemType);;
                 }
-                break;
-            default:
-                shardDrops = 0;
-                runeDrops = 0;
-                break;
-
+            }
+            else
+            {
+                runeDrops = RuneMisc.getRuneDropBy(rand, totemType);
+            }
         }
 
         if (shardDrops > 0)
@@ -91,14 +75,5 @@ public class TotemMisc
         {
             e.entityDropItem(new ItemStack(TIItems.soulRune, runeDrops, runeType.ordinal()), 0);
         }
-    }
-
-    public static int BreakRuneToNumbersOfShards(Random rand, RuneType type)
-    {
-        if (type == RuneType.NEUTRAL)
-        {
-            return rand.nextInt(3) + 2;
-        }
-        return rand.nextInt(2) + 1;
     }
 }

@@ -15,12 +15,10 @@ public class TileTotem extends TileEntity
 {
     public TileTotem()
     {
-        _direction = ForgeDirection.NORTH;
+        direction = ForgeDirection.NORTH;
     }
 
-    protected ForgeDirection _direction;
     private boolean init;
-    private int expClearTimer;
 
     private void init()
     {
@@ -30,20 +28,33 @@ public class TileTotem extends TileEntity
                 TotemLogicHandler.INSTANCE.registerTotem(this);
         }
     }
+    protected String ownerName;
+    
+    public String getOwnerName()
+    {
+        return ownerName;
+    }
+    
+    public void setOwnerName(String name)
+    {
+        ownerName = name;
+    }
+    
+    protected ForgeDirection direction;
 
     public ForgeDirection getDirection()
     {
-        return _direction;
+        return direction;
     }
 
     public void setDirection(ForgeDirection val)
     {
-        _direction = val;
+        direction = val;
     }
 
     public void setDirection(int dir)
     {
-        _direction = ForgeDirection.getOrientation(dir);
+        direction = ForgeDirection.getOrientation(dir);
     }
     
     public TotemType getType()
@@ -87,7 +98,7 @@ public class TileTotem extends TileEntity
     public Packet getDescriptionPacket()
     {
         return PacketTypeHandler.serialize(new PacketTotemUpdate(xCoord, yCoord, zCoord,
-                getDirection().ordinal()));
+                getDirection().ordinal(), getOwnerName()));
     }
 
     @Override
