@@ -1,10 +1,10 @@
 package snake.mcmods.theinvoker.items;
 
-import snake.mcmods.theinvoker.constants.TIGlobal;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTIBase extends Item
 {

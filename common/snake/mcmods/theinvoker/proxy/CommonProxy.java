@@ -1,6 +1,6 @@
 package snake.mcmods.theinvoker.proxy;
 
-import snake.mcmods.theinvoker.constants.TITileEntityID;
+import snake.mcmods.theinvoker.lib.constants.TITileEntityID;
 import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.common.registry.GameRegistry;

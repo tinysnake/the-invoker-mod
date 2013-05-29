@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
@@ -12,11 +11,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import snake.mcmods.theinvoker.constants.TIGlobal;
-import snake.mcmods.theinvoker.constants.TIRenderID;
-import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
 import snake.mcmods.theinvoker.items.ItemTotem;
 import snake.mcmods.theinvoker.items.TIItems;
+import snake.mcmods.theinvoker.lib.TIRenderID;
+import snake.mcmods.theinvoker.lib.TotemType;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -49,7 +48,7 @@ public class BlockTotem extends BlockContainer
     public Icon getIcon(int side, int metadata)
     {
         if(metadata==0)
-            return null;
+            return blockIcons[0];
         return blockIcons[metadata-1];
     }
 
@@ -129,7 +128,7 @@ public class BlockTotem extends BlockContainer
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
     {
         int metadata = world.getBlockMetadata(x, y, z);
-        if (metadata == TotemType.TYPE_GHOST.getMetadata())
+        if (metadata == TotemType.TYPE_GHOST.ordinal())
         {
             // is ghost block, look for the totem blow it.
             if (world.getBlockId(x, y - 1, z) != this.blockID && neighborBlockID == this.blockID)

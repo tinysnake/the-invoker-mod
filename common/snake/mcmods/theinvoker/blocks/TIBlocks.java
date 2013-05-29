@@ -1,6 +1,6 @@
 package snake.mcmods.theinvoker.blocks;
 
-import snake.mcmods.theinvoker.constants.TIBlockID;
+import snake.mcmods.theinvoker.lib.constants.TIBlockID;
 
 public class TIBlocks
 {

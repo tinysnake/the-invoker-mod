@@ -5,9 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import snake.mcmods.theinvoker.constants.TotemMisc;
-import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
+import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.logic.TotemLogicHandler;
+import snake.mcmods.theinvoker.logic.TotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
 
@@ -45,10 +45,15 @@ public class TileTotem extends TileEntity
     {
         _direction = ForgeDirection.getOrientation(dir);
     }
+    
+    public TotemType getType()
+    {
+        return TotemType.getType(this.getBlockMetadata());
+    }
 
     public int getEffectiveRange()
     {
-        return TotemMisc.getEffectiveRangeByMetadata(TotemType.getType(this.blockMetadata));
+        return TotemMisc.getEffectiveRangeByMetadata(TotemType.getType(this.getBlockMetadata()));
     }
 
     public boolean isEntityInRange(Entity e)

@@ -3,7 +3,6 @@ package snake.mcmods.theinvoker.handlers;
 import java.util.EnumSet;
 
 import snake.mcmods.theinvoker.logic.TotemLogicHandler;
-
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 

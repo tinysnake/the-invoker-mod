@@ -5,17 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import scala.Console;
-import snake.mcmods.theinvoker.constants.TotemMisc;
-import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
+import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import snake.mcmods.theinvoker.utils.CoordHelper;
 
@@ -53,45 +49,19 @@ public class TotemLogicHandler
         EntityLiving e = event.entityLiving;
         if (e == null)
             return false;
-        TileTotem tt = getMostPowerfulTotem(e);
+        TileTotem tt = getMostPowerfulTotemNearBy(e);
         if(tt!=null)
         {
             event.setCanceled(true);
             e.experienceValue = 0;
-            Random rand = e.worldObj.rand;
-            int dropMax = rand.nextInt(2)+1;
-            for(int i=0;i<dropMax;i++)
-            {
-                e.entityDropItem(new ItemStack(Item.seeds, 1, 0), 0);
-            }
+            TotemMisc.dropItems(e, tt);
             entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 40));
             return true;
         }
         return false;
-//        for (TileTotem tt : totems)
-//        {
-//            if (tt.isInvalid())
-//                continue;
-//            double distance = tt.getDistanceFrom(e.posX, e.posY, e.posZ);
-//            if (distance / 16F <= tt.getEffectiveRange() && !totemHasBeenDefeated(tt)
-//                    && getTotemInTheSameDimension(e, tt))
-//            {
-//                event.setCanceled(true);
-//                e.experienceValue = 0;
-//                Random rand = e.worldObj.rand;
-//                int dropMax = rand.nextInt(2)+1;
-//                for(int i=0;i<dropMax;i++)
-//                {
-//                    e.entityDropItem(new ItemStack(Item.seeds, 1, 0), 0);
-//                }
-//                entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 40));
-//                return true;
-//            }
-//        }
-//        return false;
     }
 
-    private TileTotem getMostPowerfulTotem(EntityLiving e)
+    private TileTotem getMostPowerfulTotemNearBy(EntityLiving e)
     {
         TileTotem ltt = null;
         for(TileTotem tt:totems)

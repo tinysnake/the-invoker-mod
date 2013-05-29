@@ -6,9 +6,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import snake.mcmods.theinvoker.constants.Textures;
-import snake.mcmods.theinvoker.constants.TotemMisc.TotemType;
 import snake.mcmods.theinvoker.items.ItemTotem;
+import snake.mcmods.theinvoker.lib.TotemType;
+import snake.mcmods.theinvoker.lib.constants.Textures;
 import snake.mcmods.theinvoker.models.ModelTotem;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 
@@ -27,7 +27,7 @@ public class RenderTotem extends TileEntitySpecialRenderer
     {
         TileTotem tt = (TileTotem) tileentity;
         int metadata = tt.getBlockMetadata();
-        if (metadata == TotemType.TYPE_GHOST.getMetadata())
+        if (metadata == TotemType.TYPE_GHOST.ordinal())
             return;
         String textureFileName = ItemTotem.NAMES[metadata];
         float angle = 0F;

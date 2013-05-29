@@ -6,8 +6,7 @@ import java.io.DataInputStream;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
-
-import snake.mcmods.theinvoker.constants.TIGlobal;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.net.packet.PacketTI;
 import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
 

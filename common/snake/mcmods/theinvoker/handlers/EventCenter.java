@@ -1,14 +1,13 @@
 package snake.mcmods.theinvoker.handlers;
 
-import snake.mcmods.theinvoker.config.Lang;
-import snake.mcmods.theinvoker.constants.LangKeys;
-import snake.mcmods.theinvoker.logic.TotemLogicHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import snake.mcmods.theinvoker.config.Lang;
+import snake.mcmods.theinvoker.lib.constants.LangKeys;
+import snake.mcmods.theinvoker.logic.TotemLogicHandler;
 
 public class EventCenter
 {

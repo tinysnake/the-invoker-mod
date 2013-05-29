@@ -1,6 +1,6 @@
 package snake.mcmods.theinvoker.config;
 
-import snake.mcmods.theinvoker.constants.TIGlobal;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Lang
