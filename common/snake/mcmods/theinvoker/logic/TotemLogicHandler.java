@@ -10,7 +10,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import scala.Console;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import snake.mcmods.theinvoker.utils.Utils;
@@ -52,11 +51,10 @@ public class TotemLogicHandler
         TileTotem tt = getMostPowerfulTotemNearBy(e);
         if(tt!=null)
         {
-            Utils.isVanillaMob(e);
             event.setCanceled(true);
             e.experienceValue = 0;
-            TotemMisc.dropItems(e, tt, tt.getOwnerName()==Utils.getActualDamageSource(event.source).getEntityName());
-            entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 40));
+            TotemMisc.dropItems(e, tt, tt.getOwnerName().equals(Utils.getActualDamageSource(event.source).getEntityName()));
+            entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 45));
             return true;
         }
         return false;
@@ -119,14 +117,6 @@ public class TotemLogicHandler
             }
         }
         return false;
-    }
-
-    public void debug()
-    {
-        for (TileTotem tt : totems)
-        {
-            Console.println(tt.xCoord + ", " + tt.yCoord + ", " + tt.zCoord);
-        }
     }
 
     public void update()

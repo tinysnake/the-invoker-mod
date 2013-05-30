@@ -1,12 +1,9 @@
 package snake.mcmods.theinvoker.logic;
 
-import java.util.Random;
-
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.ItemStack;
-import snake.mcmods.theinvoker.items.TIItems;
-import snake.mcmods.theinvoker.lib.RuneType;
+import scala.Console;
 import snake.mcmods.theinvoker.lib.TotemType;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 
 public class TotemMisc
@@ -27,6 +24,9 @@ public class TotemMisc
             // massacre
             4
     };
+    
+    public static final int DROP_CHANCE_OF_FIRE_ESSENCE = 5;
+    public static final int DROP_CHANGE_OF_DARK_ESSENCE = 1;
 
     public static int getEffectiveRangeByMetadata(TotemType metadata)
     {
@@ -35,45 +35,35 @@ public class TotemMisc
 
     public static void dropItems(EntityLiving e, TileTotem tt, boolean doDropRune)
     {
-        Random rand = e.worldObj.rand;
-        int shardDrops = 0;
-        int runeDrops = 0;
         TotemType totemType = tt.getType();
-        RuneType runeType = RuneMisc.getPossibleTypeOfRuneDrop(rand, tt);
 
-        shardDrops = RuneMisc.getSoulShardDropBy(rand, totemType);
+        RuneMisc.dropSoulShardsBy(e, totemType);
         if(doDropRune)
         {
-            if(tt.getType().isSomeKindOfRuneTotem())
+            int runeDrops = RuneMisc.dropRunesBy(e, totemType);
+            if(runeDrops==0)
             {
-                RuneType ttRuneType = RuneMisc.getRuneTypeFrom(totemType);
-                if (runeType != ttRuneType)
-                {
-                    if (RuneMisc.getExtraDropChanceOfTotemRune(rand))
-                    {
-                        runeDrops = 1;
-                        runeType = ttRuneType;
-                    }
-                }
-                else
-                {
-                    runeDrops = RuneMisc.getRuneDropBy(rand, totemType);;
-                }
+                RuneMisc.dropBonusRunes(e, totemType);
             }
-            else
+            if(totemType==TotemType.MASSACRE)
             {
-                runeDrops = RuneMisc.getRuneDropBy(rand, totemType);
+                tryDropEssence(e);
             }
         }
-
-        if (shardDrops > 0)
+    }
+    
+    private static boolean tryDropEssence(EntityLiving e)
+    {
+        int chance = 0;
+        if(e.getEntityName()=="Blaze")
+            chance = DROP_CHANCE_OF_FIRE_ESSENCE;
+        else if(e.getEntityName()=="Enderman")
+            chance = DROP_CHANGE_OF_DARK_ESSENCE;
+        if(e.worldObj.rand.nextInt(TIGlobal.NORMAL_CHANCE_MULTIPLIER)<=chance)
         {
-            e.entityDropItem(new ItemStack(TIItems.soulShard, shardDrops, 0), 0);
+            Console.println("congratulations!");
+            return true;
         }
-
-        if (runeDrops > 0)
-        {
-            e.entityDropItem(new ItemStack(TIItems.soulRune, runeDrops, runeType.ordinal()), 0);
-        }
+        return false;
     }
 }

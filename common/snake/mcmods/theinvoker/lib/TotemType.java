@@ -2,24 +2,24 @@ package snake.mcmods.theinvoker.lib;
 
 public enum TotemType
 {
-    TYPE_GHOST,
-    TYPE_SOUL,
-    TYPE_SOUL_ATTRACTIVE,
-    TYPE_RUNE_ICE,
-    TYPE_RUNE_FIRE,
-    TYPE_RUNE_WIND,
-    TYPE_RUNE_DARKNESS,
-    TYPE_MASSACRE;
+    GHOST,
+    SOUL,
+    SOUL_ATTRACTIVE,
+    RUNE_ICE,
+    RUNE_FIRE,
+    RUNE_WIND,
+    RUNE_DARKNESS,
+    MASSACRE;
 
     public static TotemType getType(int i)
     {
         if (i < values().length)
             return values()[i];
-        return TYPE_GHOST;
+        return GHOST;
     }
 
     public boolean isSomeKindOfRuneTotem()
     {
-        return this.ordinal() > TYPE_SOUL_ATTRACTIVE.ordinal() && this.ordinal() < TYPE_MASSACRE.ordinal();
+        return this.ordinal() > SOUL_ATTRACTIVE.ordinal() && this.ordinal() < MASSACRE.ordinal();
     }
 }

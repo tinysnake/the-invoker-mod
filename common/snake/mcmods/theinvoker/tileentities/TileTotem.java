@@ -1,17 +1,15 @@
 package snake.mcmods.theinvoker.tileentities;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.logic.TotemLogicHandler;
 import snake.mcmods.theinvoker.logic.TotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
-import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
+import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 
-public class TileTotem extends TileEntity
+public class TileTotem extends TileTIBase
 {
     public TileTotem()
     {
@@ -28,35 +26,7 @@ public class TileTotem extends TileEntity
                 TotemLogicHandler.INSTANCE.registerTotem(this);
         }
     }
-    protected String ownerName;
-    
-    public String getOwnerName()
-    {
-        return ownerName;
-    }
-    
-    public void setOwnerName(String name)
-    {
-        ownerName = name;
-    }
-    
-    protected ForgeDirection direction;
 
-    public ForgeDirection getDirection()
-    {
-        return direction;
-    }
-
-    public void setDirection(ForgeDirection val)
-    {
-        direction = val;
-    }
-
-    public void setDirection(int dir)
-    {
-        direction = ForgeDirection.getOrientation(dir);
-    }
-    
     public TotemType getType()
     {
         return TotemType.getType(this.getBlockMetadata());
@@ -70,6 +40,11 @@ public class TileTotem extends TileEntity
     public boolean isEntityInRange(Entity e)
     {
         return this.getDistanceFrom(e.posX, e.posY, e.posZ) / 16F <= getEffectiveRange();
+    }
+    
+    @Override
+    public boolean isGhostBlock() {
+        return this.getType()==TotemType.GHOST;
     }
 
     @Override
@@ -97,22 +72,7 @@ public class TileTotem extends TileEntity
     @Override
     public Packet getDescriptionPacket()
     {
-        return PacketTypeHandler.serialize(new PacketTotemUpdate(xCoord, yCoord, zCoord,
+        return PacketTypeHandler.serialize(new PacketTileEntityUpdate(xCoord, yCoord, zCoord,
                 getDirection().ordinal(), getOwnerName()));
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbtCompound)
-    {
-        super.readFromNBT(nbtCompound);
-        if (nbtCompound.hasKey("direction"))
-            setDirection(nbtCompound.getInteger("direction"));
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound nbtCompound)
-    {
-        super.writeToNBT(nbtCompound);
-        nbtCompound.setInteger("direction", getDirection().ordinal());
     }
 }

@@ -3,7 +3,7 @@ package snake.mcmods.theinvoker.proxy;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.lib.TIRenderID;
-import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
+import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.renderer.RenderTotem;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -21,7 +21,7 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void handleTileTotemUpdate(PacketTotemUpdate p)
+    public void handleTileEntityUpdate(PacketTileEntityUpdate p)
     {
         WorldClient world = FMLClientHandler.instance().getClient().theWorld;
         TileTotem tt = (TileTotem)world.getBlockTileEntity(p.x, p.y, p.z);

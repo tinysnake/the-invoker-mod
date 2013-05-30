@@ -37,10 +37,4 @@ public class Utils
         }
         return e;
     }
-    
-    public static boolean isVanillaMob(EntityLiving e)
-    {
-        Console.println(e.getEntityName());
-        return false;
-    }
 }

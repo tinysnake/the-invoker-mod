@@ -8,11 +8,11 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.net.packet.PacketTI;
-import snake.mcmods.theinvoker.net.packet.PacketTotemUpdate;
+import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 
 public enum PacketTypeHandler
 {
-    TOTEM(PacketTotemUpdate.class);
+    TOTEM(PacketTileEntityUpdate.class);
     
     private Class<? extends PacketTI> clazz;
 

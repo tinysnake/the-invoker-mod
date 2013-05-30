@@ -2,14 +2,11 @@ package snake.mcmods.theinvoker.blocks;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.items.ItemTotem;
 import snake.mcmods.theinvoker.items.TIItems;
@@ -20,7 +17,7 @@ import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTotem extends BlockContainer
+public class BlockTotem extends Block2HeightBase
 {
     public BlockTotem(int id)
     {
@@ -28,6 +25,7 @@ public class BlockTotem extends BlockContainer
         this.setBlockBounds(0.2F, 0F, 0.2F, 0.8F, 1F, 0.8F);
         this.setHardness(2.5F);
         this.setLightValue(7);
+        ghostBlockMetadata = TotemType.GHOST.ordinal();
     }
 
     private Icon[] blockIcons;
@@ -47,9 +45,9 @@ public class BlockTotem extends BlockContainer
     @SideOnly(Side.CLIENT)
     public Icon getIcon(int side, int metadata)
     {
-        if(metadata==0)
+        if (metadata == 0)
             return blockIcons[0];
-        return blockIcons[metadata-1];
+        return blockIcons[metadata - 1];
     }
 
     @Override
@@ -89,82 +87,16 @@ public class BlockTotem extends BlockContainer
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
-    {
-        return super.canPlaceBlockOnSide(world, x, y, z, side);
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+        if (world.getBlockMetadata(x, y, z) == TotemType.GHOST.ordinal())
+            return super.getCollisionBoundingBoxFromPool(world, x, y, z);
+        return AxisAlignedBB.getAABBPool().getAABB((double) x + this.minX, (double) y + this.minY, (double) z + this.minZ, (double) x + this.maxX, (double) y + this.maxY + 1, (double) z + this.maxZ);
     }
 
-    @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z)
-    {
-        return y >= 255 ? false : world.doesBlockHaveSolidTopSurface(x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving,
-            ItemStack itemStack)
-    {
-        TileTotem te = (TileTotem) world.getBlockTileEntity(x, y, z);
-        te.setOwnerName(entityLiving.getEntityName());
-        int face = MathHelper
-                .floor_double((double) (entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        switch (face)
-        {
-            case 0:
-                te.setDirection((byte) 2);
-                break;
-            case 1:
-                te.setDirection((byte) 5);
-                break;
-            case 2:
-                te.setDirection((byte) 3);
-                break;
-            case 3:
-                te.setDirection((byte) 4);
-                break;
-        }
-    }
-
-    @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
-    {
-        int metadata = world.getBlockMetadata(x, y, z);
-        if (metadata == TotemType.TYPE_GHOST.ordinal())
-        {
-            // is ghost block, look for the totem blow it.
-            if (world.getBlockId(x, y - 1, z) != this.blockID && neighborBlockID == this.blockID)
-            {
-                world.setBlockToAir(x, y, z);
-            }
-        }
-        else
-        {
-            boolean drop = false;
-            // is the actual block, look for the ghost block above it.
-            if (world.getBlockId(x, y + 1, z) != this.blockID && neighborBlockID == this.blockID && !world.isRemote)
-            {
-                drop = true;
-            }
-            if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z))
-            {
-                if (world.getBlockId(x, y + 1, z) == this.blockID)
-                {
-                    world.setBlockToAir(x, y + 1, z);
-                }
-            }
-
-            if (drop == true)
-            {
-                world.setBlockToAir(x, y, z);
-                this.dropBlockAsItem(world, x, y, z, metadata, 0);
-            }
-
-        }
-    }
-    
     @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random rdm) {
-        
+
     }
+
 }

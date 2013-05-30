@@ -7,13 +7,13 @@ import java.io.IOException;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 
-public class PacketTotemUpdate extends PacketTI
+public class PacketTileEntityUpdate extends PacketTI
 {
-    public PacketTotemUpdate()
+    public PacketTileEntityUpdate()
     {
         super(PacketTypeHandler.TOTEM, true);
     }
-    public PacketTotemUpdate(int x, int y, int z, int direction, String ownerName)
+    public PacketTileEntityUpdate(int x, int y, int z, int direction, String ownerName)
     {
         super(PacketTypeHandler.TOTEM, true);
         this.x = x;
@@ -37,7 +37,7 @@ public class PacketTotemUpdate extends PacketTI
         dos.writeInt(z);
         dos.writeInt(direction);
         if(ownerName!=null)
-            dos.writeChars(ownerName);
+            dos.writeUTF(ownerName);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PacketTotemUpdate extends PacketTI
     @Override
     public void doItsThing()
     {
-        TheInvoker.proxy.handleTileTotemUpdate(this);
+        TheInvoker.proxy.handleTileEntityUpdate(this);
     }
 
 }

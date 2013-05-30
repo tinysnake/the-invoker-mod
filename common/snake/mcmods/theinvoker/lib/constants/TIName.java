@@ -18,4 +18,5 @@ public class TIName
     public static final String ITEM_SOUL_RUNE_FIRE = "soul_rune_fire";
     public static final String ITEM_SOUL_RUNE_WIND = "soul_rune_wind";
     public static final String ITEM_SOUL_RUNE_DARKNESS = "soul_rune_darkness";
+    public static final String ITEM_SEDUCTION_TOTEM = "seduction_totem";
 }

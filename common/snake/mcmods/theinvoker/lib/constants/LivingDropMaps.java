@@ -55,7 +55,7 @@ public class LivingDropMaps
         SOUL_SHARD_DROP_MAP.put("Witch", arg.clone());
 
         /*****************************************************/
-        
+
         RUNE_DROP_MAP = new HashMap<String, int[]>();
 
         arg[0] = 2;
@@ -114,12 +114,11 @@ public class LivingDropMaps
         arg[0] = 5;
         arg[1] = 16;
         RUNE_DROP_MAP.put("Witch", arg.clone());
-        
-        
+
         /*****************************************************/
 
         RUNE_TYPE_DROP_MAP = new HashMap<String, RuneType>();
-        
+
         RUNE_TYPE_DROP_MAP.put("Creeper", RuneType.FIRE);
         RUNE_TYPE_DROP_MAP.put("Skeleton", null);
         RUNE_TYPE_DROP_MAP.put("Spider", null);
@@ -177,11 +176,12 @@ public class LivingDropMaps
 
     public static RuneType getRuneTypeBy(EntityLiving e)
     {
-        if(e==null)
+        if (e == null)
             return RuneType.NEUTRAL;
-        if(RUNE_TYPE_DROP_MAP.containsKey(e.getEntityName()))
+        if (RUNE_TYPE_DROP_MAP.containsKey(e.getEntityName()))
         {
-            return RUNE_TYPE_DROP_MAP.get(e.getEntityName());
+            RuneType rt = RUNE_TYPE_DROP_MAP.get(e.getEntityName());
+            return rt != null ? rt : RuneType.values()[e.worldObj.rand.nextInt(RuneType.values().length)];
         }
         else
         {
