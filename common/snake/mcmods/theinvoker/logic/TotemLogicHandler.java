@@ -49,7 +49,7 @@ public class TotemLogicHandler
         if (e == null||e.isChild())
             return false;
         TileTotem tt = getMostPowerfulTotemNearBy(e);
-        if(tt!=null)
+        if(tt!=null&&tt.getOwnerName()!=null)
         {
             event.setCanceled(true);
             e.experienceValue = 0;

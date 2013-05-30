@@ -26,7 +26,7 @@ public class TotemMisc
     };
     
     public static final int DROP_CHANCE_OF_FIRE_ESSENCE = 5;
-    public static final int DROP_CHANGE_OF_DARK_ESSENCE = 1;
+    public static final int DROP_CHANGE_OF_DARK_ESSENCE = 10;
 
     public static int getEffectiveRangeByMetadata(TotemType metadata)
     {
@@ -59,7 +59,7 @@ public class TotemMisc
             chance = DROP_CHANCE_OF_FIRE_ESSENCE;
         else if(e.getEntityName()=="Enderman")
             chance = DROP_CHANGE_OF_DARK_ESSENCE;
-        if(e.worldObj.rand.nextInt(TIGlobal.NORMAL_CHANCE_MULTIPLIER)<=chance)
+        if(e.worldObj.rand.nextInt(TIGlobal.RARE_CHANCE_MULTIPLIER)<=chance)
         {
             Console.println("congratulations!");
             return true;

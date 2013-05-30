@@ -58,12 +58,12 @@ public class LivingDropMaps
 
         RUNE_DROP_MAP = new HashMap<String, int[]>();
 
-        arg[0] = 2;
+        arg[0] = 1;
         arg[1] = 2;
         // special
         RUNE_DROP_MAP.put("Creeper", arg.clone());
-        arg[0] = 3;
-        arg[1] = 2;
+        arg[0] = 1;
+        arg[1] = 3;
         RUNE_DROP_MAP.put("Blaze", arg.clone());
         arg[0] = 2;
         arg[1] = 3;
@@ -72,7 +72,7 @@ public class LivingDropMaps
         arg[1] = 2;
         RUNE_DROP_MAP.put("Cave Spider", arg.clone());
         arg[0] = 1;
-        arg[1] = 4;
+        arg[1] = 3;
         RUNE_DROP_MAP.put("Enderman", arg.clone());
         arg[0] = 0;
         arg[1] = 3;

@@ -38,9 +38,9 @@ public class RenderTileBase extends TileEntitySpecialRenderer
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tileentity, double x, double t, double z, float f) 
+    public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f) 
     {
-        doRender(tileentity, x, t, z, f);
+        doRender(tileentity, x, y, z, f);
     }
 
 }
