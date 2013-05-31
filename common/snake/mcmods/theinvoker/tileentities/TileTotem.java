@@ -2,12 +2,17 @@ package snake.mcmods.theinvoker.tileentities;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
+import snake.mcmods.theinvoker.blocks.BlockTotem;
+import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.logic.TotemLogicHandler;
 import snake.mcmods.theinvoker.logic.TotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileTotem extends TileTIBase
 {
@@ -41,10 +46,10 @@ public class TileTotem extends TileTIBase
     {
         return this.getDistanceFrom(e.posX, e.posY, e.posZ) / 16F <= getEffectiveRange();
     }
-    
+
     @Override
     public boolean isGhostBlock() {
-        return this.getType()==TotemType.GHOST;
+        return this.getType() == TotemType.GHOST;
     }
 
     @Override
@@ -74,5 +79,13 @@ public class TileTotem extends TileTIBase
     {
         return PacketTypeHandler.serialize(new PacketTileEntityUpdate(xCoord, yCoord, zCoord,
                 getDirection().ordinal(), getOwnerName()));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        BlockTotem block = TIBlocks.totem;
+        return AxisAlignedBB.getAABBPool().getAABB(block.getBlockBoundsMinX() + xCoord, block.getBlockBoundsMinY() + yCoord, block.getBlockBoundsMinZ() + zCoord,
+                block.getBlockBoundsMaxX() + xCoord, block.getBlockBoundsMaxY() + yCoord + 1, block.getBlockBoundsMaxZ() + zCoord);
     }
 }

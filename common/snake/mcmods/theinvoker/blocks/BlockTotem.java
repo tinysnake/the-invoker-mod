@@ -87,16 +87,13 @@ public class BlockTotem extends Block2HeightBase
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        if (world.getBlockMetadata(x, y, z) == TotemType.GHOST.ordinal())
-            return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-        return AxisAlignedBB.getAABBPool().getAABB((double) x + this.minX, (double) y + this.minY, (double) z + this.minZ, (double) x + this.maxX, (double) y + this.maxY + 1, (double) z + this.maxZ);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random rdm) {
 
+    }
+    @Override
+    protected void dropItem(World world, int x, int y, int z, int neighborBlockID) {
+        this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
     }
 
 }

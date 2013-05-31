@@ -5,29 +5,25 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import snake.mcmods.theinvoker.TheInvoker;
+import snake.mcmods.theinvoker.logic.SeductionTotemLogicHandler;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 
-public class PacketTileEntityUpdate extends PacketTI
+public class PacketSeductionTotemUpdate extends PacketTileEntityUpdate
 {
-    public PacketTileEntityUpdate()
+
+    public PacketSeductionTotemUpdate()
     {
-        super(PacketTypeHandler.TILE_TI, true);
-    }
-    public PacketTileEntityUpdate(int x, int y, int z, int direction, String ownerName)
-    {
-        super(PacketTypeHandler.TILE_TI, true);
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.direction = direction;
-        this.ownerName = ownerName;
+        this.type=PacketTypeHandler.SEDUCTION_TOTEM;
     }
 
-    public int x;
-    public int y;
-    public int z;
-    public int direction;
-    public String ownerName;
+    public PacketSeductionTotemUpdate(int x, int y, int z, int direction, String ownerName, int age)
+    {
+        super(x, y, z, direction, ownerName);
+        this.type=PacketTypeHandler.SEDUCTION_TOTEM;
+        this.age = age;
+    }
+    
+    public int age;
 
     @Override
     protected void writeData(DataOutputStream dos) throws IOException
@@ -38,6 +34,7 @@ public class PacketTileEntityUpdate extends PacketTI
         dos.writeInt(direction);
         if(ownerName!=null)
             dos.writeUTF(ownerName);
+        dos.writeInt(age);
     }
 
     @Override
@@ -49,12 +46,12 @@ public class PacketTileEntityUpdate extends PacketTI
         direction = dis.readInt();
         if(dis.available()>0)
             ownerName = dis.readUTF();
+        age = dis.readInt();
     }
 
     @Override
     public void doItsThing()
     {
-        TheInvoker.proxy.handleTileEntityUpdate(this);
+        SeductionTotemLogicHandler.syncDataFromPacket(this);
     }
-
 }

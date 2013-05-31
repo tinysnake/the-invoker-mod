@@ -10,4 +10,6 @@ public class Textures
     public static final String MODEL_TOTEM_SOUL = MODEL_BASE_PATH + "totem_soul.png";
     public static final String MODEL_TOTEM_RUNE = MODEL_BASE_PATH + "totem_rune.png";
     public static final String MODEL_TOTEM_MASSACRE = MODEL_BASE_PATH + "totem_massacre.png";
+    public static final String MODEL_SEDUCTION_TOTEM = MODEL_BASE_PATH + "seduction_totem.png";
+    public static final String MODEL_BROKEN_SEDUCTION_TOTEM = MODEL_SEDUCTION_TOTEM;
 }

@@ -7,12 +7,14 @@ import java.io.DataInputStream;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
+import snake.mcmods.theinvoker.net.packet.PacketSeductionTotemUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketTI;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 
 public enum PacketTypeHandler
 {
-    TOTEM(PacketTileEntityUpdate.class);
+    TILE_TI(PacketTileEntityUpdate.class),
+    SEDUCTION_TOTEM(PacketSeductionTotemUpdate.class);
     
     private Class<? extends PacketTI> clazz;
 

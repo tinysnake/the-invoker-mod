@@ -4,6 +4,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
@@ -58,7 +59,15 @@ public abstract class Block2HeightBase extends BlockContainer
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
     {
-        int metadata = world.getBlockMetadata(x, y, z);
+        TileEntity te = world.getBlockTileEntity(x, y, z);
+        int metadata = 0;
+        if(te!=null)
+        {
+            metadata=te.getBlockMetadata();
+        }
+        else
+            metadata=world.getBlockMetadata(x, y, z);
+        
         if (metadata == ghostBlockMetadata)
         {
             // is ghost block, look for the totem blow it.
@@ -74,6 +83,7 @@ public abstract class Block2HeightBase extends BlockContainer
             if (world.getBlockId(x, y + 1, z) != this.blockID && neighborBlockID == this.blockID && !world.isRemote)
             {
                 drop = true;
+                dropItem(world, x, y, z, neighborBlockID);
             }
             if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z))
             {
@@ -86,10 +96,10 @@ public abstract class Block2HeightBase extends BlockContainer
             if (drop == true)
             {
                 world.setBlockToAir(x, y, z);
-                this.dropBlockAsItem(world, x, y, z, metadata, 0);
             }
 
         }
     }
 
+    protected abstract void dropItem(World world, int x, int y, int z,int neighborBlockID);
 }

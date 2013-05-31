@@ -9,15 +9,18 @@ public class TIItems
     public static ItemTotem totem;
     public static ItemSoulShard soulShard;
     public static ItemSoulRune soulRune;
+    public static ItemSeductionTotem seductionTotem;
 
     public static void init()
     {
         totem = new ItemTotem(TIItemID.TOTEM);
-        soulShard= new ItemSoulShard(TIItemID.SOUL_SHARD);
+        soulShard = new ItemSoulShard(TIItemID.SOUL_SHARD);
         soulRune = new ItemSoulRune(TIItemID.SOUL_RUNE);
+        seductionTotem = new ItemSeductionTotem(TIItemID.SEDUCTION_TOTEM);
 
-        GameRegistry.registerItem(totem,TIName.ITEM_TOTEM);
+        GameRegistry.registerItem(totem, TIName.ITEM_TOTEM);
         GameRegistry.registerItem(soulShard, TIName.ITEM_SOUL_SHARD);
         GameRegistry.registerItem(soulRune, TIName.ITEM_SOUL_RUNE);
+        GameRegistry.registerItem(seductionTotem, TIName.ITEM_SEDUCTION_TOTEM);
     }
 }
