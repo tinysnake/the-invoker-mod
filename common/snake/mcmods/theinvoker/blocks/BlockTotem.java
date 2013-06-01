@@ -77,7 +77,9 @@ public class BlockTotem extends Block2HeightBase
     @Override
     public int idDropped(int metadata, Random par2Random, int fortuneLvl)
     {
-        return TIItems.totem.itemID;
+        if(metadata!=TotemType.GHOST.ordinal())
+            return TIItems.totem.itemID;
+        return 0;
     }
 
     @Override
@@ -92,8 +94,8 @@ public class BlockTotem extends Block2HeightBase
 
     }
     @Override
-    protected void dropItem(World world, int x, int y, int z, int neighborBlockID) {
-        this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+    protected void dropItem(World world, int x, int y, int z, int neighborBlockID, int metadata) {
+        this.dropBlockAsItem(world, x, y, z, metadata, 0);
     }
 
 }

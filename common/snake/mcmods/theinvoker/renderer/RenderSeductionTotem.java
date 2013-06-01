@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
 import snake.mcmods.theinvoker.lib.constants.Textures;
+import snake.mcmods.theinvoker.logic.SeductionTotemMisc;
 import snake.mcmods.theinvoker.models.ModelBrokenSeductionTotem;
 import snake.mcmods.theinvoker.models.ModelSeductionTotem;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
@@ -38,7 +39,7 @@ public class RenderSeductionTotem extends RenderTileBase
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f)
     {
         TileSeductionTotem tst = (TileSeductionTotem) tileentity;
-        if (tst.isGhostBlock())
+        if (tst.worldObj.getBlockMetadata(tst.xCoord, tst.yCoord, tst.zCoord)==SeductionTotemMisc.GHOST_BLOCK_METADATA)
             return;
         
         super.renderTileEntityAt(tileentity, x, y, z, f);

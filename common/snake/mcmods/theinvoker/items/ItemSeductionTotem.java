@@ -9,6 +9,7 @@ import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.lib.constants.TIBlockID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.SeductionTotemMisc;
+import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 
 public class ItemSeductionTotem extends ItemTIBase
 {
@@ -19,7 +20,7 @@ public class ItemSeductionTotem extends ItemTIBase
         this.setMaxStackSize(1);
         this.setCreativeTab(TheInvoker.tab);
         this.setUnlocalizedName(TIName.ITEM_SEDUCTION_TOTEM);
-        this.setMaxDamage(SeductionTotemMisc.MAX_AGE_METADATA);
+        this.setMaxDamage(SeductionTotemMisc.MAX_AGE_DMG_VALUE);
     }
 
     @Override
@@ -34,14 +35,18 @@ public class ItemSeductionTotem extends ItemTIBase
                 itemStack))
         {
             int metadata = itemStack.getItemDamage();
-            if(metadata==0)
-                metadata=SeductionTotemMisc.MAX_AGE_METADATA;
-            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.seductionTotem.blockID, metadata, 4);
+            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.seductionTotem.blockID, SeductionTotemMisc.NORMAL_METADATA, 4);
             if (isSet)
             {
-                world.setBlock(vx, vy + 1, vz, TIBlocks.seductionTotem.blockID, SeductionTotemMisc.GHOST_BLOCK_METADATA, 4);
+                world.setBlock(vx, vy + 1, vz, TIBlocks.seductionTotem.blockID, 0, 4);
 
-                TIBlocks.totem.onBlockPlacedBy(world, vx, vy, vz, entityPlayer, itemStack);
+                TileSeductionTotem t = (TileSeductionTotem)world.getBlockTileEntity(vx, vy, vz);
+                if(t!=null)
+                {
+                    TIBlocks.totem.onBlockPlacedBy(world, vx, vy, vz, entityPlayer, itemStack);
+                    t.setAge(SeductionTotemMisc.getAgeFromDamageValue(metadata));
+                }
+                
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy + 1, vz, entityPlayer, itemStack);
 
                 itemStack.stackSize--;

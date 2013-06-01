@@ -4,7 +4,6 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
@@ -14,11 +13,11 @@ public abstract class Block2HeightBase extends BlockContainer
 
     public Block2HeightBase(int id, Material m)
     {
-        super(id,m);
+        super(id, m);
     }
-    
+
     protected int ghostBlockMetadata;
-    
+
     @Override
     public boolean canPlaceBlockOnSide(World world, int x, int y, int z, int side)
     {
@@ -28,7 +27,9 @@ public abstract class Block2HeightBase extends BlockContainer
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z)
     {
-        return y >= 255 ? false : world.doesBlockHaveSolidTopSurface(x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
+        return y >= 255 ? false : world.doesBlockHaveSolidTopSurface(x, y - 1, z)
+                && super.canPlaceBlockAt(world, x, y, z)
+                && super.canPlaceBlockAt(world, x, y + 1, z);
     }
 
     @Override
@@ -59,15 +60,8 @@ public abstract class Block2HeightBase extends BlockContainer
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighborBlockID)
     {
-        TileEntity te = world.getBlockTileEntity(x, y, z);
-        int metadata = 0;
-        if(te!=null)
-        {
-            metadata=te.getBlockMetadata();
-        }
-        else
-            metadata=world.getBlockMetadata(x, y, z);
-        
+        int metadata = world.getBlockMetadata(x, y, z);
+
         if (metadata == ghostBlockMetadata)
         {
             // is ghost block, look for the totem blow it.
@@ -75,15 +69,16 @@ public abstract class Block2HeightBase extends BlockContainer
             {
                 world.setBlockToAir(x, y, z);
             }
-        }
-        else
+        } else
         {
             boolean drop = false;
             // is the actual block, look for the ghost block above it.
-            if (world.getBlockId(x, y + 1, z) != this.blockID && neighborBlockID == this.blockID && !world.isRemote)
+            if (shouldBreakWhenGhostBlockDestoryed(world, x, y, z, neighborBlockID, metadata)
+                    && world.getBlockId(x, y + 1, z) != this.blockID
+                    && neighborBlockID == this.blockID && !world.isRemote)
             {
                 drop = true;
-                dropItem(world, x, y, z, neighborBlockID);
+                dropItem(world, x, y, z, neighborBlockID, metadata);
             }
             if (!world.doesBlockHaveSolidTopSurface(x, y - 1, z))
             {
@@ -101,5 +96,12 @@ public abstract class Block2HeightBase extends BlockContainer
         }
     }
 
-    protected abstract void dropItem(World world, int x, int y, int z,int neighborBlockID);
+    protected boolean shouldBreakWhenGhostBlockDestoryed(World world, int x, int y, int z,
+            int neighborBlockID, int metadata)
+    {
+        return true;
+    }
+
+    protected abstract void dropItem(World world, int x, int y, int z, int neighborBlockID,
+            int metadata);
 }
