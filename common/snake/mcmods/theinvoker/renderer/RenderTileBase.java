@@ -17,7 +17,7 @@ public class RenderTileBase extends TileEntitySpecialRenderer
     public void doRender(TileEntity tileentity, double x, double y, double z, float f)
     {
         TileTIBase tt = (TileTIBase) tileentity;
-        if (tt.isGhostBlock())
+        if (tt.getIsGhostBlock())
             return;
         
         switch(tt.getDirection())

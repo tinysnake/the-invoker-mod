@@ -35,10 +35,10 @@ public class ItemSeductionTotem extends ItemTIBase
                 itemStack))
         {
             int metadata = itemStack.getItemDamage();
-            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.seductionTotem.blockID, SeductionTotemMisc.NORMAL_METADATA, 4);
+            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.seductionTotem.blockID, SeductionTotemMisc.NORMAL_METADATA, 2);
             if (isSet)
             {
-                world.setBlock(vx, vy + 1, vz, TIBlocks.seductionTotem.blockID, 0, 4);
+                world.setBlock(vx, vy + 1, vz, TIBlocks.seductionTotem.blockID, 0, 2);
 
                 TileSeductionTotem t = (TileSeductionTotem)world.getBlockTileEntity(vx, vy, vz);
                 if(t!=null)

@@ -87,10 +87,10 @@ public class ItemTotem extends Item
         if (world.canPlaceEntityOnSide(TIBlockID.TOTEM, vx, vy, vz, true, side, entityPlayer,
                 itemStack))
         {
-            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.totem.blockID, itemStack.getItemDamage(), 4);
+            boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.totem.blockID, itemStack.getItemDamage(), 2);
             if (isSet)
             {
-                world.setBlock(vx, vy + 1, vz, TIBlocks.totem.blockID, TotemType.GHOST.ordinal(), 4);
+                world.setBlock(vx, vy + 1, vz, TIBlocks.totem.blockID, TotemType.GHOST.ordinal(), 2);
 
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy, vz, entityPlayer, itemStack);
                 TIBlocks.totem.onBlockPlacedBy(world, vx, vy + 1, vz, entityPlayer, itemStack);

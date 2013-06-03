@@ -91,12 +91,13 @@ public class ModelTotem extends ModelBase
 
   public void render()
   {
-      head.render(0.0625F);
-      lefthandupper.render(0.0625F);
-      lefthand.render(0.0625F);
-      righthandupper.render(0.0625F);
-      righthand.render(0.0625F);
-      body.render(0.0625F);
-      foot.render(0.0625F); 
+      render(null,0F,0F,-0.1F,0F,0F,0.0625F);
+//      head.render(0.0625F);
+//      lefthandupper.render(0.0625F);
+//      lefthand.render(0.0625F);
+//      righthandupper.render(0.0625F);
+//      righthand.render(0.0625F);
+//      body.render(0.0625F);
+//      foot.render(0.0625F); 
   }
 }

@@ -36,7 +36,7 @@ public class TileTIBase extends TileEntity
         direction = ForgeDirection.getOrientation(dir);
     }
     
-    public boolean isGhostBlock()
+    public boolean getIsGhostBlock()
     {
         return false;
     }

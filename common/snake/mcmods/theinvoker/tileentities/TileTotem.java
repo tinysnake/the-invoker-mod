@@ -48,7 +48,7 @@ public class TileTotem extends TileTIBase
     }
 
     @Override
-    public boolean isGhostBlock() {
+    public boolean getIsGhostBlock() {
         return this.getType() == TotemType.GHOST;
     }
 

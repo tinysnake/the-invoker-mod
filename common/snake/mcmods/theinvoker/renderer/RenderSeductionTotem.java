@@ -39,7 +39,7 @@ public class RenderSeductionTotem extends RenderTileBase
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f)
     {
         TileSeductionTotem tst = (TileSeductionTotem) tileentity;
-        if (tst.worldObj.getBlockMetadata(tst.xCoord, tst.yCoord, tst.zCoord)==SeductionTotemMisc.GHOST_BLOCK_METADATA)
+        if (tst.getIsGhostBlock())
             return;
         
         super.renderTileEntityAt(tileentity, x, y, z, f);

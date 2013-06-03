@@ -4,13 +4,17 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
+import snake.mcmods.theinvoker.items.ItemEvilTouch;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.TIRenderID;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.lib.constants.TIName;
+import snake.mcmods.theinvoker.logic.EvilTouchMisc;
 import snake.mcmods.theinvoker.logic.SeductionTotemMisc;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +28,6 @@ public class BlockSeductionTotem extends Block2HeightBase
         super(id, Material.wood);
         setCreativeTab(TheInvoker.tab);
         this.setHardness(2.5F);
-        this.setLightValue(7);
         ghostBlockMetadata = SeductionTotemMisc.GHOST_BLOCK_METADATA;
     }
 
@@ -55,16 +58,7 @@ public class BlockSeductionTotem extends Block2HeightBase
     @Override
     public int idDropped(int metadata, Random par2Random, int fortuneLvl)
     {
-        //TODO: drop broken seduction totem instead of the normal one.
-        if(metadata==SeductionTotemMisc.NORMAL_METADATA)
-            return TIItems.seductionTotem.itemID;
-        return 0;
-    }
-
-    @Override
-    public int damageDropped(int metadata)
-    {
-        return metadata;
+        return TIItems.brokenSeductionTotem.itemID;
     }
 
     @Override
@@ -73,14 +67,14 @@ public class BlockSeductionTotem extends Block2HeightBase
     {
         blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + TIName.ITEM_SEDUCTION_TOTEM);
     }
-    
+
     /**
      * If you call this before break the block,
-     * This will drop seduction totem with damage value inside. 
+     * This will drop seduction totem with damage value inside.
      */
     public void dropItemSafety()
     {
-        
+
     }
 
     /**
@@ -89,37 +83,57 @@ public class BlockSeductionTotem extends Block2HeightBase
     @Override
     protected void dropItem(World world, int x, int y, int z, int neighborBlockID, int metadata)
     {
-        //TODO:add a wand to remove this safety, if player break it with tool, it will turn into the broken seduction totem.
-        if (metadata != SeductionTotemMisc.NORMAL_METADATA)
-            return;
-        TileSeductionTotem tst = (TileSeductionTotem) world.getBlockTileEntity(x, y, z);
-        if (tst != null)
-        {
-            int dmgVal = SeductionTotemMisc.getDamageDataFromAge(tst.getAge());
-            if (dmgVal + 1 < SeductionTotemMisc.MAX_AGE_DMG_VALUE)
-            {
-                this.dropBlockAsItem(world, x, y, z, dmgVal, 0);
-            }
-        }
-    }
-    
-    @Override
-    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int metadata,
-            float chance, int fortune)
-    {
-        TileSeductionTotem tst = (TileSeductionTotem)world.getBlockTileEntity(x, y+1, z);
-        if(tst!=null)
-        {
-            int dmgVal = SeductionTotemMisc.getDamageDataFromAge(tst.getAge());
-            super.dropBlockAsItemWithChance(world, x, y, z, dmgVal, chance, fortune);
-        }
+
     }
 
     @Override
     protected boolean shouldBreakWhenGhostBlockDestoryed(World world, int x, int y, int z,
             int neighborBlockID, int metadata)
     {
-        return metadata!=SeductionTotemMisc.BROKEN_METADATA;
+        return metadata != SeductionTotemMisc.BROKEN_METADATA;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    {
+        ItemStack is = player.getHeldItem();
+        if (is != null && is.getItem() instanceof ItemEvilTouch && is.getItemDamage() < EvilTouchMisc.MAX_USAGE_DAMGE_VALUE)
+        {
+            TileSeductionTotem tst = (TileSeductionTotem) world.getBlockTileEntity(x, y, z);
+            if (tst == null)
+            {
+                return false;
+            }
+            else
+            {
+                int ty = y;
+                if (tst.getIsGhostBlock() && world.getBlockId(x, y - 1, z) == this.blockID)
+                {
+                    ty -= 1;
+                    tst = (TileSeductionTotem) world.getBlockTileEntity(x, ty, z);
+                }
+                if (tst.getIsBroken())
+                {
+                    this.dropBlockAsItem(world, x, y, z, 0, 0);
+                }
+                else
+                {
+                    int metadata = SeductionTotemMisc.getDamageDataFromAge(tst.getAge()) + 1;
+                    if(metadata<SeductionTotemMisc.MAX_AGE_DMG_VALUE)
+                    {
+                        ItemStack dropItemStack = new ItemStack(TIItems.seductionTotem.itemID, 1, metadata);
+                        this.dropBlockAsItem_do(world, x, y, z, dropItemStack);
+                    }
+                    else
+                    {
+                        this.dropBlockAsItem(world, x, y, z, 0, 0);
+                    }
+                }
+                world.setBlockToAir(x, y, z);
+                EvilTouchMisc.onEvilTouchUsed(is, player);
+                return true;
+            }
+        }
+        return false;
+    }
 }

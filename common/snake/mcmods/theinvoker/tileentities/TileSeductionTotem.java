@@ -22,7 +22,7 @@ public class TileSeductionTotem extends TileTIBase
     }
 
     @Override
-    public boolean isGhostBlock()
+    public boolean getIsGhostBlock()
     {
         return SeductionTotemMisc.isGhostBlock(getBlockMetadata());
     }
@@ -48,7 +48,7 @@ public class TileSeductionTotem extends TileTIBase
     public void updateEntity()
     {
         super.updateEntity();
-        if (this.isGhostBlock())
+        if (this.getIsGhostBlock()||getIsBroken())
             return;
         if (getAge() <= 0)
             setAge(SeductionTotemMisc.getAgeFromDamageValue(this.getBlockMetadata()));

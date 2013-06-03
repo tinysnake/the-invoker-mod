@@ -1,5 +1,11 @@
 package snake.mcmods.theinvoker.logic;
 
+import net.minecraft.client.multiplayer.WorldClient;
+import snake.mcmods.theinvoker.TheInvoker;
+import snake.mcmods.theinvoker.net.packet.PacketSeductionTotemUpdate;
+import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
+import cpw.mods.fml.client.FMLClientHandler;
+
 public class SeductionTotemMisc
 {
     public static final int MAX_AGE_DMG_VALUE = 17281;
@@ -12,12 +18,11 @@ public class SeductionTotemMisc
 
     public static boolean isGhostBlock(int metadata)
     {
-        return metadata == GHOST_BLOCK_METADATA || metadata == BROKEN_METADATA;
+        return metadata == GHOST_BLOCK_METADATA;
     }
 
     public static boolean getIsBroken(int age)
     {
-        // return age / (float) AGE_METADATA_SCALE <= 1F * AGE_METADATA_SCALE;
         return age / (float) AGE_DMG_VALUE_SCALE >= MAX_AGE_DMG_VALUE;
     }
 
@@ -29,5 +34,16 @@ public class SeductionTotemMisc
     public static int getAgeFromDamageValue(int metadata)
     {
         return metadata * AGE_DMG_VALUE_SCALE;
+    }
+
+    public static void syncDataFromPacket(PacketSeductionTotemUpdate p)
+    {
+        TheInvoker.proxy.handleTileEntityUpdate(p);
+        WorldClient world = FMLClientHandler.instance().getClient().theWorld;
+        TileSeductionTotem tt = (TileSeductionTotem) world.getBlockTileEntity(p.x, p.y, p.z);
+        if (tt != null)
+        {
+            tt.setAge(p.age);
+        }
     }
 }

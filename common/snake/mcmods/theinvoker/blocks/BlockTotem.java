@@ -24,7 +24,6 @@ public class BlockTotem extends Block2HeightBase
         super(id, Material.wood);
         this.setBlockBounds(0.2F, 0F, 0.2F, 0.8F, 1F, 0.8F);
         this.setHardness(2.5F);
-        this.setLightValue(7);
         ghostBlockMetadata = TotemType.GHOST.ordinal();
     }
 
