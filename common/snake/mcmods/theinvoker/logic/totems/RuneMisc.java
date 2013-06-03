@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.logic;
+package snake.mcmods.theinvoker.logic.totems;
 
 import java.util.ArrayList;
 import java.util.HashMap;

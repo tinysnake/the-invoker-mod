@@ -1,12 +1,15 @@
 package snake.mcmods.theinvoker.tileentities;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.blocks.BlockTotem;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
-import snake.mcmods.theinvoker.logic.SeductionTotemMisc;
+import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemCenter;
+import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
+import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketSeductionTotemUpdate;
 import cpw.mods.fml.relauncher.Side;
@@ -33,6 +36,7 @@ public class TileSeductionTotem extends TileTIBase
     }
 
     private int _age;
+    private boolean init;
 
     public int getAge()
     {
@@ -44,10 +48,26 @@ public class TileSeductionTotem extends TileTIBase
         _age = val;
     }
 
+    public boolean isEntityInRange(Entity e)
+    {
+        return  isInRange(e.posX, e.posY, e.posZ);
+    }
+
+    public boolean isInRange(double x, double y, double z)
+    {
+        double distance = this.getDistanceFrom(x, y, z) / 16F;
+        return  distance< SeductionTotemMisc.EFFECTIVE_RANGE && distance > SeductionTotemMisc.LOSE_EFFECT_RANGE;
+    }
+
     @Override
     public void updateEntity()
     {
         super.updateEntity();
+        if(!init)
+        {
+            setup();
+            init=true;
+        }
         if (this.getIsGhostBlock()||getIsBroken())
             return;
         if (getAge() <= 0)
@@ -64,6 +84,14 @@ public class TileSeductionTotem extends TileTIBase
             {
                 this.worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
             }
+        }
+    }
+
+    private void setup() 
+    {
+        if (this.worldObj.isRemote && !this.getIsGhostBlock()&&!this.getIsBroken())
+        {
+            SeductionTotemCenter.INSTANCE.registerSeductionTotem(this);
         }
     }
 
@@ -98,5 +126,16 @@ public class TileSeductionTotem extends TileTIBase
                 block.getBlockBoundsMinY() + yCoord, block.getBlockBoundsMinZ() + zCoord,
                 block.getBlockBoundsMaxX() + xCoord, block.getBlockBoundsMaxY() + yCoord + 1,
                 block.getBlockBoundsMaxZ() + zCoord);
+    }
+
+    @Override
+    public void invalidate()
+    {
+        super.invalidate();
+        if (this.worldObj.isRemote && !this.getIsGhostBlock())
+        {
+            SeductionTotemCenter.INSTANCE.unregisterSeductionTotem(this);
+        }
+        init = false;
     }
 }

@@ -56,7 +56,7 @@ public class TheInvoker
         
         TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
 
-        MinecraftForge.EVENT_BUS.register(new EventCenter());
+        proxy.registerEventHooks();
 
         Lang.loadLocalizedFiles();
     }

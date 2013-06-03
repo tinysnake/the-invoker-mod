@@ -7,8 +7,8 @@ import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.blocks.BlockTotem;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.lib.TotemType;
-import snake.mcmods.theinvoker.logic.TotemLogicHandler;
-import snake.mcmods.theinvoker.logic.TotemMisc;
+import snake.mcmods.theinvoker.logic.totems.TotemCenter;
+import snake.mcmods.theinvoker.logic.totems.TotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import cpw.mods.fml.relauncher.Side;
@@ -28,7 +28,7 @@ public class TileTotem extends TileTIBase
         if (this.worldObj.isRemote)
         {
             if (this.getBlockMetadata() > 0)
-                TotemLogicHandler.INSTANCE.registerTotem(this);
+                TotemCenter.INSTANCE.registerTotem(this);
         }
     }
 
@@ -67,9 +67,9 @@ public class TileTotem extends TileTIBase
     public void invalidate()
     {
         super.invalidate();
-        if (this.worldObj.isRemote && this.getBlockMetadata() > 0)
+        if (this.worldObj.isRemote && !this.getIsGhostBlock())
         {
-            TotemLogicHandler.INSTANCE.unregisterTotem(this);
+            TotemCenter.INSTANCE.unregisterTotem(this);
         }
         init = false;
     }

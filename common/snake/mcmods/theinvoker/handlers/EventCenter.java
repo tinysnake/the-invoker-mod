@@ -4,10 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.lib.constants.LangKeys;
-import snake.mcmods.theinvoker.logic.TotemLogicHandler;
 
 public class EventCenter
 {
@@ -19,11 +17,5 @@ public class EventCenter
         {
             p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
         }
-    }
-    
-    @ForgeSubscribe
-    public void handleEntityDropsEvent(LivingDropsEvent e)
-    {
-        TotemLogicHandler.INSTANCE.updateLogicWhileEntityLivingDrops(e);
     }
 }

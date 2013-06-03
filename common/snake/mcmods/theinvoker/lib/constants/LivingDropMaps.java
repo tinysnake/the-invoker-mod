@@ -36,7 +36,7 @@ public class LivingDropMaps
         SOUL_SHARD_DROP_MAP.put("Pig", arg.clone());
         SOUL_SHARD_DROP_MAP.put("Sheep", arg.clone());
         SOUL_SHARD_DROP_MAP.put("Cow", arg.clone());
-        SOUL_SHARD_DROP_MAP.put("Chiken", arg.clone());
+        SOUL_SHARD_DROP_MAP.put("Chicken", arg.clone());
         SOUL_SHARD_DROP_MAP.put("Squid", arg.clone());
         SOUL_SHARD_DROP_MAP.put("Wolf", arg.clone());
         SOUL_SHARD_DROP_MAP.put("Mooshroom", arg.clone());
@@ -96,7 +96,7 @@ public class LivingDropMaps
         RUNE_DROP_MAP.put("Pig", arg.clone());
         RUNE_DROP_MAP.put("Sheep", arg.clone());
         RUNE_DROP_MAP.put("Cow", arg.clone());
-        RUNE_DROP_MAP.put("Chiken", arg.clone());
+        RUNE_DROP_MAP.put("Chicken", arg.clone());
         RUNE_DROP_MAP.put("Wolf", arg.clone());
         RUNE_DROP_MAP.put("Mooshroom", arg.clone());
 
@@ -137,7 +137,7 @@ public class LivingDropMaps
         RUNE_TYPE_DROP_MAP.put("Pig", null);
         RUNE_TYPE_DROP_MAP.put("Sheep", null);
         RUNE_TYPE_DROP_MAP.put("Cow", null);
-        RUNE_TYPE_DROP_MAP.put("Chiken", null);
+        RUNE_TYPE_DROP_MAP.put("Chicken", null);
         RUNE_TYPE_DROP_MAP.put("Squid", RuneType.ICE);
         RUNE_TYPE_DROP_MAP.put("Wolf", null);
         RUNE_TYPE_DROP_MAP.put("Mooshroom", null);
@@ -150,7 +150,8 @@ public class LivingDropMaps
         if (e != null && SOUL_SHARD_DROP_MAP.containsKey(e.getEntityName()))
         {
             int[] arr = SOUL_SHARD_DROP_MAP.get(e.getEntityName());
-            return e.worldObj.rand.nextInt(arr[1]) + arr[0];
+            int rand = arr[1]==0? 0:e.worldObj.rand.nextInt(arr[1]);
+            return rand + arr[0];
         }
         return 0;
     }

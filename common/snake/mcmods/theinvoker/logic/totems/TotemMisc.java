@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.logic;
+package snake.mcmods.theinvoker.logic.totems;
 
 import net.minecraft.entity.EntityLiving;
 import scala.Console;

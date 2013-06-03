@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.logic;
+package snake.mcmods.theinvoker.logic.totems;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -14,11 +14,11 @@ import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import snake.mcmods.theinvoker.utils.Utils;
 
-public class TotemLogicHandler
+public class TotemCenter
 {
-    public static final TotemLogicHandler INSTANCE = new TotemLogicHandler();
+    public static final TotemCenter INSTANCE = new TotemCenter();
 
-    public TotemLogicHandler()
+    public TotemCenter()
     {
         totems = new ArrayList<TileTotem>();
         entitiesToRemove = new ArrayList<Entry<Entity, Integer>>();
@@ -134,7 +134,6 @@ public class TotemLogicHandler
                 e.worldObj.removeEntity(e);
                 it.remove();
             }
-
         }
     }
 }

@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.logic;
+package snake.mcmods.theinvoker.logic.seductiontotems;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import snake.mcmods.theinvoker.TheInvoker;
@@ -15,6 +15,12 @@ public class SeductionTotemMisc
     public static final int GHOST_BLOCK_METADATA = 0;
     public static final int NORMAL_METADATA = 1;
     public static final int BROKEN_METADATA = 2;
+    public static final String[] SEDUCTION_AI_LIST = 
+    {
+        "Creeper", "Skeleton", "Zombie", "Zombie Pigman", 
+        "Enderman", "Cave Spider", "Blaze", "Pig", "Sheep", 
+        "Cow", "Chiken", "Mooshroom", "Spider"
+    };
 
     public static boolean isGhostBlock(int metadata)
     {

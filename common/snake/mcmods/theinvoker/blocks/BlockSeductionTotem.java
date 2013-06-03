@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.items.ItemEvilTouch;
@@ -15,7 +16,7 @@ import snake.mcmods.theinvoker.lib.TIRenderID;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.EvilTouchMisc;
-import snake.mcmods.theinvoker.logic.SeductionTotemMisc;
+import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemMisc;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,7 +28,8 @@ public class BlockSeductionTotem extends Block2HeightBase
     {
         super(id, Material.wood);
         setCreativeTab(TheInvoker.tab);
-        this.setHardness(2.5F);
+        this.setHardness(7F);
+        this.setLightValue(0.5F);
         ghostBlockMetadata = SeductionTotemMisc.GHOST_BLOCK_METADATA;
     }
 
@@ -66,15 +68,6 @@ public class BlockSeductionTotem extends Block2HeightBase
     public void registerIcons(IconRegister iconRegister)
     {
         blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + TIName.ITEM_SEDUCTION_TOTEM);
-    }
-
-    /**
-     * If you call this before break the block,
-     * This will drop seduction totem with damage value inside.
-     */
-    public void dropItemSafety()
-    {
-
     }
 
     /**
@@ -119,7 +112,7 @@ public class BlockSeductionTotem extends Block2HeightBase
                 else
                 {
                     int metadata = SeductionTotemMisc.getDamageDataFromAge(tst.getAge()) + 1;
-                    if(metadata<SeductionTotemMisc.MAX_AGE_DMG_VALUE)
+                    if (metadata < SeductionTotemMisc.MAX_AGE_DMG_VALUE)
                     {
                         ItemStack dropItemStack = new ItemStack(TIItems.seductionTotem.itemID, 1, metadata);
                         this.dropBlockAsItem_do(world, x, y, z, dropItemStack);

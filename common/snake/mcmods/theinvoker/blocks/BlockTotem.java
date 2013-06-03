@@ -5,7 +5,6 @@ import java.util.Random;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.items.ItemTotem;
@@ -23,7 +22,8 @@ public class BlockTotem extends Block2HeightBase
     {
         super(id, Material.wood);
         this.setBlockBounds(0.2F, 0F, 0.2F, 0.8F, 1F, 0.8F);
-        this.setHardness(2.5F);
+        this.setHardness(7F);
+        this.setLightValue(0.5F);
         ghostBlockMetadata = TotemType.GHOST.ordinal();
     }
 
@@ -89,9 +89,11 @@ public class BlockTotem extends Block2HeightBase
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random rdm) {
+    public void randomDisplayTick(World world, int x, int y, int z, Random rdm) 
+    {
 
     }
+    
     @Override
     protected void dropItem(World world, int x, int y, int z, int neighborBlockID, int metadata) {
         this.dropBlockAsItem(world, x, y, z, metadata, 0);

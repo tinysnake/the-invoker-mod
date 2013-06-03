@@ -8,7 +8,7 @@ import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.lib.constants.TIBlockID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
-import snake.mcmods.theinvoker.logic.SeductionTotemMisc;
+import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemMisc;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 
 public class ItemSeductionTotem extends ItemTIBase

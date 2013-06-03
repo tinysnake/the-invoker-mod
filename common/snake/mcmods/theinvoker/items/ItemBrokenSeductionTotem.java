@@ -4,7 +4,7 @@ import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import net.minecraft.item.Item;
 
-public class ItemBrokenSeductionTotem extends Item
+public class ItemBrokenSeductionTotem extends ItemTIBase
 {
 
     public ItemBrokenSeductionTotem(int id)
