@@ -1,6 +1,9 @@
 package snake.mcmods.theinvoker.tileentities;
 
+import snake.mcmods.theinvoker.net.PacketTypeHandler;
+import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -39,6 +42,13 @@ public class TileTIBase extends TileEntity
     public boolean getIsGhostBlock()
     {
         return false;
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        return PacketTypeHandler.serialize(new PacketTileEntityUpdate(xCoord, yCoord, zCoord,
+                getDirection().ordinal(), getOwnerName()));
     }
 
     @Override

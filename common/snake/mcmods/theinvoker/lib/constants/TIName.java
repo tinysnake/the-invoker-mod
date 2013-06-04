@@ -20,4 +20,5 @@ public class TIName
     public static final String ITEM_SEDUCTION_TOTEM = "seduction_totem";
     public static final String ITEM_BROKEN_SEDUCTION_TOTEM = "broken_seduction_totem";
     public static final String ITEM_EVIL_TOUCH = "evil_touch";
+    public static final String BLOCK_SOUL_SMELTER = "soul_smelter";
 }

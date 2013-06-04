@@ -7,6 +7,7 @@ import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
+import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -16,6 +17,7 @@ public class CommonProxy
     {
         GameRegistry.registerTileEntity(TileTotem.class, TITileEntityID.TOTEM);
         GameRegistry.registerTileEntity(TileSeductionTotem.class, TITileEntityID.SEDUCTION_TOTEM);
+        GameRegistry.registerTileEntity(TileSoulSmelter.class, TITileEntityID.SOUL_SMELTER);
     }
     
     public void initRenderingStuff()

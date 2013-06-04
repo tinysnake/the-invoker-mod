@@ -12,4 +12,11 @@ public class Textures
     public static final String MODEL_TOTEM_MASSACRE = MODEL_BASE_PATH + "totem_massacre.png";
     public static final String MODEL_SEDUCTION_TOTEM = MODEL_BASE_PATH + "seduction_totem.png";
     public static final String MODEL_BROKEN_SEDUCTION_TOTEM = MODEL_SEDUCTION_TOTEM;
+    
+    public static final String BLOCK_SOUL_SMELTER_TOP_ON = TIGlobal.MOD_ID+":soul_smelter_top_on";
+    public static final String BLOCK_SOUL_SMELTER_TOP_OFF = TIGlobal.MOD_ID+":soul_smelter_top_off";
+    public static final String BLOCK_SOUL_SMELTER_SIDE = TIGlobal.MOD_ID+":soul_smelter_side";
+    public static final String BLOCK_SOUL_SMELTER_BOTTOM = TIGlobal.MOD_ID+":soul_smelter_bot";
+    public static final String BLOCK_SOUL_SMELTER_FRONT_OFF = TIGlobal.MOD_ID+":soul_smelter_front_off";
+    public static final String BLOCK_SOUL_SMELTER_FRONT_ON = TIGlobal.MOD_ID+":soul_smelter_front_on";
 }

@@ -15,4 +15,5 @@ item.soul_rune_darkness.name=暗之灵魂符印
 item.seduction_totem.name=魅惑图腾
 item.broken_seduction_totem.name=损坏了的魅惑图腾
 item.evil_touch.name=邪恶之触
+block.soul_smelter.name=灵魂熔炉
 text.welcome=您安装了召唤者MOD.

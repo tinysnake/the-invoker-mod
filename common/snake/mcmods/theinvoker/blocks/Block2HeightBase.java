@@ -43,16 +43,16 @@ public abstract class Block2HeightBase extends BlockContainer
         switch (face)
         {
             case 0:
-                te.setDirection((byte) 2);
+                te.setDirection(2);
                 break;
             case 1:
-                te.setDirection((byte) 5);
+                te.setDirection(5);
                 break;
             case 2:
-                te.setDirection((byte) 3);
+                te.setDirection(3);
                 break;
             case 3:
-                te.setDirection((byte) 4);
+                te.setDirection(4);
                 break;
         }
     }
@@ -69,7 +69,8 @@ public abstract class Block2HeightBase extends BlockContainer
             {
                 world.setBlockToAir(x, y, z);
             }
-        } else
+        }
+        else
         {
             boolean drop = false;
             // is the actual block, look for the ghost block above it.
