@@ -11,7 +11,8 @@ public class SeductionTotemEventHooks
     @ForgeSubscribe
     public void handleLivingEntityJoinedTheWorld(EntityJoinWorldEvent e)
     {
-        addSeductionAIToEntity(e.entity);
+        if(e.world.isRemote)
+            addSeductionAIToEntity(e.entity);
     }
 
     public void addSeductionAIToEntity(Entity entity)

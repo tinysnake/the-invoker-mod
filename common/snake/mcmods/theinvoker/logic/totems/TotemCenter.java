@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
@@ -46,14 +45,18 @@ public class TotemCenter
     public boolean updateLogicWhileEntityLivingDrops(LivingDropsEvent event)
     {
         EntityLiving e = event.entityLiving;
-        if (e == null||e.isChild())
+        if (e == null || e.isChild())
             return false;
         TileTotem tt = getMostPowerfulTotemNearBy(e);
-        if(tt!=null&&tt.getOwnerName()!=null)
+        if (tt != null && tt.getOwnerName() != null)
         {
             event.setCanceled(true);
             e.experienceValue = 0;
-            TotemMisc.dropItems(e, tt, tt.getOwnerName().equals(Utils.getActualDamageSource(event.source).getEntityName()));
+            TotemMisc.dropItems(
+                    e,
+                    tt,
+                    tt.getOwnerName().equals(
+                            Utils.getActualDamageSource(event.source).getEntityName()));
             entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 45));
             return true;
         }
@@ -63,17 +66,17 @@ public class TotemCenter
     private TileTotem getMostPowerfulTotemNearBy(EntityLiving e)
     {
         TileTotem ltt = null;
-        for(TileTotem tt:totems)
+        for (TileTotem tt : totems)
         {
-            if(tt.isEntityInRange(e))
+            if (tt.isEntityInRange(e))
             {
-                if(ltt!=null&&tt.getBlockMetadata()>ltt.getBlockMetadata()&&getTotemInTheSameDimension(e, tt))
+                if (ltt != null && tt.getBlockMetadata() > ltt.getBlockMetadata()
+                        && getTotemInTheSameDimension(e, tt))
                 {
-                    ltt=tt;
-                }
-                else if(getTotemInTheSameDimension(e, tt))
+                    ltt = tt;
+                } else if (getTotemInTheSameDimension(e, tt))
                 {
-                    ltt=tt;
+                    ltt = tt;
                 }
             }
         }
@@ -82,12 +85,7 @@ public class TotemCenter
 
     public boolean getTotemInTheSameDimension(Entity e, TileTotem tt)
     {
-        TileEntity te = e.worldObj.getBlockTileEntity(tt.xCoord, tt.yCoord, tt.zCoord);
-        if (te instanceof TileTotem)
-        {
-            return tt.getBlockMetadata() == te.getBlockMetadata();
-        }
-        return false;
+        return e.worldObj.provider.dimensionId == tt.worldObj.provider.dimensionId;
     }
 
     public boolean totemHasBeenDefeated(TileTotem tt)

@@ -4,6 +4,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -11,6 +12,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
+import snake.mcmods.theinvoker.items.TIItems;
+import snake.mcmods.theinvoker.lib.constants.TIGuiID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.lib.constants.Textures;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
@@ -121,5 +124,24 @@ public class BlockSoulSmelter extends BlockContainer
         iconFrontOn = iconRegister.registerIcon(Textures.BLOCK_SOUL_SMELTER_FRONT_ON);
         iconTopOff = iconRegister.registerIcon(Textures.BLOCK_SOUL_SMELTER_TOP_OFF);
         iconTopOn = iconRegister.registerIcon(Textures.BLOCK_SOUL_SMELTER_TOP_ON);
+    }
+    
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z,
+            EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+    {
+        if(player.isSneaking())
+            return false;
+        if(player.getHeldItem().itemID!=TIItems.evilTouch.itemID)
+        {
+            if(world.isRemote)
+                player.openGui(TheInvoker.instance, TIGuiID.SOUL_SMELTER, world, x, y, z);
+            return true;
+        }
+        else
+        {
+            
+        }
+        return false;
     }
 }
