@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidTank;
+import snake.mcmods.theinvoker.lib.constants.TIName;
 
 public class TileSoulSmelter extends TileTIBase implements IInventory, ISidedInventory
 {
@@ -43,16 +44,33 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ISidedInv
     }
 
     @Override
-    public ItemStack decrStackSize(int i, int j)
+    public ItemStack decrStackSize(int slot, int amount)
     {
-        // TODO Auto-generated method stub
+        if (inv != null) {
+            if (inv.stackSize <= 0) {
+                inv = null;
+                return null;
+            }
+            ItemStack newStack = inv;
+            if (amount >= newStack.stackSize) {
+                inv = null;
+            } else {
+                newStack = inv.splitStack(amount);
+            }
+
+            return newStack;
+        }
         return null;
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int i)
     {
-        return null;
+        if (inv == null)
+            return null;
+        ItemStack toReturn = inv;
+        inv = null;
+        return toReturn;
     }
 
     @Override
@@ -88,15 +106,11 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ISidedInv
     @Override
     public void openChest()
     {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void closeChest()
     {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
