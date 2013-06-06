@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.tileentities;
 
+import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -81,43 +82,41 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ISidedInv
     @Override
     public boolean isUseableByPlayer(EntityPlayer entityplayer)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     @Override
     public void openChest()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void closeChest()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public boolean isStackValidForSlot(int i, ItemStack itemstack)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return i == 0 && itemstack.getItem().itemID == TIItems.soulShard.itemID;
     }
 
     @Override
     public int[] getAccessibleSlotsFromSide(int var1)
     {
-        // TODO Auto-generated method stub
-        return null;
+        int[] arr =
+        { 0 };
+        return arr;
     }
 
     @Override
     public boolean canInsertItem(int i, ItemStack itemstack, int j)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return i == 0 && itemstack.getItem().itemID == TIItems.soulShard.itemID;
     }
 
     @Override
