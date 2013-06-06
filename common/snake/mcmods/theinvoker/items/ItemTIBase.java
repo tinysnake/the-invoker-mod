@@ -9,15 +9,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemTIBase extends Item
 {
 
-    public ItemTIBase(int par1)
-    {
-        super(par1);
-    }
+	public ItemTIBase(int par1)
+	{
+		super(par1);
+	}
 
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister par1IconRegister) {
-        itemIcon = par1IconRegister.registerIcon(TIGlobal.MOD_ID+":"+getUnlocalizedName().substring(5));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		itemIcon = par1IconRegister.registerIcon(TIGlobal.MOD_ID + ":" + getUnlocalizedName().substring(5));
+	}
 }

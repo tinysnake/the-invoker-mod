@@ -9,13 +9,13 @@ import snake.mcmods.theinvoker.lib.constants.LangKeys;
 
 public class EventCenter
 {
-    @ForgeSubscribe
-    public void handlePlayerJoinWorldEvent(EntityJoinWorldEvent e)
-    {
-        EntityPlayer p = Minecraft.getMinecraft().thePlayer;
-        if(e.entity== p)
-        {
-            p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
-        }
-    }
+	@ForgeSubscribe
+	public void handlePlayerJoinWorldEvent(EntityJoinWorldEvent e)
+	{
+		EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+		if (e.entity == p)
+		{
+			p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
+		}
+	}
 }

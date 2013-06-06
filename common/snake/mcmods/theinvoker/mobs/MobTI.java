@@ -6,8 +6,8 @@ import net.minecraft.world.World;
 public abstract class MobTI extends EntityMob
 {
 
-    public MobTI(World world)
-    {
-        super(world);
-    }
+	public MobTI(World world)
+	{
+		super(world);
+	}
 }

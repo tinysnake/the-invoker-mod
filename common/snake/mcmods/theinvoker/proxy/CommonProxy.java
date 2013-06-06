@@ -13,27 +13,27 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy
 {
-    public void registerTileEntities()
-    {
-        GameRegistry.registerTileEntity(TileTotem.class, TITileEntityID.TOTEM);
-        GameRegistry.registerTileEntity(TileSeductionTotem.class, TITileEntityID.SEDUCTION_TOTEM);
-        GameRegistry.registerTileEntity(TileSoulSmelter.class, TITileEntityID.SOUL_SMELTER);
-    }
-    
-    public void initRenderingStuff()
-    {
-        
-    }
-    
-    public void handleTileEntityUpdate(PacketTileEntityUpdate p)
-    {
-        
-    }
-    
-    public void registerEventHooks()
-    {
-        MinecraftForge.EVENT_BUS.register(new EventCenter());
-        MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
-        MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
-    }
+	public void registerTileEntities()
+	{
+		GameRegistry.registerTileEntity(TileTotem.class, TITileEntityID.TOTEM);
+		GameRegistry.registerTileEntity(TileSeductionTotem.class, TITileEntityID.SEDUCTION_TOTEM);
+		GameRegistry.registerTileEntity(TileSoulSmelter.class, TITileEntityID.SOUL_SMELTER);
+	}
+
+	public void initRenderingStuff()
+	{
+
+	}
+
+	public void handleTileEntityUpdate(PacketTileEntityUpdate p)
+	{
+
+	}
+
+	public void registerEventHooks()
+	{
+		MinecraftForge.EVENT_BUS.register(new EventCenter());
+		MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
+		MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
+	}
 }

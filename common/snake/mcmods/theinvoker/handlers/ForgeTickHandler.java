@@ -9,24 +9,28 @@ import cpw.mods.fml.common.TickType;
 public class ForgeTickHandler implements ITickHandler
 {
 
-    @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        TotemCenter.INSTANCE.update();
-    }
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	{
+		TotemCenter.INSTANCE.update();
+	}
 
-    @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        
-    }
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData)
+	{
 
-    @Override
-    public EnumSet<TickType> ticks() {
-        return EnumSet.of(TickType.WORLD);
-    }
+	}
 
-    @Override
-    public String getLabel() {
-        return "TITickHandler";
-    }
+	@Override
+	public EnumSet<TickType> ticks()
+	{
+		return EnumSet.of(TickType.WORLD);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return "TITickHandler";
+	}
 
 }

@@ -1,10 +1,9 @@
 package snake.mcmods.theinvoker;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.config.Lang;
-import snake.mcmods.theinvoker.handlers.EventCenter;
+import snake.mcmods.theinvoker.gui.TIGuiHanlder;
 import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
@@ -21,6 +20,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -30,40 +30,42 @@ import cpw.mods.fml.relauncher.Side;
 public class TheInvoker
 {
 
-    @Instance(TIGlobal.MOD_ID)
-    public static TheInvoker instance;
+	@Instance(TIGlobal.MOD_ID)
+	public static TheInvoker instance;
 
-    @SidedProxy(clientSide = "snake.mcmods.theinvoker.proxy.ClientProxy", serverSide = "snake.mcmods.theinvoker.proxy.CommonProxy")
-    public static CommonProxy proxy;
+	@SidedProxy(clientSide = "snake.mcmods.theinvoker.proxy.ClientProxy", serverSide = "snake.mcmods.theinvoker.proxy.CommonProxy")
+	public static CommonProxy proxy;
 
-    public static CreativeTabs tab = new CreativeTabTI(CreativeTabs.getNextID(), TIGlobal.MOD_ID);
+	public static CreativeTabs tab = new CreativeTabTI(CreativeTabs.getNextID(), TIGlobal.MOD_ID);
 
-    @PreInit
-    public void preInit(FMLPreInitializationEvent e)
-    {
+	@PreInit
+	public void preInit(FMLPreInitializationEvent e)
+	{
 
-    }
+	}
 
-    @Init
-    public void init(FMLInitializationEvent e)
-    {
-        TIBlocks.init();
-        TIItems.init();
+	@Init
+	public void init(FMLInitializationEvent e)
+	{
+		TIBlocks.init();
+		TIItems.init();
+		
+		NetworkRegistry.instance().registerGuiHandler(TheInvoker.instance, new TIGuiHanlder());
 
-        proxy.registerTileEntities();
-        
-        proxy.initRenderingStuff();
-        
-        TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
+		proxy.registerTileEntities();
 
-        proxy.registerEventHooks();
+		proxy.initRenderingStuff();
 
-        Lang.loadLocalizedFiles();
-    }
+		TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
 
-    @PostInit
-    public void postInit(FMLPostInitializationEvent e)
-    {
+		proxy.registerEventHooks();
 
-    }
+		Lang.loadLocalizedFiles();
+	}
+
+	@PostInit
+	public void postInit(FMLPostInitializationEvent e)
+	{
+
+	}
 }
