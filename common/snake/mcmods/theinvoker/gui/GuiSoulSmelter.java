@@ -26,8 +26,8 @@ public class GuiSoulSmelter extends GuiContainer
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) 
     {
-        String containerName = soulSmelter.getInvName();
-        fontRenderer.drawString(containerName, 5, 5, 4210752);
+        String containerName =  StatCollector.translateToLocal(soulSmelter.getInvName());
+        fontRenderer.drawString(containerName, 8, 5, 4210752);
         fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 50, 4210752);
     }
 

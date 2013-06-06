@@ -33,7 +33,7 @@ public class TIGuiHanlder implements IGuiHandler
 		{
 			case TIGuiID.SOUL_SMELTER:
 				if (te instanceof TileSoulSmelter)
-					return new GuiSoulSmelter(player.inventory, (TileSoulSmelter)te);
+ 					return new GuiSoulSmelter(player.inventory, (TileSoulSmelter)te);
 				break;
 		}
 		return null;

@@ -1,16 +1,21 @@
 package snake.mcmods.theinvoker.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.liquids.LiquidContainerRegistry;
+import net.minecraftforge.liquids.LiquidStack;
+import scala.Console;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGuiID;
@@ -134,15 +139,37 @@ public class BlockSoulSmelter extends BlockContainer
 	{
 		if (player.isSneaking())
 			return false;
-		if (player.getHeldItem().itemID != TIItems.evilTouch.itemID)
+		if(player.getHeldItem()==null)
 		{
-			if (world.isRemote)
-				player.openGui(TheInvoker.instance, TIGuiID.SOUL_SMELTER, world, x, y, z);
-			return true;
+		    if (!world.isRemote)
+                player.openGui(TheInvoker.instance, TIGuiID.SOUL_SMELTER, world, x, y, z);
+            return true;
+		}
+		else if (player.getHeldItem().itemID == TIItems.evilTouch.itemID)
+		{
+			
+		}
+		else if(player.getHeldItem().itemID==Item.bucketLava.itemID)
+		{
+		    TileEntity te = world.getBlockTileEntity(x, y, z);
+		    if(te instanceof TileSoulSmelter)
+		    {
+		        TileSoulSmelter soulSmelter = (TileSoulSmelter) te;
+		        int amount = soulSmelter.fill(0, new LiquidStack(Block.lavaStill, LiquidContainerRegistry.BUCKET_VOLUME), false);
+		        if(amount>0)
+		        {
+		            soulSmelter.fill(0, new LiquidStack(Block.lavaStill, LiquidContainerRegistry.BUCKET_VOLUME), true);
+	                player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Item.bucketEmpty);
+		        }
+		        Console.println("fill amount: "+amount);
+                return true;
+		    }
 		}
 		else
 		{
-
+		    if (!world.isRemote)
+                player.openGui(TheInvoker.instance, TIGuiID.SOUL_SMELTER, world, x, y, z);
+            return true; 
 		}
 		return false;
 	}
