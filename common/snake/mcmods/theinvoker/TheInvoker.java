@@ -6,6 +6,7 @@ import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.gui.TIGuiHanlder;
 import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.items.TIItems;
+import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.net.PacketHandler;
 import snake.mcmods.theinvoker.proxy.CommonProxy;
@@ -61,6 +62,8 @@ public class TheInvoker
 		proxy.registerEventHooks();
 
 		Lang.loadLocalizedFiles();
+		
+		SoulSmelterMisc.initDefaultRecipies();
 	}
 
 	@PostInit

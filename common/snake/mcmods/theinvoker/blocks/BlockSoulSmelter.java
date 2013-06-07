@@ -173,4 +173,20 @@ public class BlockSoulSmelter extends BlockContainer
 		}
 		return false;
 	}
+	
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	{
+	    dropItems(world,x,y,z);
+	    super.breakBlock(world, x, y, z, id, metadata);
+	}
+
+    private void dropItems(World world, int x, int y, int z)
+    {
+        TileSoulSmelter tss = (TileSoulSmelter)world.getBlockTileEntity(x, y, z);
+        if(tss!=null)
+        {
+            this.dropBlockAsItem_do(world, x, y, z, tss.getInputSlot().copy());
+        }
+    }
 }

@@ -8,7 +8,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import snake.mcmods.theinvoker.lib.constants.SoulSmelterGUINetwork;
+import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 
 public class ContainerSoulSmelter extends Container

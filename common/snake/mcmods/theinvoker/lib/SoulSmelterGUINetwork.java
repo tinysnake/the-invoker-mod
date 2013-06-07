@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.lib.constants;
+package snake.mcmods.theinvoker.lib;
 
 public enum SoulSmelterGUINetwork
 {

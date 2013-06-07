@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.lib;
+package snake.mcmods.theinvoker.lib.constants;
 
 public class TIRenderID
 {

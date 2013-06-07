@@ -2,7 +2,7 @@ package snake.mcmods.theinvoker.proxy;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraftforge.common.ForgeDirection;
-import snake.mcmods.theinvoker.lib.TIRenderID;
+import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.renderer.RenderSeductionTotem;
 import snake.mcmods.theinvoker.renderer.RenderTotem;
