@@ -2,17 +2,23 @@ package snake.mcmods.theinvoker.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.liquids.LiquidStack;
 
 import org.lwjgl.opengl.GL11;
 
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.lib.constants.Textures;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
+import snake.mcmods.theinvoker.utils.Utils;
 
 public class GuiSoulSmelter extends GuiContainer
 {
 
+	private static final int TANK_Y = 54;
+	private static final int TANK_X = 130;
+	private static final int TANK_HEIGHT = 48;
 	public GuiSoulSmelter(InventoryPlayer player, TileSoulSmelter soulSmelter)
 	{
 		super(new ContainerSoulSmelter(player, soulSmelter));
@@ -39,6 +45,39 @@ public class GuiSoulSmelter extends GuiContainer
         int xStart = (width - xSize) / 2;
         int yStart = (height - ySize) / 2;
         this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
+        
+        //draw lava tank
+    	// 130, 54
+        LiquidStack lq = soulSmelter.getLavaTank().getLiquid();
+        if(lq!=null)
+        {
+        	
+            Icon lavaIcon = lq.getRenderingIcon();
+            String textureSheet = lq.getTextureSheet();
+            int start = 0;
+            int lavaH = Utils.getScaledLiquidAmount(lq, soulSmelter.getLavaTank().getCapacity(), TANK_HEIGHT);
+            mc.renderEngine.bindTexture(textureSheet);
+            
+            while(lavaH>0)
+            {
+            	int h = 0;
+            	if(lavaH>16)
+            	{
+            		h = 16;
+            		lavaH-=16;
+            	}
+            	else
+            	{
+            		h = lavaH;
+            		lavaH = 0;
+            	}
+            	this.drawTexturedModelRectFromIcon(xStart+TANK_X, yStart+TANK_Y-h-start, lavaIcon, 16, h);
+            }
+
+            mc.renderEngine.bindTexture(Textures.GUI_SOUL_SMELTER);
+            this.drawTexturedModalRect(xStart+TANK_X, yStart+TANK_Y-TANK_HEIGHT, 178, 0, 8, TANK_HEIGHT);
+        }
+        
 	}
 
 }

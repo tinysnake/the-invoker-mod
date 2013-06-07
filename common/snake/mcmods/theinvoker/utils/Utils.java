@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.liquids.LiquidStack;
 
 public class Utils
 {
@@ -34,5 +35,12 @@ public class Utils
 			}
 		}
 		return e;
+	}
+	
+	public static int getScaledLiquidAmount(LiquidStack ls, int maxAmount, int scaleFactor)
+	{
+		if(ls==null)
+			return 0;
+		return (int)(ls.amount * scaleFactor / (float)maxAmount);
 	}
 }

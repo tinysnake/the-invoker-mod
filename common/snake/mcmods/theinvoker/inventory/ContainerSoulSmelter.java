@@ -1,10 +1,14 @@
 package snake.mcmods.theinvoker.inventory;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import snake.mcmods.theinvoker.lib.constants.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 
 public class ContainerSoulSmelter extends Container
@@ -13,11 +17,11 @@ public class ContainerSoulSmelter extends Container
 	private final int PLAYER_INVENTORY_ROWS = 3;
 	private final int PLAYER_INVENTORY_COLUMNS = 9;
 
-	// 130, 54
-
 	public ContainerSoulSmelter(InventoryPlayer player, TileSoulSmelter soulSmelter)
 	{
 		this.addSlotToContainer(new Slot(soulSmelter, 0, 32, 22));
+		
+		this.soulSmelter = soulSmelter;
 
 		// Add the player's inventory slots to the container
 		for (int inventoryRowIndex = 0; inventoryRowIndex < PLAYER_INVENTORY_ROWS; ++inventoryRowIndex)
@@ -33,6 +37,26 @@ public class ContainerSoulSmelter extends Container
 		{
 			this.addSlotToContainer(new Slot(player, actionBarSlotIndex, 9 + actionBarSlotIndex * 18, 119));
 		}
+	}
+	
+	private TileSoulSmelter soulSmelter;
+	
+	@Override
+	public void detectAndSendChanges()
+	{
+	    super.detectAndSendChanges();
+	    for(Object c:crafters)
+	    {
+	    	soulSmelter.sendNetworkGUIData(this, (ICrafting)c);
+	    }
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int signiture, int value)
+	{
+	    super.updateProgressBar(signiture, value);
+	    soulSmelter.receiveNetworkGUIData(signiture, value);
 	}
 
 	@Override
