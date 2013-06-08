@@ -13,265 +13,289 @@ import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
-import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 
 public class TileSoulSmelter extends TileTIBase implements IInventory, ITankContainer
 {
-    public static final int MAX_LIQUID = LiquidContainerRegistry.BUCKET_VOLUME * 3;
+	public static final int MAX_LIQUID = LiquidContainerRegistry.BUCKET_VOLUME * 3;
 
-    public TileSoulSmelter()
-    {
-        setDirection(ForgeDirection.SOUTH.ordinal());
-        lavaTank = new LiquidTank(MAX_LIQUID);
-    }
+	public TileSoulSmelter()
+	{
+		setDirection(ForgeDirection.SOUTH.ordinal());
+		lavaTank = new LiquidTank(MAX_LIQUID);
+	}
 
-    private boolean isProccessing;
-    private int lastBoilTicks;
-    private int boilTicksLeft;
-    private LiquidTank lavaTank;
-    private ItemStack inputSlot;
+	private boolean isProccessing;
+	private int lastBoilTicks;
+	private int boilTicksLeft;
+	private int idolTicks;
+	private int processingItemID;
+	private LiquidTank lavaTank;
+	private ItemStack inputSlot;
 
-    public int getBoilTicksLeft()
-    {
-        return boilTicksLeft;
-    }
+	public int getBoilTicksLeft()
+	{
+		return boilTicksLeft;
+	}
 
-    public float getBoilProgress()
-    {
-        return (lastBoilTicks - boilTicksLeft) / (float) lastBoilTicks;
-    }
+	public float getBoilProgress()
+	{
+		return (lastBoilTicks - boilTicksLeft) / (float) lastBoilTicks;
+	}
 
-    private void setBoilTicks(int ticks)
-    {
-        lastBoilTicks = boilTicksLeft = ticks;
-    }
+	private void setBoilTicks(int ticks)
+	{
+		lastBoilTicks = boilTicksLeft = ticks;
+	}
 
-    public LiquidTank getLavaTank()
-    {
-        return lavaTank;
-    }
+	public LiquidTank getLavaTank()
+	{
+		return lavaTank;
+	}
 
-    public ItemStack getInputSlot()
-    {
-        return inputSlot;
-    }
+	public ItemStack getInputSlot()
+	{
+		return inputSlot;
+	}
 
-    public boolean getIsActive()
-    {
-        return boilTicksLeft > 0;
-    }
+	public boolean getIsProcessing()
+	{
+		return isProccessing;
+	}
+	
+	public boolean getIsAbleToWork()
+	{
+		return (inputSlot != null && lavaTank.getLiquid() != null && 
+				SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) &&
+				lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID));
+	}
 
-    @Override
-    public void updateEntity()
-    {
-        super.updateEntity();
-        if (getIsActive())
-        {
-            boilTicksLeft--;
-        }
-        else
-        {
-            if (isProccessing)
-            {
-                isProccessing = false;
-            }
-            else
-            {
-                if (inputSlot != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) && lavaTank.drain(SoulSmelterMisc.getLavaBurnAmount(inputSlot.itemID), false).amount > 0)
-                {
-                    isProccessing = true;
-                    setBoilTicks(SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID));
-                    lavaTank.drain(SoulSmelterMisc.getLavaBurnAmount(inputSlot.itemID), true);
-                    decrStackSize(0, 1);
-                }
-            }
-        }
-    }
+	public boolean getHasWork()
+	{
+		return getIsProcessing() || getIsAbleToWork();
+	}
 
-    @Override
-    public int getSizeInventory()
-    {
-        return 1;
-    }
+	@Override
+	public void updateEntity()
+	{
+		super.updateEntity();
+		if (getIsProcessing())
+		{
+			boilTicksLeft--;
+			idolTicks = 0;
+		}
+		else if (idolTicks == 0)
+		{
+			if (isProccessing)
+			{
+				isProccessing = false;
+				if (processingItemID > 0)
+					lavaTank.drain(SoulSmelterMisc.getLavaBurnAmount(processingItemID), true);
+				processingItemID = 0;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			else
+			{
+				if (getIsAbleToWork())
+				{
+					isProccessing = true;
+					processingItemID = inputSlot.itemID;
+					setBoilTicks(SoulSmelterMisc.getTotalBoilTicks(processingItemID));
+					decrStackSize(0, 1);
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				}
+			}
+			idolTicks = 10;
+		}
+		else
+		{
+			idolTicks--;
+		}
+	}
 
-    @Override
-    public ItemStack getStackInSlot(int i)
-    {
-        return inputSlot;
-    }
+	@Override
+	public int getSizeInventory()
+	{
+		return 1;
+	}
 
-    @Override
-    public ItemStack decrStackSize(int slot, int amount)
-    {
-        if (inputSlot != null)
-        {
-            if (inputSlot.stackSize <= 0)
-            {
-                inputSlot = null;
-                return null;
-            }
-            ItemStack newStack = inputSlot;
-            if (amount >= newStack.stackSize)
-            {
-                inputSlot = null;
-            }
-            else
-            {
-                newStack = inputSlot.splitStack(amount);
-            }
+	@Override
+	public ItemStack getStackInSlot(int i)
+	{
+		return inputSlot;
+	}
 
-            return newStack;
-        }
-        return null;
-    }
+	@Override
+	public ItemStack decrStackSize(int slot, int amount)
+	{
+		if (inputSlot != null)
+		{
+			if (inputSlot.stackSize <= 0)
+			{
+				inputSlot = null;
+				return null;
+			}
+			ItemStack newStack = inputSlot;
+			if (amount >= newStack.stackSize)
+			{
+				inputSlot = null;
+			}
+			else
+			{
+				newStack = inputSlot.splitStack(amount);
+			}
 
-    @Override
-    public ItemStack getStackInSlotOnClosing(int i)
-    {
-        if (inputSlot == null)
-            return null;
-        ItemStack toReturn = inputSlot;
-        inputSlot = null;
-        return toReturn;
-    }
+			return newStack;
+		}
+		return null;
+	}
 
-    @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack)
-    {
-        inputSlot = itemstack;
-    }
+	@Override
+	public ItemStack getStackInSlotOnClosing(int i)
+	{
+		if (inputSlot == null)
+			return null;
+		ItemStack toReturn = inputSlot;
+		inputSlot = null;
+		return toReturn;
+	}
 
-    @Override
-    public String getInvName()
-    {
-        return TIName.CONTAINER_SOUL_SMELTER;
-    }
+	@Override
+	public void setInventorySlotContents(int i, ItemStack itemstack)
+	{
+		inputSlot = itemstack;
+	}
 
-    @Override
-    public boolean isInvNameLocalized()
-    {
-        return false;
-    }
+	@Override
+	public String getInvName()
+	{
+		return TIName.CONTAINER_SOUL_SMELTER;
+	}
 
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
+	@Override
+	public boolean isInvNameLocalized()
+	{
+		return false;
+	}
 
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
-    {
-        return true;
-    }
+	@Override
+	public int getInventoryStackLimit()
+	{
+		return 64;
+	}
 
-    @Override
-    public void openChest()
-    {
-    }
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	{
+		return true;
+	}
 
-    @Override
-    public void closeChest()
-    {
-    }
+	@Override
+	public void openChest()
+	{
+	}
 
-    @Override
-    public boolean isStackValidForSlot(int i, ItemStack itemstack)
-    {
-        if (itemstack == null)
-            return false;
+	@Override
+	public void closeChest()
+	{
+	}
 
-        return SoulSmelterMisc.getIsValidRecipe(itemstack.itemID);
-    }
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack)
+	{
+		if (itemstack == null)
+			return false;
 
-    @Override
-    public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
-    {
-        return fill(0, resource, doFill);
-    }
+		return SoulSmelterMisc.getIsValidRecipe(itemstack.itemID);
+	}
 
-    @Override
-    public int fill(int tankIndex, LiquidStack resource, boolean doFill)
-    {
-        if (resource.itemID == Block.lavaStill.blockID)
-        {
-            return lavaTank.fill(resource, doFill);
-        }
-        return 0;
-    }
+	@Override
+	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
+	{
+		return fill(0, resource, doFill);
+	}
 
-    @Override
-    public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
-    {
-        return drain(0, maxDrain, doDrain);
-    }
+	@Override
+	public int fill(int tankIndex, LiquidStack resource, boolean doFill)
+	{
+		if (resource.itemID == Block.lavaStill.blockID)
+		{
+			return lavaTank.fill(resource, doFill);
+		}
+		return 0;
+	}
 
-    @Override
-    public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain)
-    {
-        return lavaTank.drain(maxDrain, doDrain);
-    }
+	@Override
+	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+	{
+		return drain(0, maxDrain, doDrain);
+	}
 
-    @Override
-    public ILiquidTank[] getTanks(ForgeDirection direction)
-    {
-        return new ILiquidTank[] { lavaTank };
-    }
+	@Override
+	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain)
+	{
+		return lavaTank.drain(maxDrain, doDrain);
+	}
 
-    @Override
-    public ILiquidTank getTank(ForgeDirection direction, LiquidStack type)
-    {
-        return type.itemID == Block.lavaStill.blockID ? lavaTank : null;
-    }
+	@Override
+	public ILiquidTank[] getTanks(ForgeDirection direction)
+	{
+		return new ILiquidTank[] { lavaTank };
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbtCompound)
-    {
-        super.readFromNBT(nbtCompound);
-        lavaTank.setLiquid(LiquidStack.loadLiquidStackFromNBT(nbtCompound.getCompoundTag("lavaTank")));
-        if (nbtCompound.hasKey("inputSlot"))
-        {
-            inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag("inputSlot"));
-        }
-    }
+	@Override
+	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type)
+	{
+		return type.itemID == Block.lavaStill.blockID ? lavaTank : null;
+	}
 
-    @Override
-    public void writeToNBT(NBTTagCompound nbtCompound)
-    {
-        super.writeToNBT(nbtCompound);
-        if (inputSlot != null)
-        {
-            nbtCompound.setTag("inputSlot", inputSlot.writeToNBT(new NBTTagCompound()));
-        }
-        nbtCompound.setTag("lavaTank", lavaTank.writeToNBT(new NBTTagCompound()));
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound nbtCompound)
+	{
+		super.readFromNBT(nbtCompound);
+		lavaTank.setLiquid(LiquidStack.loadLiquidStackFromNBT(nbtCompound.getCompoundTag("lavaTank")));
+		if (nbtCompound.hasKey("inputSlot"))
+		{
+			inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag("inputSlot"));
+		}
+	}
 
-    public void sendNetworkGUIData(ContainerSoulSmelter container, ICrafting c)
-    {
-        c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.BOIL_PROGRESS.ordinal(), boilTicksLeft);
-        c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAVA_CAPACITY.ordinal(), lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0);
-    }
+	@Override
+	public void writeToNBT(NBTTagCompound nbtCompound)
+	{
+		super.writeToNBT(nbtCompound);
+		if (inputSlot != null)
+		{
+			nbtCompound.setTag("inputSlot", inputSlot.writeToNBT(new NBTTagCompound()));
+		}
+		nbtCompound.setTag("lavaTank", lavaTank.writeToNBT(new NBTTagCompound()));
+	}
 
-    public void receiveNetworkGUIData(int signiture, int value)
-    {
-        SoulSmelterGUINetwork s = SoulSmelterGUINetwork.fromInt(signiture);
-        switch (s)
-        {
-            case BOIL_PROGRESS:
-                this.boilTicksLeft = value;
-                break;
-            case LAVA_CAPACITY:
-                if (this.lavaTank.getLiquid() == null)
-                    this.lavaTank.setLiquid(new LiquidStack(Block.lavaStill.blockID, value));
-                else
-                    this.lavaTank.getLiquid().amount = value;
-                break;
-            default:
-                break;
+	public void sendNetworkGUIData(ContainerSoulSmelter container, ICrafting c)
+	{
+		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.BOIL_PROGRESS.ordinal(), boilTicksLeft);
+		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAVA_CAPACITY.ordinal(), lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0);
+	}
 
-        }
-    }
+	public void receiveNetworkGUIData(int signiture, int value)
+	{
+		SoulSmelterGUINetwork s = SoulSmelterGUINetwork.fromInt(signiture);
+		switch (s)
+		{
+			case BOIL_PROGRESS:
+				this.boilTicksLeft = value;
+				break;
+			case LAVA_CAPACITY:
+				if (this.lavaTank.getLiquid() == null)
+					this.lavaTank.setLiquid(new LiquidStack(Block.lavaStill.blockID, value));
+				else
+					this.lavaTank.getLiquid().amount = value;
+				break;
+			default:
+				break;
+
+		}
+	}
 }

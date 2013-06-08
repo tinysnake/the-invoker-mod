@@ -41,7 +41,7 @@ public class SoulSmelterMisc
     {
         if (getIsValidRecipe(itemID))
         {
-            return SOUL_SHARD_BOIL_TICKS * 4 / getTotalBoilTicks(itemID);
+            return LiquidContainerRegistry.BUCKET_VOLUME * 4 / getTotalBoilTicks(itemID);
         }
         return -1;
     }

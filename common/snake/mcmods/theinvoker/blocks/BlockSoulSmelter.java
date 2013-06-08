@@ -81,12 +81,14 @@ public class BlockSoulSmelter extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public Icon getBlockTexture(IBlockAccess iBlockAccess, int x, int y, int z, int side)
 	{
+		if(iBlockAccess==null)
+			return getIcon(side, 0);
 		TileSoulSmelter tss = (TileSoulSmelter) iBlockAccess.getBlockTileEntity(x, y, z);
 		if (tss != null)
 		{
 			if (tss.getDirection().ordinal() == side)
 			{
-				return tss.getIsActive() ? iconFrontOn : iconFrontOff;
+				return tss.getHasWork() ? iconFrontOn : iconFrontOff;
 			}
 			else
 			{
@@ -95,7 +97,7 @@ public class BlockSoulSmelter extends BlockContainer
 					case 0:
 						return iconBottom;
 					case 1:
-						return tss.getIsActive() ? iconTopOn : iconTopOff;
+						return tss.getHasWork() ? iconTopOn : iconTopOff;
 					default:
 						return blockIcon;
 				}

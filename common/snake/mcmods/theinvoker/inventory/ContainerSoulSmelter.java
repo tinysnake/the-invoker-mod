@@ -1,15 +1,14 @@
 package snake.mcmods.theinvoker.inventory;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerSoulSmelter extends Container
 {

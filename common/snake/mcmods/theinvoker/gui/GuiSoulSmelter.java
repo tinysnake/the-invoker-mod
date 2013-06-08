@@ -49,12 +49,12 @@ public class GuiSoulSmelter extends GuiContainer
         this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
 
         // draw fire indicator
-        // draw position: 35, 42
-        // fire position: 178, 50, 12,11
-        if (soulSmelter.getIsActive())
+        // draw position: 53, 25
+        // fire position: 178, 50, 11,10
+        if (soulSmelter.getIsProcessing())
         {
             int fireH = (int) (soulSmelter.getBoilProgress() * FIRE_HEIGHT);
-            this.drawTexturedModalRect(xStart + 35, yStart + 42 + FIRE_HEIGHT - fireH, 178, 50 + FIRE_HEIGHT - fireH, 12, FIRE_HEIGHT - fireH);
+            this.drawTexturedModalRect(xStart + 53, yStart + 25 + fireH, 178, 50 + fireH, 12, FIRE_HEIGHT - fireH);
         }
 
         // draw lava tank
