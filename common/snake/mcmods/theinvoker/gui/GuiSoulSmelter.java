@@ -51,7 +51,7 @@ public class GuiSoulSmelter extends GuiContainer
         // draw fire indicator
         // draw position: 53, 25
         // fire position: 178, 50, 11,10
-        if (soulSmelter.getIsProcessing())
+        if (soulSmelter.getBoilTicksLeft()>0)
         {
             int fireH = (int) (soulSmelter.getBoilProgress() * FIRE_HEIGHT);
             this.drawTexturedModalRect(xStart + 53, yStart + 25 + fireH, 178, 50 + fireH, 12, FIRE_HEIGHT - fireH);

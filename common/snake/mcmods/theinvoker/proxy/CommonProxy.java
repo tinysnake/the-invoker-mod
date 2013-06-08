@@ -2,6 +2,7 @@ package snake.mcmods.theinvoker.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import snake.mcmods.theinvoker.handlers.EventCenter;
+import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TITileEntityID;
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
@@ -35,5 +36,6 @@ public class CommonProxy
 		MinecraftForge.EVENT_BUS.register(new EventCenter());
 		MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
 		MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
+		MinecraftForge.EVENT_BUS.register(new SoulSmelterMisc());
 	}
 }
