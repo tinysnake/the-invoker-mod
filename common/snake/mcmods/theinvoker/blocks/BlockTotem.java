@@ -4,6 +4,8 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -12,6 +14,7 @@ import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
+import snake.mcmods.theinvoker.logic.EvilTouchMisc;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -97,7 +100,34 @@ public class BlockTotem extends Block2HeightBase
 	@Override
 	protected void dropItem(World world, int x, int y, int z, int neighborBlockID, int metadata)
 	{
-		this.dropBlockAsItem(world, x, y, z, metadata, 0);
+		// this.dropBlockAsItem(world, x, y, z, metadata, 0);
 	}
 
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	{
+		ItemStack is = player.getHeldItem();
+		if (EvilTouchMisc.isPlayHoldingEvilTouch(player))
+		{
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if (te == null)
+				return false;
+
+			TileTotem tt = (TileTotem) te;
+			if (tt.getIsGhostBlock() && world.getBlockId(x, y - 1, z) == this.blockID)
+			{
+				te = world.getBlockTileEntity(x, y - 1, z);
+
+				if (te != null)
+					tt = (TileTotem) te;
+				else
+					return false;
+			}
+			ItemStack dropItemStack = new ItemStack(TIItems.totem.itemID, 1, tt.getBlockMetadata());
+			this.dropBlockAsItem_do(world, x, y, z, dropItemStack);
+			world.setBlockToAir(x, y, z);
+			EvilTouchMisc.onEvilTouchUsed(is, player);
+			return true;
+		}
+		return false;
+	}
 }

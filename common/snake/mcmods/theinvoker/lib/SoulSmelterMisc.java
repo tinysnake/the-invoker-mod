@@ -4,10 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidEvent;
-import net.minecraftforge.liquids.LiquidEvent.LiquidFillingEvent;
-
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 

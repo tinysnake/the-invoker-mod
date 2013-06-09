@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
-import snake.mcmods.theinvoker.items.ItemEvilTouch;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.lib.constants.TIName;
@@ -89,42 +88,42 @@ public class BlockSeductionTotem extends Block2HeightBase
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
 		ItemStack is = player.getHeldItem();
-		if (is != null && is.getItem() instanceof ItemEvilTouch && is.getItemDamage() < EvilTouchMisc.MAX_USAGE_DAMGE_VALUE)
+		if (EvilTouchMisc.isPlayHoldingEvilTouch(player))
 		{
-			TileSeductionTotem tst = (TileSeductionTotem) world.getBlockTileEntity(x, y, z);
-			if (tst == null)
-			{
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if (te == null)
 				return false;
+
+			TileSeductionTotem tst = (TileSeductionTotem) te;
+			if (tst.getIsGhostBlock() && world.getBlockId(x, y - 1, z) == this.blockID)
+			{
+				te = world.getBlockTileEntity(x, y - 1, z);
+
+				if (te != null)
+					tst = (TileSeductionTotem) te;
+				else
+					return false;
+			}
+			if (tst.getIsBroken())
+			{
+				this.dropBlockAsItem(world, x, y, z, 0, 0);
 			}
 			else
 			{
-				int ty = y;
-				if (tst.getIsGhostBlock() && world.getBlockId(x, y - 1, z) == this.blockID)
+				int metadata = SeductionTotemMisc.getDamageDataFromAge(tst.getAge()) + 1;
+				if (metadata < SeductionTotemMisc.MAX_AGE_DMG_VALUE)
 				{
-					ty -= 1;
-					tst = (TileSeductionTotem) world.getBlockTileEntity(x, ty, z);
-				}
-				if (tst.getIsBroken())
-				{
-					this.dropBlockAsItem(world, x, y, z, 0, 0);
+					ItemStack dropItemStack = new ItemStack(TIItems.seductionTotem.itemID, 1, metadata);
+					this.dropBlockAsItem_do(world, x, y, z, dropItemStack);
 				}
 				else
 				{
-					int metadata = SeductionTotemMisc.getDamageDataFromAge(tst.getAge()) + 1;
-					if (metadata < SeductionTotemMisc.MAX_AGE_DMG_VALUE)
-					{
-						ItemStack dropItemStack = new ItemStack(TIItems.seductionTotem.itemID, 1, metadata);
-						this.dropBlockAsItem_do(world, x, y, z, dropItemStack);
-					}
-					else
-					{
-						this.dropBlockAsItem(world, x, y, z, 0, 0);
-					}
+					this.dropBlockAsItem(world, x, y, z, 0, 0);
 				}
-				world.setBlockToAir(x, y, z);
-				EvilTouchMisc.onEvilTouchUsed(is, player);
-				return true;
 			}
+			world.setBlockToAir(x, y, z);
+			EvilTouchMisc.onEvilTouchUsed(is, player);
+			return true;
 		}
 		return false;
 	}
