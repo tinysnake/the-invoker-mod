@@ -12,6 +12,8 @@ import net.minecraftforge.liquids.ITankContainer;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
+import snake.mcmods.theinvoker.energy.EnergyContainer;
+import snake.mcmods.theinvoker.energy.IEnergyContainer;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
@@ -25,6 +27,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
     {
         setDirection(ForgeDirection.SOUTH.ordinal());
         lavaTank = new LiquidTank(Block.lavaStill.blockID,0,MAX_LIQUID,this);
+        energyContainer = new EnergyContainer(this, true, 0);
     }
 
     private boolean isProccessing;
@@ -34,6 +37,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
     private int processingItemID;
     private LiquidTank lavaTank;
     private ItemStack inputSlot;
+    private EnergyContainer energyContainer;
     private boolean init;
 
     public int getBoilTicksLeft()
@@ -49,6 +53,11 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
     private void setBoilTicks(int ticks)
     {
         lastBoilTicks = boilTicksLeft = ticks;
+    }
+    
+    public IEnergyContainer getEnergyContainer()
+    {
+    	return energyContainer;
     }
 
     public LiquidTank getLavaTank()

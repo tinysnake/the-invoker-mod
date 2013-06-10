@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.proxy;
+package snake.mcmods.theinvoker;
 
 import net.minecraftforge.common.MinecraftForge;
 import snake.mcmods.theinvoker.handlers.EventCenter;

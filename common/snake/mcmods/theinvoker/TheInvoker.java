@@ -9,7 +9,6 @@ import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.net.PacketHandler;
-import snake.mcmods.theinvoker.proxy.CommonProxy;
 import snake.mcmods.theinvoker.utils.others.CreativeTabTI;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -34,7 +33,7 @@ public class TheInvoker
 	@Instance(TIGlobal.MOD_ID)
 	public static TheInvoker instance;
 
-	@SidedProxy(clientSide = "snake.mcmods.theinvoker.proxy.ClientProxy", serverSide = "snake.mcmods.theinvoker.proxy.CommonProxy")
+	@SidedProxy(clientSide = "snake.mcmods.theinvoker.ClientProxy", serverSide = "snake.mcmods.theinvoker.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static CreativeTabs tab = new CreativeTabTI(CreativeTabs.getNextID(), TIGlobal.MOD_ID);

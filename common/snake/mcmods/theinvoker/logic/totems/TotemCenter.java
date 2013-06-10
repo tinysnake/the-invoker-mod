@@ -57,7 +57,7 @@ public class TotemCenter
 			        tt,
 			        tt.getOwnerName().equals(
 			                Utils.getActualDamageSource(event.source).getEntityName()));
-			entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 45));
+			entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 25));
 			return true;
 		}
 		return false;

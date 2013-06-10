@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.proxy;
+package snake.mcmods.theinvoker;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraftforge.common.ForgeDirection;
