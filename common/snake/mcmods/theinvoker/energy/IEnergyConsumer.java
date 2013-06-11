@@ -6,6 +6,7 @@ public interface IEnergyConsumer
 {
 	int getConsumerEnergyID();
 	int getMaxEnergyRequest();
+	void setMaxEnergyRequest(int max);
 	void requestEnergy(int energy);
 	void acceptEnergy(int energyFlow);
 	int getEnergyIsRequesting();

@@ -21,6 +21,7 @@ public class EnergyConsumer implements IEnergyConsumer
 		return maxEnergyRequest;
 	}
 	
+	@Override
 	public void setMaxEnergyRequest(int val)
 	{
 		maxEnergyRequest = val;
