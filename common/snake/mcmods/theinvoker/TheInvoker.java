@@ -3,8 +3,8 @@ package snake.mcmods.theinvoker;
 import net.minecraft.creativetab.CreativeTabs;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.config.Lang;
+import snake.mcmods.theinvoker.energy.EnergyForce;
 import snake.mcmods.theinvoker.gui.TIGuiHanlder;
-import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
@@ -21,8 +21,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = TIGlobal.MOD_ID, name = TIGlobal.MOD_NAME, version = TIGlobal.VERSION)
 @NetworkMod(serverSideRequired = true, clientSideRequired = false, channels =
@@ -49,6 +47,7 @@ public class TheInvoker
 	{
 		TIBlocks.init();
 		TIItems.init();
+		EnergyForce.init();
 		
 		NetworkRegistry.instance().registerGuiHandler(TheInvoker.instance, new TIGuiHanlder());
 
@@ -56,7 +55,7 @@ public class TheInvoker
 
 		proxy.initRenderingStuff();
 
-		TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
+		proxy.registerTickHandlers();
 
 		proxy.registerEventHooks();
 

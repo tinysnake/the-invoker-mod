@@ -1,10 +1,10 @@
 package snake.mcmods.theinvoker.logic.seductiontotems;
 
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.net.packet.PacketSeductionTotemUpdate;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class SeductionTotemMisc
 {
@@ -42,10 +42,10 @@ public class SeductionTotemMisc
 		return metadata * AGE_DMG_VALUE_SCALE;
 	}
 
-	public static void syncDataFromPacket(PacketSeductionTotemUpdate p)
+	public static void syncDataFromPacket(PacketSeductionTotemUpdate p, EntityPlayer player)
 	{
-		TheInvoker.proxy.handleTileEntityUpdate(p);
-		WorldClient world = FMLClientHandler.instance().getClient().theWorld;
+		TheInvoker.proxy.handleTileEntityUpdate(p,player);
+		World world = player.worldObj;
 		TileSeductionTotem tt = (TileSeductionTotem) world.getBlockTileEntity(p.x, p.y, p.z);
 		if (tt != null)
 		{

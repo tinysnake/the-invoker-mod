@@ -1,37 +1,41 @@
 package snake.mcmods.theinvoker.energy;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class EnergyContainer implements IEnergyContainer
+public class EnergyContainer
 {
-	public EnergyContainer(TileEntity te, boolean isEnergyProvider,int containerEnergyID)
-    {
-	    this.te=te;
-	    this.isEnergyProvider=isEnergyProvider;
-	    this.energyID=containerEnergyID;
-	    EnergyLogicCenter.INSTANCE.registerContainer(this);
-    }
+	public EnergyContainer(TileEntity te, boolean isEnergyProvider, int containerEnergyID)
+	{
+		if (te == null)
+			throw new IllegalArgumentException("you dare to create a EnergyContainer without a valid TileEntity?");
+		this.te = te;
+		this.isEnergyProvider = isEnergyProvider;
+		if (EnergyCenter.INSTANCE.getEnergyForce(containerEnergyID) != null)
+			this.energyID = containerEnergyID;
+		else
+			throw new IllegalArgumentException("you have created a EnergyContainer without a valid Energy ID");
+		EnergyCenter.INSTANCE.registerContainer(this);
+	}
+
 	protected int effectiveRange;
 	protected int maxEnergyRequst;
 	protected int capacity;
 	protected boolean isEnergyProvider;
+	protected int energyLevel;
 	private TileEntity te;
 	private int energyID;
-	public int energyLevel;
-	
-	@Override
+
 	public void setEffectiveRange(int range)
 	{
 		effectiveRange = range;
 	}
 
-	@Override
 	public int getEffectiveRange()
 	{
 		return effectiveRange;
 	}
 
-	@Override
 	public int gain(int energyFlow, boolean doGain)
 	{
 		int tobeGain = energyFlow;
@@ -47,7 +51,6 @@ public class EnergyContainer implements IEnergyContainer
 		return tobeGain;
 	}
 
-	@Override
 	public int take(int energyFlow, boolean doTake)
 	{
 		int tobeTake = energyFlow;
@@ -63,58 +66,76 @@ public class EnergyContainer implements IEnergyContainer
 		return tobeTake;
 	}
 
-	@Override
 	public int getEnergyCapacity()
 	{
 		return capacity;
 	}
 
-	@Override
 	public void setEnergyCapacity(int capacity)
 	{
-		this.capacity=capacity;
-		if(energyLevel>this.capacity)
-			energyLevel=capacity;
+		this.capacity = capacity;
+		if (energyLevel > this.capacity)
+			energyLevel = capacity;
 	}
 
-	@Override
 	public int getEnergyLevel()
 	{
 		return energyLevel;
 	}
 
-	@Override
-    public void setEnergyLevel(int level)
-    {
-	    energyLevel=level;
-    }
+	public void setEnergyLevel(int level)
+	{
+		energyLevel = level;
+	}
 
-	@Override
 	public int getMaxEnergyRequest()
 	{
 		return maxEnergyRequst;
 	}
-	@Override
+
 	public void setMaxEnergyRequest(int val)
 	{
-		maxEnergyRequst=val;
+		maxEnergyRequst = val;
 	}
 
-	@Override
 	public boolean getIsEnergyProvider()
 	{
 		return isEnergyProvider;
 	}
 
-	@Override
 	public TileEntity getTileEntity()
 	{
 		return te;
 	}
 
-	@Override
-    public int getContainerEnergyID()
-    {
-	    return energyID;
-    }
+	public int getContainerEnergyID()
+	{
+		return energyID;
+	}
+
+	public void destroy()
+	{
+		EnergyCenter.INSTANCE.removeContainer(this);
+	}
+
+	public NBTTagCompound WriteToNBT(NBTTagCompound nbt)
+	{
+		nbt.setInteger("range", getEffectiveRange());
+		nbt.setInteger("maxRequest", getMaxEnergyRequest());
+		nbt.setInteger("capacity", getEnergyCapacity());
+		nbt.setInteger("energyLevel", getEnergyLevel());
+		nbt.setInteger("energyId", getContainerEnergyID());
+		nbt.setBoolean("isProvider", getIsEnergyProvider());
+		return nbt;
+	}
+
+	public static EnergyContainer ReadFromNBT(NBTTagCompound nbt, TileEntity te)
+	{
+		EnergyContainer c = new EnergyContainer(te, nbt.getBoolean("isProvider"), nbt.getInteger("energyId"));
+		c.setEffectiveRange(nbt.getInteger("range"));
+		c.setMaxEnergyRequest(nbt.getInteger("maxReuest"));
+		c.setEnergyCapacity(nbt.getInteger("capacity"));
+		c.setEnergyLevel(nbt.getInteger("energyLevel"));
+		return c;
+	}
 }

@@ -5,7 +5,7 @@ import net.minecraftforge.event.Event;
 
 public class EnergyConsumerEvent extends Event
 {
-	public EnergyConsumerEvent(World w, IEnergyConsumer c, int x, int y, int z)
+	public EnergyConsumerEvent(World w, EnergyConsumer c, int x, int y, int z)
 	{
 		world = w;
 		consumer = c;
@@ -18,29 +18,25 @@ public class EnergyConsumerEvent extends Event
 	public int y;
 	public int z;
 	public World world;
-	public IEnergyConsumer consumer;
+	public EnergyConsumer consumer;
 	
-	public static class EnergyConsumerPlacedEvent extends EnergyConsumerEvent
+	public static class EnergyRequestedEvent extends EnergyConsumerEvent
 	{
-		public EnergyConsumerPlacedEvent(World w, IEnergyConsumer c, int x, int y, int z)
+		public EnergyRequestedEvent(World w, EnergyConsumer c, int x, int y, int z, int level)
         {
 	        super(w, c, x, y, z);
+	        energyLevel=level;
         }
-	}
-	
-	public static class EnergyConsumerDestoryedEvent extends EnergyConsumerEvent
-	{
-		public EnergyConsumerDestoryedEvent(World w, IEnergyConsumer c, int x, int y, int z)
-        {
-	        super(w, c, x, y, z);
-        }
+		public final int energyLevel;
 	}
 	
 	public static class EnergyAcceptedEvent extends EnergyConsumerEvent
 	{
-		public EnergyAcceptedEvent(World w, IEnergyConsumer c, int x, int y, int z)
+		public EnergyAcceptedEvent(World w, EnergyConsumer c, int x, int y, int z, int level)
         {
 	        super(w, c, x, y, z);
+	        energyLevel=level;
         }
+		public final int energyLevel;
 	}
 }

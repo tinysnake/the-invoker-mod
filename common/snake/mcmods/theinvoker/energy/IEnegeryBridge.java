@@ -1,7 +1,7 @@
 package snake.mcmods.theinvoker.energy;
 
-public interface IEnegeryBridge extends IEnergyContainer
+public interface IEnegeryBridge
 {
-	IEnergyContainer getTargetContainer();
-	void setTargetContainer(IEnergyContainer container);
+	EnergyContainer getTargetContainer();
+	void setTargetContainer(EnergyContainer container);
 }

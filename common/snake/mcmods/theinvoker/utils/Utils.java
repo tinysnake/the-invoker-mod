@@ -3,6 +3,7 @@ package snake.mcmods.theinvoker.utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.liquids.LiquidStack;
 
@@ -23,6 +24,13 @@ public class Utils
 		int dz = z1 - z2;
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
+
+	public static double getDistanceBetweenTiles(TileEntity te1, TileEntity te2)
+    {
+		if(te1!=null && te2!=null)
+			return te1.getDistanceFrom(te2.xCoord, te2.yCoord, te2.zCoord);
+	    return Integer.MAX_VALUE;
+    }
 
 	public static Entity getActualDamageSource(DamageSource ds)
 	{

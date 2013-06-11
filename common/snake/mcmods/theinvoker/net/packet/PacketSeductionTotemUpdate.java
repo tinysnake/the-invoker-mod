@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 
@@ -49,8 +51,8 @@ public class PacketSeductionTotemUpdate extends PacketTileEntityUpdate
 	}
 
 	@Override
-	public void doItsThing()
+	public void doItsThing(EntityPlayer player)
 	{
-		SeductionTotemMisc.syncDataFromPacket(this);
+		SeductionTotemMisc.syncDataFromPacket(this, player);
 	}
 }

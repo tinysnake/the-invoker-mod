@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
+import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketSeductionTotemUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketTI;
@@ -15,7 +16,8 @@ public enum PacketTypeHandler
 {
 	TILE_TI(PacketTileEntityUpdate.class),
 	SEDUCTION_TOTEM(PacketSeductionTotemUpdate.class),
-	ENERGY_CONTAINER(PacketEnergyContainerUpdate.class);
+	ENERGY_CONTAINER(PacketEnergyContainerUpdate.class), 
+	ENERGY_CONSUMER(PacketEnergyConsumerUpdate.class);
 
 	private Class<? extends PacketTI> clazz;
 

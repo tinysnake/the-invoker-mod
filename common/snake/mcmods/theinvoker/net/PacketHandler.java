@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.net;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import snake.mcmods.theinvoker.net.packet.PacketTI;
@@ -14,7 +15,7 @@ public class PacketHandler implements IPacketHandler
 	{
 		PacketTI p = PacketTypeHandler.deserialize(packet.data);
 
-		p.doItsThing();
+		p.doItsThing((EntityPlayer)player);
 	}
 
 }

@@ -1,6 +1,7 @@
 package snake.mcmods.theinvoker;
 
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
@@ -9,7 +10,6 @@ import snake.mcmods.theinvoker.renderer.RenderTotem;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -24,11 +24,17 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTotem.class, new RenderTotem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSeductionTotem.class, new RenderSeductionTotem());
 	}
+	
+	@Override
+	public void registerTickHandlers()
+	{
+	    
+	}
 
 	@Override
-	public void handleTileEntityUpdate(PacketTileEntityUpdate p)
+	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)
 	{
-		WorldClient world = FMLClientHandler.instance().getClient().theWorld;
+		World world =player.worldObj;
 		TileTIBase tt = (TileTIBase) world.getBlockTileEntity(p.x, p.y, p.z);
 		if (tt != null)
 		{

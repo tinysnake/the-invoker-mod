@@ -7,15 +7,18 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.lib.constants.LangKeys;
 
-public class EventCenter
+public class MiscEventCenter
 {
 	@ForgeSubscribe
 	public void handlePlayerJoinWorldEvent(EntityJoinWorldEvent e)
 	{
-		EntityPlayer p = Minecraft.getMinecraft().thePlayer;
-		if (e.entity == p)
+		if(e.world.isRemote)
 		{
-			p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
+			EntityPlayer p = Minecraft.getMinecraft().thePlayer;
+			if (e.entity == p)
+			{
+				p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
+			}
 		}
 	}
 }
