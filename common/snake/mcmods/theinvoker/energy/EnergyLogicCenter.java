@@ -2,14 +2,19 @@ package snake.mcmods.theinvoker.energy;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
+import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 public class EnergyLogicCenter
 {
 	public static final EnergyLogicCenter INSTANCE = new EnergyLogicCenter();
 
-	public EnergyLogicCenter()
+    public EnergyLogicCenter()
 	{
 		containerNodes = new ArrayList<IEnergyContainer>();
 		consumerNodes = new ArrayList<IEnergyConsumer>();
@@ -17,6 +22,7 @@ public class EnergyLogicCenter
 
 	private ArrayList<IEnergyContainer> containerNodes;
 	private ArrayList<IEnergyConsumer> consumerNodes;
+	private int updateTick;
 
 	public void registerContainer(IEnergyContainer energyContainer)
 	{
@@ -50,18 +56,29 @@ public class EnergyLogicCenter
 
 	public void updateEnergyFlow()
 	{
+		updateTick--;
 		for (IEnergyContainer c : containerNodes)
 		{
 			IEnergyContainer nearest = getNearestAvailableContainer(c, false);
 			evenTheEnergyLevelBetween2Containers(c, nearest);
 			pullEnergyFromProvider(c, nearest);
+			if(updateTick<=0)
+			{
+				
+			}
 		}
 
 		for (IEnergyConsumer c : consumerNodes)
 		{
 			IEnergyContainer container = getNearestAvailableContainer(c, true);
 			applyEnergyToConsumer(container, c);
+			if(updateTick<=0)
+			{
+				
+			}
 		}
+		if(updateTick<=0)
+			updateTick=10;
 	}
 
 	public IEnergyContainer getNearestAvailableContainer(IEnergyConsumer consumer, boolean includingSelf)
@@ -93,6 +110,8 @@ public class EnergyLogicCenter
 			if (!includingSelf && te == c.getTileEntity())
 				continue;
 			if (c.getContainerEnergyID() != energyID)
+				continue;
+			if(te.worldObj.provider.dimensionId!=c.getTileEntity().worldObj.provider.dimensionId)
 				continue;
 			double distance = EnergyUtils.getDistanceBetweenTiles(te, c.getTileEntity());
 			if (distance < c.getEffectiveRange() && lastDistance > distance && c.getEnergyLevel() > 0)
@@ -146,4 +165,14 @@ public class EnergyLogicCenter
 			consumer.acceptEnergy(container.take(actualFlow, true));
 		}
 	}
+
+	public static void syncDataFromServer(PacketEnergyContainerUpdate p)
+    {
+	    World world = FMLClientHandler.instance().getClient().theWorld;
+	    TileEntity te = world.getBlockTileEntity(p.x, p.y, p.z);
+	    if(te!=null)
+	    {
+	    	
+	    }
+    }
 }

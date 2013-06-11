@@ -14,12 +14,13 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainer;
+import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 
-public class TileSoulSmelter extends TileTIBase implements IInventory, ITankContainer
+public class TileSoulSmelter extends TileTIBase implements IInventory, ITankContainer,IEnergyContainerWrapper
 {
     public static final int MAX_LIQUID = LiquidContainerRegistry.BUCKET_VOLUME * 3;
 
@@ -55,6 +56,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
         lastBoilTicks = boilTicksLeft = ticks;
     }
     
+    @Override
     public IEnergyContainer getEnergyContainer()
     {
     	return energyContainer;

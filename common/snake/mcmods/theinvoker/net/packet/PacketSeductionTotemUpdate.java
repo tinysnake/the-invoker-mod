@@ -12,7 +12,7 @@ public class PacketSeductionTotemUpdate extends PacketTileEntityUpdate
 
 	public PacketSeductionTotemUpdate()
 	{
-		this.type = PacketTypeHandler.SEDUCTION_TOTEM;
+		super();
 	}
 
 	public PacketSeductionTotemUpdate(int x, int y, int z, int direction, String ownerName, int age)

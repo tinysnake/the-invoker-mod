@@ -18,7 +18,8 @@ public class EnergyContainer implements IEnergyContainer
 	private TileEntity te;
 	private int energyID;
 	public int energyLevel;
-
+	
+	@Override
 	public void setEffectiveRange(int range)
 	{
 		effectiveRange = range;
@@ -83,11 +84,17 @@ public class EnergyContainer implements IEnergyContainer
 	}
 
 	@Override
+    public void setEnergyLevel(int level)
+    {
+	    energyLevel=level;
+    }
+
+	@Override
 	public int getMaxEnergyRequest()
 	{
 		return maxEnergyRequst;
 	}
-	
+	@Override
 	public void setMaxEnergyRequest(int val)
 	{
 		maxEnergyRequst=val;
