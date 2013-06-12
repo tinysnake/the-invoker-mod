@@ -88,10 +88,7 @@ public class TileSeductionTotem extends TileTIBase
 
 	private void setup()
 	{
-		if (this.worldObj.isRemote && !this.getIsGhostBlock() && !this.getIsBroken())
-		{
-			SeductionTotemCenter.INSTANCE.registerSeductionTotem(this);
-		}
+		SeductionTotemCenter.INSTANCE.registerSeductionTotem(this);
 	}
 
 	@Override
@@ -131,10 +128,7 @@ public class TileSeductionTotem extends TileTIBase
 	public void invalidate()
 	{
 		super.invalidate();
-		if (this.worldObj.isRemote && !this.getIsGhostBlock())
-		{
-			SeductionTotemCenter.INSTANCE.unregisterSeductionTotem(this);
-		}
+		SeductionTotemCenter.INSTANCE.unregisterSeductionTotem(this);
 		init = false;
 	}
 }

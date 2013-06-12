@@ -22,8 +22,10 @@ public class SeductionTotemCenter
 
 	public void registerSeductionTotem(TileSeductionTotem tst)
 	{
-		if (tst != null && _seductionTotems.indexOf(tst) < 0)
+		if (tst != null && !tst.worldObj.isRemote && !tst.getIsGhostBlock() && !tst.getIsBroken() && _seductionTotems.indexOf(tst) < 0)
+		{
 			_seductionTotems.add(tst);
+		}
 	}
 
 	public void unregisterSeductionTotem(TileSeductionTotem tst)

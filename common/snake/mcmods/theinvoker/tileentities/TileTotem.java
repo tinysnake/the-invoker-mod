@@ -20,13 +20,9 @@ public class TileTotem extends TileTIBase
 
 	private boolean init;
 
-	private void init()
+	private void setup()
 	{
-		if (this.worldObj.isRemote)
-		{
-			if (this.getBlockMetadata() > 0)
-				TotemCenter.INSTANCE.registerTotem(this);
-		}
+		TotemCenter.INSTANCE.registerTotem(this);
 	}
 
 	public TotemType getType()
@@ -56,7 +52,7 @@ public class TileTotem extends TileTIBase
 		super.updateEntity();
 		if (!init && !isInvalid())
 		{
-			init();
+			setup();
 			init = true;
 		}
 	}
@@ -65,10 +61,7 @@ public class TileTotem extends TileTIBase
 	public void invalidate()
 	{
 		super.invalidate();
-		if (this.worldObj.isRemote && !this.getIsGhostBlock())
-		{
-			TotemCenter.INSTANCE.unregisterTotem(this);
-		}
+		TotemCenter.INSTANCE.unregisterTotem(this);
 		init = false;
 	}
 

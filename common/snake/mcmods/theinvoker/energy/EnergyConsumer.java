@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.energy;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class EnergyConsumer
@@ -13,12 +14,17 @@ public class EnergyConsumer
 		    this.energyID=energyConsumerID;
 	    else
 	    	throw new IllegalArgumentException("you have created a EnergyConsumer without a valid Energy ID");
-	    EnergyCenter.INSTANCE.registerConsumer(this);
     }
 	protected int maxEnergyRequest;
 	protected int energyRequesting;
 	private TileEntity te;
 	private int energyID;
+	private boolean isRegistered;
+	
+	public boolean getIsRegister()
+	{
+		return isRegistered;
+	}
 
 	public int getConsumerEnergyID()
 	{
@@ -68,10 +74,29 @@ public class EnergyConsumer
 	{
 		return te;
 	}
+	
+	public void register()
+	{
+	    isRegistered = EnergyCenter.INSTANCE.registerConsumer(this);
+	}
 
 	public void destroy()
 	{
 		EnergyCenter.INSTANCE.removeConsumer(this);
 	}
 
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		nbt.setInteger("energyId",getConsumerEnergyID());
+		nbt.setInteger("maxRequest", getMaxEnergyRequest());
+		nbt.setInteger("energyRequesting", getEnergyIsRequesting());
+	}
+	
+	public static EnergyConsumer readFromNBT(NBTTagCompound nbt,TileEntity te)
+	{
+		EnergyConsumer ec= new EnergyConsumer(te, nbt.getInteger("energyId"));
+		ec.setMaxEnergyRequest(nbt.getInteger("maxRequest"));
+		ec.requestEnergy(nbt.getInteger("energyRequesting"));
+		return ec;
+	}
 }

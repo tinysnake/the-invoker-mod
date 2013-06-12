@@ -22,10 +22,13 @@ public class EnergyUtils
 		if (te != null&&te instanceof IEnergyContainerWrapper)
 		{
 			EnergyContainer c = ((IEnergyContainerWrapper)te).getEnergyContainer();
-			c.setEnergyLevel(p.energyLevel);
-			c.setEnergyCapacity(p.capacity);
-			c.setMaxEnergyRequest(p.maxRequest);
-			c.setEffectiveRange(p.range);
+			if(c!=null)
+			{
+				c.setEnergyLevel(p.energyLevel);
+				c.setEnergyCapacity(p.capacity);
+				c.setMaxEnergyRequest(p.maxRequest);
+				c.setEffectiveRange(p.range);
+			}
 		}
 	}
 	
@@ -36,8 +39,11 @@ public class EnergyUtils
 		if(te!=null&&te instanceof IEnergyConsumerWrapper)
 		{
 			EnergyConsumer c = ((IEnergyConsumerWrapper)te).getEnergyConsumer();
-			c.setMaxEnergyRequest(p.maxRequest);
-			c.requestEnergy(p.energyLevel);
+			if(c!=null)
+			{
+				c.setMaxEnergyRequest(p.maxRequest);
+				c.requestEnergy(p.energyLevel);
+			}
 		}
 	}
 }

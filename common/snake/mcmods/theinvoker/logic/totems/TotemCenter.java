@@ -28,7 +28,7 @@ public class TotemCenter
 
 	public void registerTotem(TileTotem tt)
 	{
-		if (tt != null && totems.indexOf(tt) < 0)
+		if (tt != null &&!tt.worldObj.isRemote&& tt.getBlockMetadata() > 0 && totems.indexOf(tt) < 0)
 		{
 			totems.add(tt);
 		}

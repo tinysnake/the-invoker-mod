@@ -15,7 +15,6 @@ public class EnergyContainer
 			this.energyID = containerEnergyID;
 		else
 			throw new IllegalArgumentException("you have created a EnergyContainer without a valid Energy ID");
-		EnergyCenter.INSTANCE.registerContainer(this);
 	}
 
 	protected int effectiveRange;
@@ -25,6 +24,12 @@ public class EnergyContainer
 	protected int energyLevel;
 	private TileEntity te;
 	private int energyID;
+	private boolean isRegistered;
+	
+	public boolean getIsRegistered()
+	{
+		return isRegistered;
+	}
 
 	public void setEffectiveRange(int range)
 	{
@@ -111,6 +116,12 @@ public class EnergyContainer
 	public int getContainerEnergyID()
 	{
 		return energyID;
+	}
+	
+	public void register()
+	{
+		if(!isRegistered)
+			isRegistered = EnergyCenter.INSTANCE.registerContainer(this);
 	}
 
 	public void destroy()

@@ -2,14 +2,13 @@ package snake.mcmods.theinvoker.energy;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
 import snake.mcmods.theinvoker.utils.Utils;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class EnergyCenter
 {
@@ -27,13 +26,15 @@ public class EnergyCenter
 	private ArrayList<EnergyForce> energyForceRegistry;
 	private int updateTick;
 
-	public void registerContainer(EnergyContainer energyContainer)
+	public boolean registerContainer(EnergyContainer energyContainer)
 	{
-		if (energyContainer != null && energyContainer.getTileEntity() != null &&
-				energyContainer.getTileEntity().worldObj.isRemote && containerNodes.indexOf(energyContainer) < 0)
+		if (energyContainer != null && energyContainer.getTileEntity() != null && energyContainer.getTileEntity().worldObj != null &&
+		        !energyContainer.getTileEntity().worldObj.isRemote && containerNodes.indexOf(energyContainer) < 0)
 		{
 			containerNodes.add(energyContainer);
+			return true;
 		}
+		return false;
 	}
 
 	public void removeContainer(EnergyContainer energyContainer)
@@ -43,13 +44,15 @@ public class EnergyCenter
 			containerNodes.remove(index);
 	}
 
-	public void registerConsumer(EnergyConsumer consumer)
+	public boolean registerConsumer(EnergyConsumer consumer)
 	{
-		if (consumer != null && consumer.getTileEntity() != null &&
-				consumer.getTileEntity().worldObj.isRemote && consumerNodes.indexOf(consumer) < 0)
+		if (consumer != null && consumer.getTileEntity() != null && consumer.getTileEntity().worldObj != null &&
+		        !consumer.getTileEntity().worldObj.isRemote && consumerNodes.indexOf(consumer) < 0)
 		{
 			consumerNodes.add(consumer);
+			return true;
 		}
+		return false;
 	}
 
 	public void removeConsumer(EnergyConsumer consumer)
@@ -86,7 +89,7 @@ public class EnergyCenter
 			if (updateTick <= 0)
 			{
 				TileEntity te = c.getTileEntity();
-				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 64, te.worldObj.provider.dimensionId,
+				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 128, te.worldObj.provider.dimensionId,
 				        PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord,
 				                c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
 			}

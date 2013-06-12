@@ -18,8 +18,8 @@ import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
-import snake.mcmods.theinvoker.lib.SoulSmelterMisc;
 import snake.mcmods.theinvoker.lib.constants.TIName;
+import snake.mcmods.theinvoker.logic.soulsmelter.SoulSmelterMisc;
 
 public class TileSoulSmelter extends TileTIBase implements IInventory, ITankContainer, IEnergyContainerWrapper
 {
@@ -43,7 +43,6 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	private LiquidTank lavaTank;
 	private ItemStack inputSlot;
 	private EnergyContainer energyContainer;
-	private boolean init;
 
 	public int getBoilTicksLeft()
 	{
@@ -83,7 +82,9 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public boolean getIsAbleToWork()
 	{
-		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) && lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID));
+		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) && 
+				lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID)&&
+				energyContainer.getEnergyCapacity()>energyContainer.getEnergyLevel());
 	}
 
 	public boolean getHasWork()
@@ -97,7 +98,8 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 		super.updateEntity();
 
 		setupEnergyContainer();
-		
+		if(this.worldObj.isRemote)
+			return;
 		if (boilTicksLeft > 0)
 		{
 			boilTicksLeft--;
@@ -109,7 +111,10 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 			{
 				isProccessing = false;
 				if (processingItemID > 0)
+				{
 					this.drain(0, SoulSmelterMisc.getLavaBurnAmount(processingItemID), true);
+					energyContainer.gain(5, true);
+				}
 				processingItemID = 0;
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
@@ -134,12 +139,15 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	private void setupEnergyContainer()
 	{
-		if (!init)
+		if (energyContainer==null)
 		{
 			energyContainer = new EnergyContainer(this, true, TIItems.soulShard.itemID);
 			energyContainer.setEffectiveRange(ENERGY_RANGE);
 			energyContainer.setEnergyCapacity(MAX_ENERGY_CAPACITY);
-			init = true;
+		}
+		if(!energyContainer.getIsRegistered())
+		{
+			energyContainer.register();
 		}
 	}
 
@@ -283,12 +291,12 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	public void readFromNBT(NBTTagCompound nbtCompound)
 	{
 		super.readFromNBT(nbtCompound);
-		if(nbtCompound.hasKey("lavaTank"))
-			lavaTank.setLiquid(LiquidStack.loadLiquidStackFromNBT(nbtCompound.getCompoundTag("lavaTank")));
-		if(nbtCompound.hasKey("energyContainer"))
-			energyContainer = EnergyContainer.ReadFromNBT(nbtCompound.getCompoundTag("energyCotnaienr"), this);
-		if (nbtCompound.hasKey("inputSlot"))
-			inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag("inputSlot"));
+		if(nbtCompound.hasKey(TAG_LAVA_TANK))
+			lavaTank.setLiquid(LiquidStack.loadLiquidStackFromNBT(nbtCompound.getCompoundTag(TAG_LAVA_TANK)));
+		if(nbtCompound.hasKey(TAG_ENERGY_CONTAINER))
+			energyContainer = EnergyContainer.ReadFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
+		if (nbtCompound.hasKey(TAG_INPUT_SLOT))
+			inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag(TAG_INPUT_SLOT));
 		setupEnergyContainer();
 	}
 
@@ -296,12 +304,16 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	public void writeToNBT(NBTTagCompound nbtCompound)
 	{
 		super.writeToNBT(nbtCompound);
+//		setupEnergyContainer();
 		if (inputSlot != null)
 		{
-			nbtCompound.setTag("inputSlot", inputSlot.writeToNBT(new NBTTagCompound()));
+			nbtCompound.setTag(TAG_INPUT_SLOT, inputSlot.writeToNBT(new NBTTagCompound()));
 		}
-		nbtCompound.setTag("lavaTank", lavaTank.writeToNBT(new NBTTagCompound()));
-		nbtCompound.setTag("energyContainer",energyContainer.WriteToNBT(new NBTTagCompound()));
+		nbtCompound.setTag(TAG_LAVA_TANK, lavaTank.writeToNBT(new NBTTagCompound()));
+		if(energyContainer!=null)
+		{
+			nbtCompound.setTag(TAG_ENERGY_CONTAINER,energyContainer.WriteToNBT(new NBTTagCompound()));
+		}
 	}
 
 	public void sendNetworkGUIData(ContainerSoulSmelter container, ICrafting c)
@@ -335,7 +347,6 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	    super.invalidate();
 	    if(energyContainer!=null)
 	    	energyContainer.destroy();
-	    init=false;
 	}
 	
 	@Override
@@ -344,4 +355,8 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 		setupEnergyContainer();
 	    return super.getDescriptionPacket();
 	}
+	
+	private static final String TAG_LAVA_TANK = "lavaTank";
+	private static final String TAG_INPUT_SLOT = "inputSlot";
+	private static final String TAG_ENERGY_CONTAINER = "energyContainer";
 }
