@@ -10,12 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.liquids.LiquidContainerRegistry;
 import net.minecraftforge.liquids.LiquidStack;
-import scala.Console;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGuiID;
@@ -23,6 +21,7 @@ import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.lib.constants.Textures;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
+import snake.mcmods.theinvoker.utils.Utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -57,22 +56,7 @@ public class BlockSoulSmelter extends BlockContainer
     {
         TileTIBase te = (TileTIBase) world.getBlockTileEntity(x, y, z);
         te.setOwnerName(entityLiving.getEntityName());
-        int face = MathHelper.floor_double((double) (entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        switch (face)
-        {
-            case 0:
-                te.setDirection(2);
-                break;
-            case 1:
-                te.setDirection(5);
-                break;
-            case 2:
-                te.setDirection(3);
-                break;
-            case 3:
-                te.setDirection(4);
-                break;
-        }
+		te.setDirection(Utils.getPlaceDirection(entityLiving));
     }
 
     @Override
@@ -160,7 +144,6 @@ public class BlockSoulSmelter extends BlockContainer
                     soulSmelter.fill(0, new LiquidStack(Block.lavaStill, LiquidContainerRegistry.BUCKET_VOLUME), true);
                     player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Item.bucketEmpty);
                 }
-                Console.println("fill amount: " + amount);
                 return true;
             }
         }

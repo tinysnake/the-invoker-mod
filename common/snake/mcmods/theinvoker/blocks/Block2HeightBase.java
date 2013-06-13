@@ -4,9 +4,9 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
+import snake.mcmods.theinvoker.utils.Utils;
 
 public abstract class Block2HeightBase extends BlockContainer
 {
@@ -38,23 +38,7 @@ public abstract class Block2HeightBase extends BlockContainer
 	{
 		TileTIBase te = (TileTIBase) world.getBlockTileEntity(x, y, z);
 		te.setOwnerName(entityLiving.getEntityName());
-		int face = MathHelper
-		        .floor_double((double) (entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		switch (face)
-		{
-			case 0:
-				te.setDirection(2);
-				break;
-			case 1:
-				te.setDirection(5);
-				break;
-			case 2:
-				te.setDirection(3);
-				break;
-			case 3:
-				te.setDirection(4);
-				break;
-		}
+		te.setDirection(Utils.getPlaceDirection(entityLiving));
 	}
 
 	@Override

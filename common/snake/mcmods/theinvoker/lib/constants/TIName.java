@@ -23,4 +23,5 @@ public class TIName
     public static final String BLOCK_SOUL_SMELTER = "soul_smelter";
     public static final String CONTAINER_SOUL_SMELTER = "container." + BLOCK_SOUL_SMELTER;
 	public static final String ENERGY_SOUL = "soul";
+	public static final String BLOCK_SOUL_STONE = "soul_stone";
 }

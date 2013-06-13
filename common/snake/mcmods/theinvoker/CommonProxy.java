@@ -3,11 +3,10 @@ package snake.mcmods.theinvoker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import snake.mcmods.theinvoker.energy.EnergyTickHandler;
-import snake.mcmods.theinvoker.handlers.MiscEventCenter;
 import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
+import snake.mcmods.theinvoker.handlers.MiscEventCenter;
 import snake.mcmods.theinvoker.lib.constants.TITileEntityID;
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
-import snake.mcmods.theinvoker.logic.soulsmelter.SoulSmelterMisc;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
@@ -35,7 +34,6 @@ public class CommonProxy
 	{
 		MinecraftForge.EVENT_BUS.register(new MiscEventCenter());
 		MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
-		MinecraftForge.EVENT_BUS.register(new SoulSmelterMisc());
 		MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
 	}
 	

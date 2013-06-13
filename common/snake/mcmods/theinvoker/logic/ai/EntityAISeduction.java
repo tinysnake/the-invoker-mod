@@ -49,7 +49,7 @@ public class EntityAISeduction extends EntityAIBase
 			TileSeductionTotem tst = SeductionTotemCenter.INSTANCE.getNearestSeductionTotem(living.posX, living.posY, living.posZ);
 			if (tst != null)
 			{
-				living.getNavigator().tryMoveToXYZ(tst.xCoord + randomOffset(living.getRNG()), tst.yCoord, tst.zCoord + randomOffset(living.getRNG()), 0.25F);
+				living.getNavigator().tryMoveToXYZ(tst.xCoord + randomOffset(living.getRNG()), tst.yCoord, tst.zCoord + randomOffset(living.getRNG()), 0.1F);
 			}
 		}
 	}

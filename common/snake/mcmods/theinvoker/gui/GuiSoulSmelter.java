@@ -99,6 +99,7 @@ public class GuiSoulSmelter extends GuiContainer
 	}
 
 	@Override
+	@SuppressWarnings({"all"})
 	public void drawScreen(int mouseX, int mouseY, float pTicks)
 	{
 		super.drawScreen(mouseX, mouseY, pTicks);
@@ -109,7 +110,6 @@ public class GuiSoulSmelter extends GuiContainer
 		int yStart = (height - ySize) / 2;
 		if (mouseX > xStart + 130 && mouseX < xStart + 148 && mouseY > yStart + 6 && mouseY < yStart + 54)
 		{
-			@SuppressWarnings("rawtypes")
 			List arr = new ArrayList();
 			String amount = soulSmelter.getLavaTank().getLiquid() != null ?
 			        String.valueOf(soulSmelter.getLavaTank().getLiquid().amount) : "0";

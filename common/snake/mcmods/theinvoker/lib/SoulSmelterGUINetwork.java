@@ -2,6 +2,7 @@ package snake.mcmods.theinvoker.lib;
 
 public enum SoulSmelterGUINetwork
 {
+	LAST_BOIL_TICK,
 	BOIL_PROGRESS,
 	LAVA_CAPACITY;
 	

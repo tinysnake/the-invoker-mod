@@ -5,6 +5,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.LiquidStack;
 
 public class Utils
@@ -50,5 +52,45 @@ public class Utils
 		if(ls==null)
 			return 0;
 		return (int)(ls.amount * scaleFactor / (float)maxAmount);
+	}
+	
+	public static int getPlaceDirection(EntityLiving entityLiving)
+	{
+		int direction = 2;
+        int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+
+        if (facing == 0) {
+            direction = ForgeDirection.NORTH.ordinal();
+        }
+        else if (facing == 1) {
+            direction = ForgeDirection.EAST.ordinal();
+        }
+        else if (facing == 2) {
+            direction = ForgeDirection.SOUTH.ordinal();
+        }
+        else if (facing == 3) {
+            direction = ForgeDirection.WEST.ordinal();
+        }
+        return direction;
+	}
+	
+	public static ForgeDirection getPlaceDirectionForge(EntityLiving entityLiving)
+	{
+		ForgeDirection direction = ForgeDirection.NORTH;
+        int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+
+        if (facing == 0) {
+            direction = ForgeDirection.NORTH;
+        }
+        else if (facing == 1) {
+            direction = ForgeDirection.EAST;
+        }
+        else if (facing == 2) {
+            direction = ForgeDirection.SOUTH;
+        }
+        else if (facing == 3) {
+            direction = ForgeDirection.WEST;
+        }
+        return direction;
 	}
 }
