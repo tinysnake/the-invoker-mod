@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
+import snake.mcmods.theinvoker.config.Lang;
+import snake.mcmods.theinvoker.lib.constants.LangKeys;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.EvilTouchMisc;
@@ -39,7 +41,19 @@ public class BlockSoulStoneDummy extends Block
 			return false;
 		if (EvilTouchMisc.isPlayHoldingEvilTouch(player))
 		{
-			SoulStoneMisc.getIsFormable(world, x, y, z);
+		    if(SoulStoneMisc.getFormedTileSoulStone(world, x, y, z)!=null)
+		    {
+		    }
+		    else if(SoulStoneMisc.getIsFormable(world, x, y, z))
+		    {
+		        if(!world.isRemote)
+		            player.sendChatToPlayer(" you can form it!");
+		    }
+		    else
+		    {
+		        if(!world.isRemote)
+		            player.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		    }
 		}
 		return true;
 	}
