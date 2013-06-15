@@ -43,6 +43,7 @@ public class RenderTotem extends RenderTileBase
 
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glDisable(GL11.GL_LIGHTING);
+
 	}
 
 }

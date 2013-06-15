@@ -129,7 +129,7 @@ public class EnergyContainer
 		EnergyCenter.INSTANCE.removeContainer(this);
 	}
 
-	public NBTTagCompound WriteToNBT(NBTTagCompound nbt)
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		nbt.setInteger("range", getEffectiveRange());
 		nbt.setInteger("maxRequest", getMaxEnergyRequest());
@@ -140,7 +140,7 @@ public class EnergyContainer
 		return nbt;
 	}
 
-	public static EnergyContainer ReadFromNBT(NBTTagCompound nbt, TileEntity te)
+	public static EnergyContainer readFromNBT(NBTTagCompound nbt, TileEntity te)
 	{
 		EnergyContainer c = new EnergyContainer(te, nbt.getBoolean("isProvider"), nbt.getInteger("energyId"));
 		c.setEffectiveRange(nbt.getInteger("range"));

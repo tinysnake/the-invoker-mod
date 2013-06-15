@@ -308,7 +308,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 		if (nbtCompound.hasKey(TAG_LAVA_TANK))
 			lavaTank.setLiquid(LiquidStack.loadLiquidStackFromNBT(nbtCompound.getCompoundTag(TAG_LAVA_TANK)));
 		if (nbtCompound.hasKey(TAG_ENERGY_CONTAINER))
-			energyContainer = EnergyContainer.ReadFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
+			energyContainer = EnergyContainer.readFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
 		if (nbtCompound.hasKey(TAG_INPUT_SLOT))
 			inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag(TAG_INPUT_SLOT));
 		setupEnergyContainer();
@@ -326,7 +326,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 		nbtCompound.setTag(TAG_LAVA_TANK, lavaTank.writeToNBT(new NBTTagCompound()));
 		if (energyContainer != null)
 		{
-			nbtCompound.setTag(TAG_ENERGY_CONTAINER, energyContainer.WriteToNBT(new NBTTagCompound()));
+			nbtCompound.setTag(TAG_ENERGY_CONTAINER, energyContainer.writeToNBT(new NBTTagCompound()));
 		}
 	}
 

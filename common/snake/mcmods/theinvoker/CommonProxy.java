@@ -11,6 +11,7 @@ import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
+import snake.mcmods.theinvoker.tileentities.TileSoulStone;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -23,6 +24,7 @@ public class CommonProxy
 		GameRegistry.registerTileEntity(TileTotem.class, TITileEntityID.TOTEM);
 		GameRegistry.registerTileEntity(TileSeductionTotem.class, TITileEntityID.SEDUCTION_TOTEM);
 		GameRegistry.registerTileEntity(TileSoulSmelter.class, TITileEntityID.SOUL_SMELTER);
+		GameRegistry.registerTileEntity(TileSoulStone.class, TITileEntityID.SOUL_STONE);
 	}
 
 	public void initRenderingStuff()
@@ -36,7 +38,7 @@ public class CommonProxy
 		MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
 		MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
 	}
-	
+
 	public void registerTickHandlers()
 	{
 		TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);

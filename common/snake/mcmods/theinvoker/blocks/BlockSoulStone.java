@@ -9,6 +9,8 @@ import snake.mcmods.theinvoker.tileentities.TileSoulStone;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -29,6 +31,18 @@ public class BlockSoulStone extends BlockContainer
 	    blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID+":"+getUnlocalizedName2());
 	}
 
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack itemstack)
+	{
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if(te!=null&& te instanceof TileSoulStone)
+		{
+			TileSoulStone tss = (TileSoulStone)te;
+			tss.setDirection(0);
+			tss.setOwnerName(player.getEntityName());
+		}
+	}
+	
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{

@@ -46,6 +46,7 @@ public class TileTIBase extends TileEntity
 	@Override
 	public Packet getDescriptionPacket()
 	{
+		//return super.getDescriptionPacket();
 		return PacketTypeHandler.serialize(new PacketTileEntityUpdate(xCoord, yCoord, zCoord,
 		        getDirection().ordinal(), getOwnerName()));
 	}
