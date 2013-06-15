@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
+import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.logic.SoulStoneMisc;
 
@@ -16,11 +17,22 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	}
 
 	private EnergyContainer energyContainer;
+    public EntitySoulStoneMonitor monitor;
 
 	@Override
 	public EnergyContainer getEnergyContainer()
 	{
 		return energyContainer;
+	}
+	
+	public boolean getIsFormless()
+	{
+	    return !energyContainer.getIsAvailable();
+	}
+	
+	public void setIsFormless(boolean val)
+	{
+	    energyContainer.setIsAvailable(!val);
 	}
 	
 	@Override
@@ -66,6 +78,7 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	
 	public void transferFrom(TileSoulStone tss)
 	{
+	    this.ownerName = tss.getOwnerName();
 		this.energyContainer = tss.getEnergyContainer();
 	}
 

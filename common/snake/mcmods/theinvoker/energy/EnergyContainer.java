@@ -5,148 +5,167 @@ import net.minecraft.tileentity.TileEntity;
 
 public class EnergyContainer
 {
-	public EnergyContainer(TileEntity te, boolean isEnergyProvider, int containerEnergyID)
-	{
-		if (te == null)
-			throw new IllegalArgumentException("you dare to create a EnergyContainer without a valid TileEntity?");
-		this.te = te;
-		this.isEnergyProvider = isEnergyProvider;
-		if (EnergyCenter.INSTANCE.getEnergyForce(containerEnergyID) != null)
-			this.energyID = containerEnergyID;
-		else
-			throw new IllegalArgumentException("you have created a EnergyContainer without a valid Energy ID");
-	}
+    public EnergyContainer(TileEntity te, boolean isEnergyProvider, int containerEnergyID)
+    {
+        if (te == null)
+            throw new IllegalArgumentException("you dare to create a EnergyContainer without a valid TileEntity?");
+        this.te = te;
+        this.isEnergyProvider = isEnergyProvider;
+        if (EnergyCenter.INSTANCE.getEnergyForce(containerEnergyID) != null)
+            this.energyID = containerEnergyID;
+        else
+            throw new IllegalArgumentException("you have created a EnergyContainer without a valid Energy ID");
+        isAvailable=true;
+    }
 
-	protected int effectiveRange;
-	protected int maxEnergyRequst;
-	protected int capacity;
-	protected boolean isEnergyProvider;
-	protected int energyLevel;
-	private TileEntity te;
-	private int energyID;
-	private boolean isRegistered;
-	
-	public boolean getIsRegistered()
-	{
-		return isRegistered;
-	}
+    protected int effectiveRange;
+    protected int maxEnergyRequst;
+    protected int capacity;
+    protected boolean isEnergyProvider;
+    protected int energyLevel;
+    private TileEntity te;
+    private int energyID;
+    private boolean isAvailable;
+    private boolean isRegistered;
 
-	public void setEffectiveRange(int range)
-	{
-		effectiveRange = range;
-	}
+    public boolean getIsRegistered()
+    {
+        return isRegistered;
+    }
 
-	public int getEffectiveRange()
-	{
-		return effectiveRange;
-	}
+    public void setEffectiveRange(int range)
+    {
+        effectiveRange = range;
+    }
 
-	public int gain(int energyFlow, boolean doGain)
-	{
-		int tobeGain = energyFlow;
-		if (energyLevel + tobeGain > capacity)
-		{
-			tobeGain = capacity - energyLevel;
-		}
-		if (doGain)
-		{
-			energyLevel += tobeGain;
-			EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyGainedEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, tobeGain));
-		}
-		return tobeGain;
-	}
+    public int getEffectiveRange()
+    {
+        return effectiveRange;
+    }
 
-	public int take(int energyFlow, boolean doTake)
-	{
-		int tobeTake = energyFlow;
-		if (energyLevel - energyFlow < 0)
-		{
-			tobeTake = energyLevel;
-		}
-		if (doTake)
-		{
-			energyLevel -= tobeTake;
-			EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyTookEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, tobeTake));
-		}
-		return tobeTake;
-	}
+    public int gain(int energyFlow, boolean doGain)
+    {
+        int tobeGain = energyFlow;
+        if (energyLevel + tobeGain > capacity)
+        {
+            tobeGain = capacity - energyLevel;
+        }
+        if (doGain)
+        {
+            energyLevel += tobeGain;
+            EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyGainedEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, tobeGain));
+        }
+        return tobeGain;
+    }
 
-	public int getEnergyCapacity()
-	{
-		return capacity;
-	}
+    public int take(int energyFlow, boolean doTake)
+    {
+        int tobeTake = energyFlow;
+        if (energyLevel - energyFlow < 0)
+        {
+            tobeTake = energyLevel;
+        }
+        if (doTake)
+        {
+            energyLevel -= tobeTake;
+            EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyTookEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, tobeTake));
+        }
+        return tobeTake;
+    }
 
-	public void setEnergyCapacity(int capacity)
-	{
-		this.capacity = capacity;
-		if (energyLevel > this.capacity)
-			energyLevel = capacity;
-	}
+    public int getEnergyCapacity()
+    {
+        return capacity;
+    }
 
-	public int getEnergyLevel()
-	{
-		return energyLevel;
-	}
+    public void setEnergyCapacity(int capacity)
+    {
+        this.capacity = capacity;
+        if (energyLevel > this.capacity)
+            energyLevel = capacity;
+    }
 
-	public void setEnergyLevel(int level)
-	{
-		energyLevel = level;
-	}
+    public int getEnergyLevel()
+    {
+        return energyLevel;
+    }
 
-	public int getMaxEnergyRequest()
-	{
-		return maxEnergyRequst;
-	}
+    public void setEnergyLevel(int level)
+    {
+        energyLevel = level;
+    }
 
-	public void setMaxEnergyRequest(int val)
-	{
-		maxEnergyRequst = val;
-	}
+    public int getMaxEnergyRequest()
+    {
+        return maxEnergyRequst;
+    }
 
-	public boolean getIsEnergyProvider()
-	{
-		return isEnergyProvider;
-	}
+    public void setMaxEnergyRequest(int val)
+    {
+        maxEnergyRequst = val;
+    }
 
-	public TileEntity getTileEntity()
-	{
-		return te;
-	}
+    public boolean getIsAvailable()
+    {
+        return isAvailable;
+    }
 
-	public int getContainerEnergyID()
-	{
-		return energyID;
-	}
-	
-	public void register()
-	{
-		if(!isRegistered)
-			isRegistered = EnergyCenter.INSTANCE.registerContainer(this);
-	}
+    public void setIsAvailable(boolean val)
+    {
+        isAvailable = val;
+    }
 
-	public void destroy()
-	{
-		EnergyCenter.INSTANCE.removeContainer(this);
-	}
+    public boolean getIsEnergyProvider()
+    {
+        return isEnergyProvider;
+    }
 
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-	{
-		nbt.setInteger("range", getEffectiveRange());
-		nbt.setInteger("maxRequest", getMaxEnergyRequest());
-		nbt.setInteger("capacity", getEnergyCapacity());
-		nbt.setInteger("energyLevel", getEnergyLevel());
-		nbt.setInteger("energyId", getContainerEnergyID());
-		nbt.setBoolean("isProvider", getIsEnergyProvider());
-		return nbt;
-	}
+    public TileEntity getTileEntity()
+    {
+        return te;
+    }
 
-	public static EnergyContainer readFromNBT(NBTTagCompound nbt, TileEntity te)
-	{
-		EnergyContainer c = new EnergyContainer(te, nbt.getBoolean("isProvider"), nbt.getInteger("energyId"));
-		c.setEffectiveRange(nbt.getInteger("range"));
-		c.setMaxEnergyRequest(nbt.getInteger("maxReuest"));
-		c.setEnergyCapacity(nbt.getInteger("capacity"));
-		c.setEnergyLevel(nbt.getInteger("energyLevel"));
-		return c;
-	}
+    public int getContainerEnergyID()
+    {
+        return energyID;
+    }
+
+    public void register()
+    {
+        if (!isRegistered)
+            isRegistered = EnergyCenter.INSTANCE.registerContainer(this);
+    }
+
+    public void destroy()
+    {
+        EnergyCenter.INSTANCE.removeContainer(this);
+    }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        nbt.setInteger("range", getEffectiveRange());
+        nbt.setInteger("maxRequest", getMaxEnergyRequest());
+        nbt.setInteger("capacity", getEnergyCapacity());
+        nbt.setInteger("energyLevel", getEnergyLevel());
+        nbt.setInteger("energyId", getContainerEnergyID());
+        nbt.setBoolean("isProvider", getIsEnergyProvider());
+        nbt.setBoolean("isAvailable", getIsAvailable());
+        return nbt;
+    }
+
+    public static EnergyContainer readFromNBT(NBTTagCompound nbt, TileEntity te)
+    {
+        EnergyContainer c = new EnergyContainer(te, nbt.getBoolean("isProvider"), nbt.getInteger("energyId"));
+        if (nbt.hasKey("range"))
+            c.setEffectiveRange(nbt.getInteger("range"));
+        if (nbt.hasKey("maxReuest"))
+            c.setMaxEnergyRequest(nbt.getInteger("maxReuest"));
+        if (nbt.hasKey("capacity"))
+            c.setEnergyCapacity(nbt.getInteger("capacity"));
+        if (nbt.hasKey("energyLevel"))
+            c.setEnergyLevel(nbt.getInteger("energyLevel"));
+        if (nbt.hasKey("isAvailable"))
+            c.setIsAvailable(nbt.getBoolean("isAvailable"));
+        return c;
+    }
 }

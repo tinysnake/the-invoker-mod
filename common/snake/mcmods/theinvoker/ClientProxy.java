@@ -3,8 +3,10 @@ package snake.mcmods.theinvoker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
+import snake.mcmods.theinvoker.renderer.RenderSoulStoneMonitor;
 import snake.mcmods.theinvoker.renderer.RenderSeductionTotem;
 import snake.mcmods.theinvoker.renderer.RenderTotem;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
@@ -23,6 +25,8 @@ public class ClientProxy extends CommonProxy
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTotem.class, new RenderTotem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSeductionTotem.class, new RenderSeductionTotem());
+		
+		RenderingRegistry.registerEntityRenderingHandler(EntitySoulStoneMonitor.class, new RenderSoulStoneMonitor());
 	}
 	
 	@Override

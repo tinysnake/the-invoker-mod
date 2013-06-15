@@ -139,6 +139,8 @@ public class EnergyCenter
 				continue;
 			if (!includingSelf && te == c.getTileEntity())
 				continue;
+            if(!c.getIsAvailable())
+                continue;
 			if (c.getContainerEnergyID() != energyID)
 				continue;
 			if (te.worldObj.provider.dimensionId != c.getTileEntity().worldObj.provider.dimensionId)
