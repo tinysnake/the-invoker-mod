@@ -313,6 +313,15 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 			energyContainer = EnergyContainer.readFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
 		if (nbtCompound.hasKey(TAG_INPUT_SLOT))
 			inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag(TAG_INPUT_SLOT));
+		if(nbtCompound.hasKey(TAG_BOIL_TICKS_LEFT))
+			boilTicksLeft = nbtCompound.getInteger(TAG_BOIL_TICKS_LEFT);
+		if(nbtCompound.hasKey(TAG_LAST_BOIL_TICKS))
+			lastBoilTicks = nbtCompound.getInteger(TAG_LAST_BOIL_TICKS);
+		if(nbtCompound.hasKey(TAG_BOIL_TICKS_LEFT))
+			processingItemID = nbtCompound.getInteger(TAG_PROCESSING_ITEM_ID);
+		if(nbtCompound.hasKey(TAG_IS_PROCESSING))
+			isProccessing = nbtCompound.getBoolean(TAG_IS_PROCESSING);
+		hasWork = getIsProcessing();
 		setupEnergyContainer();
 	}
 
@@ -330,6 +339,10 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 		{
 			nbtCompound.setTag(TAG_ENERGY_CONTAINER, energyContainer.writeToNBT(new NBTTagCompound()));
 		}
+		nbtCompound.setInteger(TAG_BOIL_TICKS_LEFT, boilTicksLeft);
+		nbtCompound.setBoolean(TAG_IS_PROCESSING, isProccessing);
+		nbtCompound.setInteger(TAG_LAST_BOIL_TICKS, lastBoilTicks);
+		nbtCompound.setInteger(TAG_PROCESSING_ITEM_ID, processingItemID);
 	}
 
 	public void sendNetworkGUIData(ContainerSoulSmelter container, ICrafting c)
@@ -384,4 +397,8 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	private static final String TAG_LAVA_TANK = "lavaTank";
 	private static final String TAG_INPUT_SLOT = "inputSlot";
 	private static final String TAG_ENERGY_CONTAINER = "energyContainer";
+	private static final String TAG_LAST_BOIL_TICKS = "lastBoilTicks";
+	private static final String TAG_BOIL_TICKS_LEFT = "boilTicksLeft";
+	private static final String TAG_PROCESSING_ITEM_ID = "processingItemID";
+	private static final String TAG_IS_PROCESSING = "isProcessing";
 }
