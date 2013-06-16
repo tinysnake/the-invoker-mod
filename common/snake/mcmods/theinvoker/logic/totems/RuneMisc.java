@@ -16,51 +16,31 @@ import snake.mcmods.theinvoker.tileentities.TileTotem;
 
 public class RuneMisc
 {
-	public static final float[] SOUL_DROP_TOTEM_TYPE_MODIFIERS =
-	{
-	        // ghost block
-	        0F,
-	        // soul
-	        1.5F,
-	        // soulAttractive
-	        1F,
-	        // all of runes
-	        0F,
-	        0F,
-	        0F,
-	        0F,
-	        // massacre
-	        0F
-	};
+	public static final float[] SOUL_DROP_TOTEM_TYPE_MODIFIERS = {
+			// ghost block
+	0F,
+			// soul
+	1.5F,
+			// soulAttractive
+	1F,
+			// all of runes
+	0F, 0F, 0F, 0F,
+			// massacre
+	0F };
 
-	public static final float[] RUNE_DROP_TOTEM_TYPE_MODIFIERS =
-	{
-	        // ghost block
-	        0F,
-	        // soul
-	        0F,
-	        // soulAttractive
-	        1F,
-	        // all of runes
-	        1.5F,
-	        1.5F,
-	        1.5F,
-	        1.5F,
-	        // massacre
-	        0F
-	};
+	public static final float[] RUNE_DROP_TOTEM_TYPE_MODIFIERS = {
+			// ghost block
+	0F,
+			// soul
+	0F,
+			// soulAttractive
+	1F,
+			// all of runes
+	1.5F, 1.5F, 1.5F, 1.5F,
+			// massacre
+	0F };
 
-	public static final int[] RUNE_OF_TOTEM_DROP_CHANCE =
-	{
-	        0,
-	        0,
-	        14,
-	        20,
-	        20,
-	        20,
-	        20,
-	        0
-	};
+	public static final int[] RUNE_OF_TOTEM_DROP_CHANCE = { 0, 0, 14, 20, 20, 20, 20, 0 };
 
 	public static final int EXTRA_CHANCE_OF_TOTEM_RUNE = 15;
 	public static final int QUANTITY_OF_EXTRA_DROP = 1;

@@ -1,12 +1,12 @@
 package snake.mcmods.theinvoker.energy;
 
-import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
-import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;
+import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
+import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
 
 public class EnergyUtils
 {
@@ -19,10 +19,10 @@ public class EnergyUtils
 	{
 		World world = player.worldObj;
 		TileEntity te = world.getBlockTileEntity(p.x, p.y, p.z);
-		if (te != null&&te instanceof IEnergyContainerWrapper)
+		if (te != null && te instanceof IEnergyContainerWrapper)
 		{
 			EnergyContainer c = ((IEnergyContainerWrapper)te).getEnergyContainer();
-			if(c!=null)
+			if (c != null)
 			{
 				c.setEnergyLevel(p.energyLevel);
 				c.setEnergyCapacity(p.capacity);
@@ -31,15 +31,15 @@ public class EnergyUtils
 			}
 		}
 	}
-	
+
 	public static void syncDataFromePacket(PacketEnergyConsumerUpdate p, EntityPlayer player)
 	{
 		World world = player.worldObj;
 		TileEntity te = world.getBlockTileEntity(p.x, p.y, p.z);
-		if(te!=null&&te instanceof IEnergyConsumerWrapper)
+		if (te != null && te instanceof IEnergyConsumerWrapper)
 		{
 			EnergyConsumer c = ((IEnergyConsumerWrapper)te).getEnergyConsumer();
-			if(c!=null)
+			if (c != null)
 			{
 				c.setMaxEnergyRequest(p.maxRequest);
 				c.requestEnergy(p.energyLevel);

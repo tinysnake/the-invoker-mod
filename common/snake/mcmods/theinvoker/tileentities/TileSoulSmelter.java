@@ -31,7 +31,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	public static final int MAX_ENERGY_CAPACITY = 200;
 
 	public static final int ENERGY_RANGE = 8;
-	
+
 	public static final int MAX_ENERGY_REQUEST = 5;
 
 	public TileSoulSmelter()
@@ -58,7 +58,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public float getBoilProgress()
 	{
-		return (lastBoilTicks - boilTicksLeft) / (float) lastBoilTicks;
+		return (lastBoilTicks - boilTicksLeft) / (float)lastBoilTicks;
 	}
 
 	private void setBoilTicks(int ticks)
@@ -89,8 +89,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public boolean getIsAbleToWork()
 	{
-		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) &&
-		        lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID) && energyContainer.getEnergyCapacity() > energyContainer.getEnergyLevel());
+		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) && lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID) && energyContainer.getEnergyCapacity() > energyContainer.getEnergyLevel());
 	}
 
 	public boolean getHasWork()
@@ -379,9 +378,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public void sendUpdatePacket()
 	{
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128, worldObj.provider.dimensionId,
-		        PacketTypeHandler.serialize(new PacketSoulSmelterUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(),
-		                getOwnerName(), this.hasWork, lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0)));
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128, worldObj.provider.dimensionId, PacketTypeHandler.serialize(new PacketSoulSmelterUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(), getOwnerName(), this.hasWork, lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0)));
 	}
 
 	private static final String TAG_LAVA_TANK = "lavaTank";

@@ -8,22 +8,17 @@ import snake.mcmods.theinvoker.tileentities.TileTotem;
 
 public class TotemMisc
 {
-	public static final int[] TOTEM_EFFECTIVE_RANGES =
-	{
-	        // ghost
-	        0,
-	        // soul_attractive
-	        8,
-	        // soul
-	        16,
-	        // runes
-	        8,
-	        8,
-	        8,
-	        8,
-	        // massacre
-	        4
-	};
+	public static final int[] TOTEM_EFFECTIVE_RANGES = {
+			// ghost
+	0,
+			// soul_attractive
+	8,
+			// soul
+	16,
+			// runes
+	8, 8, 8, 8,
+			// massacre
+	4 };
 
 	public static final int DROP_CHANCE_OF_FIRE_ESSENCE = 5;
 	public static final int DROP_CHANGE_OF_DARK_ESSENCE = 10;

@@ -12,7 +12,7 @@ public class MiscEventCenter
 	@ForgeSubscribe
 	public void handlePlayerJoinWorldEvent(EntityJoinWorldEvent e)
 	{
-		if(e.world.isRemote)
+		if (e.world.isRemote)
 		{
 			EntityPlayer p = Minecraft.getMinecraft().thePlayer;
 			if (e.entity == p)

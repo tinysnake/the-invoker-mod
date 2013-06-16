@@ -18,7 +18,7 @@ public class SoulSmelterMisc
 	private static final int SOUL_SHARD_LAVA_COST = 20;
 
 	private static final HashMap<Integer, Integer> boilRegistry = new HashMap<Integer, Integer>();
-	
+
 	public static final int ENERGY_PER_ITEM = 20;
 
 	public static void registerRecipe(int itemID, int totalBoilTicks)
@@ -65,7 +65,7 @@ public class SoulSmelterMisc
 		TileEntity te = player.worldObj.getBlockTileEntity(p.x, p.y, p.z);
 		if (te != null && te instanceof TileSoulSmelter)
 		{
-			TileSoulSmelter tss = (TileSoulSmelter) te;
+			TileSoulSmelter tss = (TileSoulSmelter)te;
 			tss.setDirection(p.direction);
 			LiquidTank lt = tss.getLavaTank();
 			if (p.lavaAmount > 0)

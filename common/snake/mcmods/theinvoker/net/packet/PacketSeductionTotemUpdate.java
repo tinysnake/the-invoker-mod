@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 

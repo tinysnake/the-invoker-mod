@@ -79,8 +79,8 @@ public class BlockTotem extends Block2HeightBase
 	@Override
 	public int idDropped(int metadata, Random par2Random, int fortuneLvl)
 	{
-//		if (metadata != TotemType.GHOST.ordinal())
-//			return TIItems.totem.itemID;
+		// if (metadata != TotemType.GHOST.ordinal())
+		// return TIItems.totem.itemID;
 		return 0;
 	}
 
@@ -103,6 +103,7 @@ public class BlockTotem extends Block2HeightBase
 		// this.dropBlockAsItem(world, x, y, z, metadata, 0);
 	}
 
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
 		ItemStack is = player.getHeldItem();
@@ -112,13 +113,13 @@ public class BlockTotem extends Block2HeightBase
 			if (te == null)
 				return false;
 
-			TileTotem tt = (TileTotem) te;
+			TileTotem tt = (TileTotem)te;
 			if (tt.getIsGhostBlock() && world.getBlockId(x, y - 1, z) == this.blockID)
 			{
 				te = world.getBlockTileEntity(x, y - 1, z);
 
 				if (te != null)
-					tt = (TileTotem) te;
+					tt = (TileTotem)te;
 				else
 					return false;
 			}

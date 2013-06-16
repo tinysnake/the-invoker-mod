@@ -41,7 +41,7 @@ public class Utils
 		{
 			if (e instanceof EntityArrow)
 			{
-				return ((EntityArrow) e).shootingEntity;
+				return ((EntityArrow)e).shootingEntity;
 			}
 		}
 		return e;
@@ -51,7 +51,7 @@ public class Utils
 	{
 		if (ls == null)
 			return 0;
-		return (int) (ls.amount * scaleFactor / (float) maxAmount);
+		return (int)(ls.amount * scaleFactor / (float)maxAmount);
 	}
 
 	public static int getPlaceDirection(EntityLiving entityLiving)

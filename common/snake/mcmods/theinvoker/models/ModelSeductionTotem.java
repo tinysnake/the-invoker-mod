@@ -50,6 +50,7 @@ public class ModelSeductionTotem extends ModelBase
 		setRotation(handright, 0F, 0F, -0.6981317F);
 	}
 
+	@Override
 	public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
 	{
 		super.render(par1Entity, par2, par3, par4, par5, par6, par7);
@@ -68,6 +69,7 @@ public class ModelSeductionTotem extends ModelBase
 		model.rotateAngleZ = z;
 	}
 
+	@Override
 	public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
 	{
 		super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);

@@ -70,7 +70,6 @@ public class TileTotem extends TileTIBase
 	public AxisAlignedBB getRenderBoundingBox()
 	{
 		BlockTotem block = TIBlocks.totem;
-		return AxisAlignedBB.getAABBPool().getAABB(block.getBlockBoundsMinX() + xCoord, block.getBlockBoundsMinY() + yCoord, block.getBlockBoundsMinZ() + zCoord,
-		        block.getBlockBoundsMaxX() + xCoord, block.getBlockBoundsMaxY() + yCoord + 1, block.getBlockBoundsMaxZ() + zCoord);
+		return AxisAlignedBB.getAABBPool().getAABB(block.getBlockBoundsMinX() + xCoord, block.getBlockBoundsMinY() + yCoord, block.getBlockBoundsMinZ() + zCoord, block.getBlockBoundsMaxX() + xCoord, block.getBlockBoundsMaxY() + yCoord + 1, block.getBlockBoundsMaxZ() + zCoord);
 	}
 }

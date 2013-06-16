@@ -19,7 +19,7 @@ public class ContainerSoulSmelter extends Container
 	public ContainerSoulSmelter(InventoryPlayer player, TileSoulSmelter soulSmelter)
 	{
 		this.addSlotToContainer(new Slot(soulSmelter, 0, 32, 22));
-		
+
 		this.soulSmelter = soulSmelter;
 
 		// Add the player's inventory slots to the container
@@ -37,25 +37,25 @@ public class ContainerSoulSmelter extends Container
 			this.addSlotToContainer(new Slot(player, actionBarSlotIndex, 9 + actionBarSlotIndex * 18, 119));
 		}
 	}
-	
+
 	private TileSoulSmelter soulSmelter;
-	
+
 	@Override
 	public void detectAndSendChanges()
 	{
-	    super.detectAndSendChanges();
-	    for(Object c:crafters)
-	    {
-	    	soulSmelter.sendNetworkGUIData(this, (ICrafting)c);
-	    }
+		super.detectAndSendChanges();
+		for (Object c : crafters)
+		{
+			soulSmelter.sendNetworkGUIData(this, (ICrafting)c);
+		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int signiture, int value)
 	{
-	    super.updateProgressBar(signiture, value);
-	    soulSmelter.receiveNetworkGUIData(signiture, value);
+		super.updateProgressBar(signiture, value);
+		soulSmelter.receiveNetworkGUIData(signiture, value);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class ContainerSoulSmelter extends Container
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
 	{
 		ItemStack itemStack = null;
-		Slot slot = (Slot) inventorySlots.get(slotIndex);
+		Slot slot = (Slot)inventorySlots.get(slotIndex);
 		if (slot != null && slot.getHasStack())
 		{
 			ItemStack slotItemStack = slot.getStack();
@@ -91,7 +91,7 @@ public class ContainerSoulSmelter extends Container
 
 			if (slotItemStack.stackSize == 0)
 			{
-				slot.putStack((ItemStack) null);
+				slot.putStack((ItemStack)null);
 			}
 			else
 			{

@@ -19,7 +19,7 @@ public class SeductionTotemEventHooks
 	{
 		if (!(entity instanceof EntityLiving))
 			return;
-		EntityLiving e = (EntityLiving) entity;
+		EntityLiving e = (EntityLiving)entity;
 		for (String name : SeductionTotemMisc.SEDUCTION_AI_LIST)
 		{
 			if (name.equals(entity.getEntityName()))

@@ -60,7 +60,7 @@ public class GuiSoulSmelter extends GuiContainer
 		// fire position: 178, 50, 11,10
 		if (soulSmelter.getBoilTicksLeft() > 0)
 		{
-			int fireH = (int) (soulSmelter.getBoilProgress() * FIRE_HEIGHT);
+			int fireH = (int)(soulSmelter.getBoilProgress() * FIRE_HEIGHT);
 			this.drawTexturedModalRect(xStart + 53, yStart + 25 + fireH, 178, 50 + fireH, 12, FIRE_HEIGHT - fireH);
 		}
 
@@ -99,7 +99,7 @@ public class GuiSoulSmelter extends GuiContainer
 	}
 
 	@Override
-	@SuppressWarnings({"all"})
+	@SuppressWarnings({ "all" })
 	public void drawScreen(int mouseX, int mouseY, float pTicks)
 	{
 		super.drawScreen(mouseX, mouseY, pTicks);
@@ -111,8 +111,7 @@ public class GuiSoulSmelter extends GuiContainer
 		if (mouseX > xStart + 130 && mouseX < xStart + 148 && mouseY > yStart + 6 && mouseY < yStart + 54)
 		{
 			List arr = new ArrayList();
-			String amount = soulSmelter.getLavaTank().getLiquid() != null ?
-			        String.valueOf(soulSmelter.getLavaTank().getLiquid().amount) : "0";
+			String amount = soulSmelter.getLavaTank().getLiquid() != null ? String.valueOf(soulSmelter.getLavaTank().getLiquid().amount) : "0";
 			String capacity = String.valueOf(soulSmelter.getLavaTank().getCapacity());
 			arr.add(EnumChatFormatting.WHITE + amount + "/" + capacity);
 			drawHoveringText(arr, mouseX, mouseY, fontRenderer);

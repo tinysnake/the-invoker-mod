@@ -16,7 +16,7 @@ public class RenderTileBase extends TileEntitySpecialRenderer
 	@SuppressWarnings("incomplete-switch")
 	public void doRender(TileEntity tileentity, double x, double y, double z, float f)
 	{
-		TileTIBase tt = (TileTIBase) tileentity;
+		TileTIBase tt = (TileTIBase)tileentity;
 		if (tt.getIsGhostBlock())
 			return;
 

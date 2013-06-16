@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 
@@ -57,7 +56,7 @@ public class PacketTileEntityUpdate extends PacketTI
 	@Override
 	public void doItsThing(EntityPlayer player)
 	{
-		TheInvoker.proxy.handleTileEntityUpdate(this,player);
+		TheInvoker.proxy.handleTileEntityUpdate(this, player);
 	}
 
 }

@@ -78,8 +78,7 @@ public class BlockSeductionTotem extends Block2HeightBase
 	}
 
 	@Override
-	protected boolean shouldBreakWhenGhostBlockDestoryed(World world, int x, int y, int z,
-	        int neighborBlockID, int metadata)
+	protected boolean shouldBreakWhenGhostBlockDestoryed(World world, int x, int y, int z, int neighborBlockID, int metadata)
 	{
 		return metadata != SeductionTotemMisc.BROKEN_METADATA;
 	}
@@ -94,13 +93,13 @@ public class BlockSeductionTotem extends Block2HeightBase
 			if (te == null)
 				return false;
 
-			TileSeductionTotem tst = (TileSeductionTotem) te;
+			TileSeductionTotem tst = (TileSeductionTotem)te;
 			if (tst.getIsGhostBlock() && world.getBlockId(x, y - 1, z) == this.blockID)
 			{
 				te = world.getBlockTileEntity(x, y - 1, z);
 
 				if (te != null)
-					tst = (TileSeductionTotem) te;
+					tst = (TileSeductionTotem)te;
 				else
 					return false;
 			}

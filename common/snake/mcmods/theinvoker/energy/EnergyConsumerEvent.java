@@ -19,24 +19,26 @@ public class EnergyConsumerEvent extends Event
 	public int z;
 	public World world;
 	public EnergyConsumer consumer;
-	
+
 	public static class EnergyRequestedEvent extends EnergyConsumerEvent
 	{
 		public EnergyRequestedEvent(World w, EnergyConsumer c, int x, int y, int z, int level)
-        {
-	        super(w, c, x, y, z);
-	        energyLevel=level;
-        }
+		{
+			super(w, c, x, y, z);
+			energyLevel = level;
+		}
+
 		public final int energyLevel;
 	}
-	
+
 	public static class EnergyAcceptedEvent extends EnergyConsumerEvent
 	{
 		public EnergyAcceptedEvent(World w, EnergyConsumer c, int x, int y, int z, int level)
-        {
-	        super(w, c, x, y, z);
-	        energyLevel=level;
-        }
+		{
+			super(w, c, x, y, z);
+			energyLevel = level;
+		}
+
 		public final int energyLevel;
 	}
 }

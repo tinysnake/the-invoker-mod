@@ -73,11 +73,9 @@ public class TileSeductionTotem extends TileTIBase
 			setAge(SeductionTotemMisc.getAgeFromDamageValue(this.getBlockMetadata()));
 		if (!getIsBroken())
 			_age++;
-		if (getIsBroken()
-		        && this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != SeductionTotemMisc.BROKEN_METADATA)
+		if (getIsBroken() && this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) != SeductionTotemMisc.BROKEN_METADATA)
 		{
-			this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord,
-			        SeductionTotemMisc.BROKEN_METADATA, 4);
+			this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, SeductionTotemMisc.BROKEN_METADATA, 4);
 			int blockID = this.worldObj.getBlockId(xCoord, yCoord + 1, zCoord);
 			if (blockID == TIBlocks.seductionTotem.blockID)
 			{
@@ -94,8 +92,7 @@ public class TileSeductionTotem extends TileTIBase
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		PacketSeductionTotemUpdate p = new PacketSeductionTotemUpdate(xCoord, yCoord, zCoord, this
-		        .getDirection().ordinal(), getOwnerName(), getAge());
+		PacketSeductionTotemUpdate p = new PacketSeductionTotemUpdate(xCoord, yCoord, zCoord, this.getDirection().ordinal(), getOwnerName(), getAge());
 		return PacketTypeHandler.serialize(p);
 	}
 
@@ -118,10 +115,7 @@ public class TileSeductionTotem extends TileTIBase
 	public AxisAlignedBB getRenderBoundingBox()
 	{
 		BlockTotem block = TIBlocks.totem;
-		return AxisAlignedBB.getAABBPool().getAABB(block.getBlockBoundsMinX() + xCoord,
-		        block.getBlockBoundsMinY() + yCoord, block.getBlockBoundsMinZ() + zCoord,
-		        block.getBlockBoundsMaxX() + xCoord, block.getBlockBoundsMaxY() + yCoord + 1,
-		        block.getBlockBoundsMaxZ() + zCoord);
+		return AxisAlignedBB.getAABBPool().getAABB(block.getBlockBoundsMinX() + xCoord, block.getBlockBoundsMinY() + yCoord, block.getBlockBoundsMinZ() + zCoord, block.getBlockBoundsMaxX() + xCoord, block.getBlockBoundsMaxY() + yCoord + 1, block.getBlockBoundsMaxZ() + zCoord);
 	}
 
 	@Override

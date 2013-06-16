@@ -15,14 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemSoulRune extends Item
 {
-	public static final String[] NAMES =
-	{
-	        TIName.ITEM_SOUL_RUNE_NEUTRAL,
-	        TIName.ITEM_SOUL_RUNE_ICE,
-	        TIName.ITEM_SOUL_RUNE_FIRE,
-	        TIName.ITEM_SOUL_RUNE_WIND,
-	        TIName.ITEM_SOUL_RUNE_DARKNESS
-	};
+	public static final String[] NAMES = { TIName.ITEM_SOUL_RUNE_NEUTRAL, TIName.ITEM_SOUL_RUNE_ICE, TIName.ITEM_SOUL_RUNE_FIRE, TIName.ITEM_SOUL_RUNE_WIND, TIName.ITEM_SOUL_RUNE_DARKNESS };
 
 	public ItemSoulRune(int id)
 	{

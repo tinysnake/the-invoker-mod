@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 
 public class PacketTI

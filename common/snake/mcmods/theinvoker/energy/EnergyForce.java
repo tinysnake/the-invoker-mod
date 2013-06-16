@@ -1,8 +1,8 @@
 package snake.mcmods.theinvoker.energy;
 
+import net.minecraft.util.StatCollector;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIName;
-import net.minecraft.util.StatCollector;
 
 public class EnergyForce
 {

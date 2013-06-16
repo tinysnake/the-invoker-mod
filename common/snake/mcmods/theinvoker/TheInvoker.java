@@ -23,8 +23,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod(modid = TIGlobal.MOD_ID, name = TIGlobal.MOD_NAME, version = TIGlobal.VERSION)
-@NetworkMod(serverSideRequired = true, clientSideRequired = false, channels =
-{ TIGlobal.CHANNEL }, packetHandler = PacketHandler.class)
+@NetworkMod(serverSideRequired = true, clientSideRequired = false, channels = { TIGlobal.CHANNEL }, packetHandler = PacketHandler.class)
 public class TheInvoker
 {
 
@@ -48,7 +47,7 @@ public class TheInvoker
 		TIBlocks.init();
 		TIItems.init();
 		EnergyForce.init();
-		
+
 		NetworkRegistry.instance().registerGuiHandler(TheInvoker.instance, new TIGuiHanlder());
 
 		proxy.registerTileEntities();
@@ -60,7 +59,7 @@ public class TheInvoker
 		proxy.registerEventHooks();
 
 		Lang.loadLocalizedFiles();
-		
+
 		SoulSmelterMisc.initDefaultRecipies();
 	}
 

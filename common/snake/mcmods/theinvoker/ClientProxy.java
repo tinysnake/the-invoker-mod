@@ -6,8 +6,8 @@ import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
-import snake.mcmods.theinvoker.renderer.RenderSoulStoneMonitor;
 import snake.mcmods.theinvoker.renderer.RenderSeductionTotem;
+import snake.mcmods.theinvoker.renderer.RenderSoulStoneMonitor;
 import snake.mcmods.theinvoker.renderer.RenderTotem;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
@@ -25,21 +25,21 @@ public class ClientProxy extends CommonProxy
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileTotem.class, new RenderTotem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSeductionTotem.class, new RenderSeductionTotem());
-		
+
 		RenderingRegistry.registerEntityRenderingHandler(EntitySoulStoneMonitor.class, new RenderSoulStoneMonitor());
 	}
-	
+
 	@Override
 	public void registerTickHandlers()
 	{
-	    super.registerTickHandlers();
+		super.registerTickHandlers();
 	}
 
 	@Override
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)
 	{
-		World world =player.worldObj;
-		TileTIBase tt = (TileTIBase) world.getBlockTileEntity(p.x, p.y, p.z);
+		World world = player.worldObj;
+		TileTIBase tt = (TileTIBase)world.getBlockTileEntity(p.x, p.y, p.z);
 		if (tt != null)
 		{
 			tt.xCoord = p.x;

@@ -15,11 +15,7 @@ import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 
 public enum PacketTypeHandler
 {
-	TILE_TI(PacketTileEntityUpdate.class),
-	SEDUCTION_TOTEM(PacketSeductionTotemUpdate.class),
-	ENERGY_CONTAINER(PacketEnergyContainerUpdate.class), 
-	ENERGY_CONSUMER(PacketEnergyConsumerUpdate.class), 
-	SOUL_SMELTER_UPDATE(PacketSoulSmelterUpdate.class);
+	TILE_TI(PacketTileEntityUpdate.class), SEDUCTION_TOTEM(PacketSeductionTotemUpdate.class), ENERGY_CONTAINER(PacketEnergyContainerUpdate.class), ENERGY_CONSUMER(PacketEnergyConsumerUpdate.class), SOUL_SMELTER_UPDATE(PacketSoulSmelterUpdate.class);
 
 	private Class<? extends PacketTI> clazz;
 

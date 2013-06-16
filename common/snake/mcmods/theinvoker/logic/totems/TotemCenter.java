@@ -28,7 +28,7 @@ public class TotemCenter
 
 	public void registerTotem(TileTotem tt)
 	{
-		if (tt != null &&!tt.worldObj.isRemote&& tt.getBlockMetadata() > 0 && totems.indexOf(tt) < 0)
+		if (tt != null && !tt.worldObj.isRemote && tt.getBlockMetadata() > 0 && totems.indexOf(tt) < 0)
 		{
 			totems.add(tt);
 		}
@@ -52,11 +52,7 @@ public class TotemCenter
 		{
 			event.setCanceled(true);
 			e.experienceValue = 0;
-			TotemMisc.dropItems(
-			        e,
-			        tt,
-			        tt.getOwnerName().equals(
-			                Utils.getActualDamageSource(event.source).getEntityName()));
+			TotemMisc.dropItems(e, tt, tt.getOwnerName().equals(Utils.getActualDamageSource(event.source).getEntityName()));
 			entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 25));
 			return true;
 		}
@@ -70,8 +66,7 @@ public class TotemCenter
 		{
 			if (tt.isEntityInRange(e))
 			{
-				if (ltt != null && tt.getBlockMetadata() > ltt.getBlockMetadata()
-				        && getTotemInTheSameDimension(e, tt))
+				if (ltt != null && tt.getBlockMetadata() > ltt.getBlockMetadata() && getTotemInTheSameDimension(e, tt))
 				{
 					ltt = tt;
 				}
@@ -96,18 +91,15 @@ public class TotemCenter
 		{
 			if (tt1.equals(tt))
 				continue;
-			double distance = Utils.getDistance(tt.xCoord, tt.yCoord, tt.zCoord, tt1.xCoord,
-			        tt1.yCoord, tt1.zCoord);
+			double distance = Utils.getDistance(tt.xCoord, tt.yCoord, tt.zCoord, tt1.xCoord, tt1.yCoord, tt1.zCoord);
 			if (distance / 16F <= range)
 			{
 				if (tt1.getBlockMetadata() >= tt.getBlockMetadata())
 				{
 					if (tt1.getBlockMetadata() == tt.getBlockMetadata())
 					{
-						double thisSum = tt.xCoord * tt.xCoord + tt.yCoord * tt.yCoord + tt.zCoord
-						        * tt.zCoord;
-						double thatSum = tt1.xCoord * tt1.xCoord + tt1.yCoord * tt1.yCoord
-						        + tt1.zCoord * tt1.zCoord;
+						double thisSum = tt.xCoord * tt.xCoord + tt.yCoord * tt.yCoord + tt.zCoord * tt.zCoord;
+						double thatSum = tt1.xCoord * tt1.xCoord + tt1.yCoord * tt1.yCoord + tt1.zCoord * tt1.zCoord;
 						if (thisSum < thatSum)
 							return true;
 					}

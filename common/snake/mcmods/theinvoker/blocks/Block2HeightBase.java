@@ -27,16 +27,13 @@ public abstract class Block2HeightBase extends BlockContainer
 	@Override
 	public boolean canPlaceBlockAt(World world, int x, int y, int z)
 	{
-		return y >= 255 ? false : world.doesBlockHaveSolidTopSurface(x, y - 1, z)
-		        && super.canPlaceBlockAt(world, x, y, z)
-		        && super.canPlaceBlockAt(world, x, y + 1, z);
+		return y >= 255 ? false : world.doesBlockHaveSolidTopSurface(x, y - 1, z) && super.canPlaceBlockAt(world, x, y, z) && super.canPlaceBlockAt(world, x, y + 1, z);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving,
-	        ItemStack itemStack)
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
 	{
-		TileTIBase te = (TileTIBase) world.getBlockTileEntity(x, y, z);
+		TileTIBase te = (TileTIBase)world.getBlockTileEntity(x, y, z);
 		te.setOwnerName(entityLiving.getEntityName());
 		te.setDirection(Utils.getPlaceDirection(entityLiving));
 	}
@@ -58,9 +55,7 @@ public abstract class Block2HeightBase extends BlockContainer
 		{
 			boolean drop = false;
 			// is the actual block, look for the ghost block above it.
-			if (shouldBreakWhenGhostBlockDestoryed(world, x, y, z, neighborBlockID, metadata)
-			        && world.getBlockId(x, y + 1, z) != this.blockID
-			        && neighborBlockID == this.blockID && !world.isRemote)
+			if (shouldBreakWhenGhostBlockDestoryed(world, x, y, z, neighborBlockID, metadata) && world.getBlockId(x, y + 1, z) != this.blockID && neighborBlockID == this.blockID && !world.isRemote)
 			{
 				drop = true;
 				dropItem(world, x, y, z, neighborBlockID, metadata);
@@ -81,12 +76,10 @@ public abstract class Block2HeightBase extends BlockContainer
 		}
 	}
 
-	protected boolean shouldBreakWhenGhostBlockDestoryed(World world, int x, int y, int z,
-	        int neighborBlockID, int metadata)
+	protected boolean shouldBreakWhenGhostBlockDestoryed(World world, int x, int y, int z, int neighborBlockID, int metadata)
 	{
 		return true;
 	}
 
-	protected abstract void dropItem(World world, int x, int y, int z, int neighborBlockID,
-	        int metadata);
+	protected abstract void dropItem(World world, int x, int y, int z, int neighborBlockID, int metadata);
 }

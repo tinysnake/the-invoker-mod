@@ -24,15 +24,13 @@ public class ItemSeductionTotem extends ItemTIBase
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x,
-	        int y, int z, int side, float hitX, float hitY, float hitZ)
+	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 	{
 		ForgeDirection fd = ForgeDirection.getOrientation(side);
 		int vx = x + fd.offsetX;
 		int vy = side == 0 ? y + fd.offsetY - 1 : y + fd.offsetY;
 		int vz = z + fd.offsetZ;
-		if (world.canPlaceEntityOnSide(TIBlockID.SEDUCTION_TOTEM, vx, vy, vz, true, side, entityPlayer,
-		        itemStack))
+		if (world.canPlaceEntityOnSide(TIBlockID.SEDUCTION_TOTEM, vx, vy, vz, true, side, entityPlayer, itemStack))
 		{
 			int metadata = itemStack.getItemDamage();
 			boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.seductionTotem.blockID, SeductionTotemMisc.NORMAL_METADATA, 2);
@@ -40,7 +38,7 @@ public class ItemSeductionTotem extends ItemTIBase
 			{
 				world.setBlock(vx, vy + 1, vz, TIBlocks.seductionTotem.blockID, 0, 2);
 
-				TileSeductionTotem t = (TileSeductionTotem) world.getBlockTileEntity(vx, vy, vz);
+				TileSeductionTotem t = (TileSeductionTotem)world.getBlockTileEntity(vx, vy, vz);
 				if (t != null)
 				{
 					TIBlocks.totem.onBlockPlacedBy(world, vx, vy, vz, entityPlayer, itemStack);

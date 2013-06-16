@@ -21,8 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTotem extends Item
 {
-	public static final String[] NAMES =
-	{ "", TIName.ITEM_TOTEM_SOUL, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE, TIName.ITEM_TOTEM_RUNE_ICE, TIName.ITEM_TOTEM_RUNE_FIRE, TIName.ITEM_TOTEM_RUNE_WIND, TIName.ITEM_TOTEM_RUNE_DARKNESS, TIName.ITEM_TOTEM_MASSACRE };
+	public static final String[] NAMES = { "", TIName.ITEM_TOTEM_SOUL, TIName.ITEM_TOTEM_SOUL_ATTRACTIVE, TIName.ITEM_TOTEM_RUNE_ICE, TIName.ITEM_TOTEM_RUNE_FIRE, TIName.ITEM_TOTEM_RUNE_WIND, TIName.ITEM_TOTEM_RUNE_DARKNESS, TIName.ITEM_TOTEM_MASSACRE };
 
 	public ItemTotem(int id)
 	{
@@ -66,8 +65,7 @@ public class ItemTotem extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	@SuppressWarnings(
-	{ "all" })
+	@SuppressWarnings({ "all" })
 	public void getSubItems(int itemID, CreativeTabs tab, List list)
 	{
 		for (int i = 1; i < NAMES.length; i++)
@@ -77,15 +75,13 @@ public class ItemTotem extends Item
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x,
-	        int y, int z, int side, float hitX, float hitY, float hitZ)
+	public boolean onItemUse(ItemStack itemStack, EntityPlayer entityPlayer, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 	{
 		ForgeDirection fd = ForgeDirection.getOrientation(side);
 		int vx = x + fd.offsetX;
 		int vy = side == 0 ? y + fd.offsetY - 1 : y + fd.offsetY;
 		int vz = z + fd.offsetZ;
-		if (world.canPlaceEntityOnSide(TIBlockID.TOTEM, vx, vy, vz, true, side, entityPlayer,
-		        itemStack))
+		if (world.canPlaceEntityOnSide(TIBlockID.TOTEM, vx, vy, vz, true, side, entityPlayer, itemStack))
 		{
 			boolean isSet = world.setBlock(vx, vy, vz, TIBlocks.totem.blockID, itemStack.getItemDamage(), 2);
 			if (isSet)
