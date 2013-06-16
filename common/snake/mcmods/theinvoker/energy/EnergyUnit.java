@@ -23,7 +23,6 @@ public abstract class EnergyUnit
 	protected int maxEnergyRequest;
 	protected boolean isAvailable;
 	protected boolean isRegistered;
-	protected int maxEnergyRequst;
 
 	public int getEnergyID()
 	{
@@ -62,12 +61,12 @@ public abstract class EnergyUnit
 
 	public int getMaxEnergyRequest()
 	{
-		return maxEnergyRequst;
+		return maxEnergyRequest;
 	}
 
 	public void setMaxEnergyRequest(int val)
 	{
-		maxEnergyRequst = val;
+		maxEnergyRequest = val;
 	}
 
 	public TileEntity getTileEntity()
