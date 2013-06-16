@@ -3,63 +3,21 @@ package snake.mcmods.theinvoker.energy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class EnergyConsumer
+public class EnergyConsumer extends EnergyUnit
 {
     public EnergyConsumer(TileEntity te, int energyConsumerID)
     {
-        if (te == null)
-            throw new IllegalArgumentException("you dare to create a EnergyConsumer without a valid TileEntity?");
-        this.te = te;
-        if (EnergyCenter.INSTANCE.getEnergyForce(energyConsumerID) != null)
-            this.energyID = energyConsumerID;
-        else
-            throw new IllegalArgumentException("you have created a EnergyConsumer without a valid Energy ID");
-        isAvailable = true;
+        super(te, energyConsumerID);
     }
 
-    protected int maxEnergyRequest;
     protected int energyRequesting;
-    private TileEntity te;
-    private int energyID;
-    private boolean isAvailable;
-    private boolean isRegistered;
-
-    public boolean getIsRegister()
-    {
-        return isRegistered;
-    }
-
-    public int getConsumerEnergyID()
-    {
-        return energyID;
-    }
-
-    public int getMaxEnergyRequest()
-    {
-        return maxEnergyRequest;
-    }
-
-    public void setMaxEnergyRequest(int val)
-    {
-        maxEnergyRequest = val;
-    }
-
-    public boolean getIsAvailable()
-    {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(boolean val)
-    {
-        isAvailable = val;
-    }
 
     public void requestEnergy(int energy)
     {
         energyRequesting = energy;
         if (energy > 0)
         {
-            EnergyUtils.fireEvent(new EnergyConsumerEvent.EnergyRequestedEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, energy));
+            EnergyUtils.fireEvent(new EnergyConsumerEvent.EnergyRequestedEvent(getTileEntity().worldObj, this, getTileEntity().xCoord, getTileEntity().yCoord, getTileEntity().zCoord, energy));
         }
     }
 
@@ -69,7 +27,7 @@ public class EnergyConsumer
         {
             int accepted = energyRequesting - energyFlow < 0 ? energyRequesting : energyRequesting - energyFlow;
             energyRequesting -= accepted;
-            EnergyUtils.fireEvent(new EnergyConsumerEvent.EnergyAcceptedEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, accepted));
+            EnergyUtils.fireEvent(new EnergyConsumerEvent.EnergyAcceptedEvent(getTileEntity().worldObj, this, getTileEntity().xCoord, getTileEntity().yCoord, getTileEntity().zCoord, accepted));
         }
     }
 
@@ -83,39 +41,40 @@ public class EnergyConsumer
         return energyRequesting > 0;
     }
 
-    public TileEntity getTileEntity()
-    {
-        return te;
-    }
-
+    @Override
     public void register()
     {
-        if (!isRegistered && this.te.worldObj != null && !this.te.worldObj.isRemote)
+        if (!isRegistered && this.getTileEntity().worldObj != null && !this.getTileEntity().worldObj.isRemote)
             isRegistered = EnergyCenter.INSTANCE.registerConsumer(this);
     }
 
+    @Override
     public void destroy()
     {
         EnergyCenter.INSTANCE.removeConsumer(this);
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setInteger("energyId", getConsumerEnergyID());
-        nbt.setInteger("maxRequest", getMaxEnergyRequest());
-        nbt.setInteger("energyRequesting", getEnergyIsRequesting());
-        nbt.setBoolean("isAvailable", getIsAvailable());
+        nbt = super.writeToNBT(nbt);
+        nbt.setInteger(TAG_ENERGY_REQUESTING, getEnergyIsRequesting());
+        return nbt;
     }
 
     public static EnergyConsumer readFromNBT(NBTTagCompound nbt, TileEntity te)
     {
         EnergyConsumer ec = new EnergyConsumer(te, nbt.getInteger("energyId"));
-        if (nbt.hasKey("maxRequest"))
-            ec.setMaxEnergyRequest(nbt.getInteger("maxRequest"));
-        if (nbt.hasKey("energyRequesting"))
-            ec.requestEnergy(nbt.getInteger("energyRequesting"));
-        if (nbt.hasKey("isAvailable"))
-            ec.setIsAvailable(nbt.getBoolean("isAvailable"));
+        if (nbt.hasKey(TAG_RANGE))
+            ec.setEffectiveRange(nbt.getInteger(TAG_RANGE));
+        if (nbt.hasKey(TAG_MAX_REQUEST))
+            ec.setMaxEnergyRequest(nbt.getInteger(TAG_MAX_REQUEST));
+        if (nbt.hasKey(TAG_ENERGY_REQUESTING))
+            ec.requestEnergy(nbt.getInteger(TAG_ENERGY_REQUESTING));
+        if (nbt.hasKey(TAG_IS_AVAILABLE))
+            ec.setIsAvailable(nbt.getBoolean(TAG_IS_AVAILABLE));
         return ec;
     }
+
+    private static final String TAG_ENERGY_REQUESTING = "energyRequesting";
 }

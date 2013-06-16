@@ -3,45 +3,17 @@ package snake.mcmods.theinvoker.energy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class EnergyContainer
+public class EnergyContainer extends EnergyUnit
 {
     public EnergyContainer(TileEntity te, boolean isEnergyProvider, int containerEnergyID)
     {
-        if (te == null)
-            throw new IllegalArgumentException("you dare to create a EnergyContainer without a valid TileEntity?");
-        this.te = te;
+        super(te, containerEnergyID);
         this.isEnergyProvider = isEnergyProvider;
-        if (EnergyCenter.INSTANCE.getEnergyForce(containerEnergyID) != null)
-            this.energyID = containerEnergyID;
-        else
-            throw new IllegalArgumentException("you have created a EnergyContainer without a valid Energy ID");
-        isAvailable=true;
     }
 
-    protected int effectiveRange;
-    protected int maxEnergyRequst;
     protected int capacity;
     protected boolean isEnergyProvider;
     protected int energyLevel;
-    private TileEntity te;
-    private int energyID;
-    private boolean isAvailable;
-    private boolean isRegistered;
-
-    public boolean getIsRegistered()
-    {
-        return isRegistered;
-    }
-
-    public void setEffectiveRange(int range)
-    {
-        effectiveRange = range;
-    }
-
-    public int getEffectiveRange()
-    {
-        return effectiveRange;
-    }
 
     public int gain(int energyFlow, boolean doGain)
     {
@@ -53,7 +25,7 @@ public class EnergyContainer
         if (doGain)
         {
             energyLevel += tobeGain;
-            EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyGainedEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, tobeGain));
+            EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyGainedEvent(getTileEntity().worldObj, this, getTileEntity().xCoord, getTileEntity().yCoord, getTileEntity().zCoord, tobeGain));
         }
         return tobeGain;
     }
@@ -68,7 +40,7 @@ public class EnergyContainer
         if (doTake)
         {
             energyLevel -= tobeTake;
-            EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyTookEvent(te.worldObj, this, te.xCoord, te.yCoord, te.zCoord, tobeTake));
+            EnergyUtils.fireEvent(new EnergyContainerEvent.EnergyTookEvent(getTileEntity().worldObj, this, getTileEntity().xCoord, getTileEntity().yCoord, getTileEntity().zCoord, tobeTake));
         }
         return tobeTake;
     }
@@ -95,47 +67,19 @@ public class EnergyContainer
         energyLevel = level;
     }
 
-    public int getMaxEnergyRequest()
-    {
-        return maxEnergyRequst;
-    }
-
-    public void setMaxEnergyRequest(int val)
-    {
-        maxEnergyRequst = val;
-    }
-
-    public boolean getIsAvailable()
-    {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(boolean val)
-    {
-        isAvailable = val;
-    }
-
     public boolean getIsEnergyProvider()
     {
         return isEnergyProvider;
     }
 
-    public TileEntity getTileEntity()
-    {
-        return te;
-    }
-
-    public int getContainerEnergyID()
-    {
-        return energyID;
-    }
-
+    @Override
     public void register()
     {
-        if (!isRegistered&&this.te.worldObj!=null&&!this.te.worldObj.isRemote)
+        if (!isRegistered && this.getTileEntity().worldObj != null && !this.getTileEntity().worldObj.isRemote)
             isRegistered = EnergyCenter.INSTANCE.registerContainer(this);
     }
 
+    @Override
     public void destroy()
     {
         EnergyCenter.INSTANCE.removeContainer(this);
@@ -143,13 +87,10 @@ public class EnergyContainer
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setInteger(TAG_RANGE, getEffectiveRange());
-        nbt.setInteger(TAG_MAX_REQUEST, getMaxEnergyRequest());
-        nbt.setInteger(TAG_CAPACITY, getEnergyCapacity());
+        nbt = super.writeToNBT(nbt);
         nbt.setInteger(TAG_ENERGY_LEVEL, getEnergyLevel());
-        nbt.setInteger(TAG_ENERGY_ID, getContainerEnergyID());
+        nbt.setInteger(TAG_CAPACITY, getEnergyCapacity());
         nbt.setBoolean(TAG_IS_PROVIDER, getIsEnergyProvider());
-        nbt.setBoolean(TAG_IS_AVAILABLE, getIsAvailable());
         return nbt;
     }
 
@@ -169,11 +110,7 @@ public class EnergyContainer
         return c;
     }
     
-    private static final String TAG_RANGE = "range";
-    private static final String TAG_MAX_REQUEST = "maxRequest";
     private static final String TAG_CAPACITY = "capacity";
     private static final String TAG_ENERGY_LEVEL = "energyLevel";
-    private static final String TAG_ENERGY_ID = "energyId";
     private static final String TAG_IS_PROVIDER = "isProvider";
-    private static final String TAG_IS_AVAILABLE = "isAvailable";
 }
