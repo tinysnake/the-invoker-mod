@@ -28,8 +28,7 @@ public class EnergyCenter
 
 	public boolean registerContainer(EnergyContainer energyContainer)
 	{
-		if (energyContainer != null && energyContainer.getTileEntity() != null && energyContainer.getTileEntity().worldObj != null &&
-		        !energyContainer.getTileEntity().worldObj.isRemote && containerNodes.indexOf(energyContainer) < 0)
+		if (energyContainer != null && energyContainer.getTileEntity() != null && containerNodes.indexOf(energyContainer) < 0)
 		{
 			containerNodes.add(energyContainer);
 			return true;
@@ -46,8 +45,7 @@ public class EnergyCenter
 
 	public boolean registerConsumer(EnergyConsumer consumer)
 	{
-		if (consumer != null && consumer.getTileEntity() != null && consumer.getTileEntity().worldObj != null &&
-		        !consumer.getTileEntity().worldObj.isRemote && consumerNodes.indexOf(consumer) < 0)
+		if (consumer != null && consumer.getTileEntity() != null && consumerNodes.indexOf(consumer) < 0)
 		{
 			consumerNodes.add(consumer);
 			return true;
@@ -146,7 +144,7 @@ public class EnergyCenter
 			if (te.worldObj.provider.dimensionId != c.getTileEntity().worldObj.provider.dimensionId)
 				continue;
 			double distance = Utils.getDistanceBetweenTiles(te, c.getTileEntity());
-			if (distance < c.getEffectiveRange() && lastDistance > distance && c.getEnergyLevel() > 0)
+			if (distance < c.getEffectiveRange() * c.getEffectiveRange() && lastDistance > distance && c.getEnergyLevel() > 0)
 			{
 				lastDistance = distance;
 				lastContainer = c;

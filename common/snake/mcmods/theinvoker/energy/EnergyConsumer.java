@@ -90,7 +90,8 @@ public class EnergyConsumer
 
     public void register()
     {
-        isRegistered = EnergyCenter.INSTANCE.registerConsumer(this);
+        if (!isRegistered && this.te.worldObj != null && !this.te.worldObj.isRemote)
+            isRegistered = EnergyCenter.INSTANCE.registerConsumer(this);
     }
 
     public void destroy()

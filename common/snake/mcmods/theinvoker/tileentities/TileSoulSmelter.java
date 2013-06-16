@@ -28,9 +28,11 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 {
 	public static final int MAX_LIQUID = LiquidContainerRegistry.BUCKET_VOLUME * 3;
 
-	public static final int MAX_ENERGY_CAPACITY = 300;
+	public static final int MAX_ENERGY_CAPACITY = 200;
 
 	public static final int ENERGY_RANGE = 8;
+	
+	public static final int MAX_ENERGY_REQUEST = 5;
 
 	public TileSoulSmelter()
 	{
@@ -117,7 +119,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 				if (processingItemID > 0)
 				{
 					this.drain(0, SoulSmelterMisc.getLavaBurnAmount(processingItemID), true);
-					energyContainer.gain(5, true);
+					energyContainer.gain(SoulSmelterMisc.ENERGY_PER_ITEM, true);
 				}
 				processingItemID = 0;
 				hasWork = getIsAbleToWork();
@@ -152,6 +154,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 			energyContainer = new EnergyContainer(this, true, TIItems.soulShard.itemID);
 			energyContainer.setEffectiveRange(ENERGY_RANGE);
 			energyContainer.setEnergyCapacity(MAX_ENERGY_CAPACITY);
+			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST);
 		}
 		if (!energyContainer.getIsRegistered())
 		{

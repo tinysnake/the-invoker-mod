@@ -132,7 +132,7 @@ public class EnergyContainer
 
     public void register()
     {
-        if (!isRegistered)
+        if (!isRegistered&&this.te.worldObj!=null&&!this.te.worldObj.isRemote)
             isRegistered = EnergyCenter.INSTANCE.registerContainer(this);
     }
 
@@ -143,29 +143,37 @@ public class EnergyContainer
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setInteger("range", getEffectiveRange());
-        nbt.setInteger("maxRequest", getMaxEnergyRequest());
-        nbt.setInteger("capacity", getEnergyCapacity());
-        nbt.setInteger("energyLevel", getEnergyLevel());
-        nbt.setInteger("energyId", getContainerEnergyID());
-        nbt.setBoolean("isProvider", getIsEnergyProvider());
-        nbt.setBoolean("isAvailable", getIsAvailable());
+        nbt.setInteger(TAG_RANGE, getEffectiveRange());
+        nbt.setInteger(TAG_MAX_REQUEST, getMaxEnergyRequest());
+        nbt.setInteger(TAG_CAPACITY, getEnergyCapacity());
+        nbt.setInteger(TAG_ENERGY_LEVEL, getEnergyLevel());
+        nbt.setInteger(TAG_ENERGY_ID, getContainerEnergyID());
+        nbt.setBoolean(TAG_IS_PROVIDER, getIsEnergyProvider());
+        nbt.setBoolean(TAG_IS_AVAILABLE, getIsAvailable());
         return nbt;
     }
 
     public static EnergyContainer readFromNBT(NBTTagCompound nbt, TileEntity te)
     {
-        EnergyContainer c = new EnergyContainer(te, nbt.getBoolean("isProvider"), nbt.getInteger("energyId"));
-        if (nbt.hasKey("range"))
-            c.setEffectiveRange(nbt.getInteger("range"));
-        if (nbt.hasKey("maxReuest"))
-            c.setMaxEnergyRequest(nbt.getInteger("maxReuest"));
-        if (nbt.hasKey("capacity"))
-            c.setEnergyCapacity(nbt.getInteger("capacity"));
-        if (nbt.hasKey("energyLevel"))
-            c.setEnergyLevel(nbt.getInteger("energyLevel"));
-        if (nbt.hasKey("isAvailable"))
-            c.setIsAvailable(nbt.getBoolean("isAvailable"));
+        EnergyContainer c = new EnergyContainer(te, nbt.getBoolean(TAG_IS_PROVIDER), nbt.getInteger(TAG_ENERGY_ID));
+        if (nbt.hasKey(TAG_RANGE))
+            c.setEffectiveRange(nbt.getInteger(TAG_RANGE));
+        if (nbt.hasKey(TAG_MAX_REQUEST))
+            c.setMaxEnergyRequest(nbt.getInteger(TAG_MAX_REQUEST));
+        if (nbt.hasKey(TAG_CAPACITY))
+            c.setEnergyCapacity(nbt.getInteger(TAG_CAPACITY));
+        if (nbt.hasKey(TAG_ENERGY_LEVEL))
+            c.setEnergyLevel(nbt.getInteger(TAG_ENERGY_LEVEL));
+        if (nbt.hasKey(TAG_IS_AVAILABLE))
+            c.setIsAvailable(nbt.getBoolean(TAG_IS_AVAILABLE));
         return c;
     }
+    
+    private static final String TAG_RANGE = "range";
+    private static final String TAG_MAX_REQUEST = "maxRequest";
+    private static final String TAG_CAPACITY = "capacity";
+    private static final String TAG_ENERGY_LEVEL = "energyLevel";
+    private static final String TAG_ENERGY_ID = "energyId";
+    private static final String TAG_IS_PROVIDER = "isProvider";
+    private static final String TAG_IS_AVAILABLE = "isAvailable";
 }

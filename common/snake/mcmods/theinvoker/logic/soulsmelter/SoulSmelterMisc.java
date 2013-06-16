@@ -18,6 +18,8 @@ public class SoulSmelterMisc
 	private static final int SOUL_SHARD_LAVA_COST = 20;
 
 	private static final HashMap<Integer, Integer> boilRegistry = new HashMap<Integer, Integer>();
+	
+	public static final int ENERGY_PER_ITEM = 20;
 
 	public static void registerRecipe(int itemID, int totalBoilTicks)
 	{
