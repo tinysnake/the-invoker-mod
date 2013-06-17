@@ -67,6 +67,9 @@ public class BlockSoulStoneDummy extends Block
 				if (world.setBlock(x, y, z, TIBlocks.soulStone.blockID, SoulStoneMisc.getMetadataOfFormSize(world, x, y, z), 4))
 				{
 					TIBlocks.soulStone.setupTileEntity(world, x, y, z, player.getEntityName());
+					tss = (TileSoulStone)world.getBlockTileEntity(x, y, z);
+					int[] startCoords = SoulStoneMisc.getStructureStartPoint(tss.worldObj, tss.xCoord, tss.yCoord, tss.zCoord);
+					tss.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
 					world.spawnParticle("hugeexplosion", x, y, z, 0, 0, 0);
 				}
 			}
@@ -88,6 +91,8 @@ public class BlockSoulStoneDummy extends Block
 		int metadata = SoulStoneMisc.getMetadataOfFormSize(tss.worldObj, tss.xCoord, tss.yCoord, tss.zCoord);
 		tss.worldObj.setBlockMetadataWithNotify(tss.xCoord, tss.yCoord, tss.zCoord, metadata, 4);
 		tss.getEnergyContainer().setEnergyCapacity(SoulStoneMisc.CAPACITY_OF_METADATA[metadata]);
+		int[] startCoords = SoulStoneMisc.getStructureStartPoint(tss.worldObj, tss.xCoord, tss.yCoord, tss.zCoord);
+		tss.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
 		tss.setIsFormless(false);
 		// reform effect
 	}

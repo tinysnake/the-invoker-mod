@@ -4,20 +4,23 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
+import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.logic.SoulStoneMisc;
 
-public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
+public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
 {
 	public static final int MAX_ENERGY_REQUEST = 5;
 
 	public TileSoulStone()
 	{
 		setDirection(0);
+		originCoords = new int[3];
 	}
 
 	private EnergyContainer energyContainer;
+	private int[] originCoords;
 	public EntitySoulStoneMonitor monitor;
 
 	@Override
@@ -34,6 +37,39 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	public void setIsFormless(boolean val)
 	{
 		energyContainer.setIsAvailable(!val);
+	}
+	
+	public void setOriginCoords(int x, int y, int z)
+	{
+		originCoords[0]=x;
+		originCoords[1]=y;
+		originCoords[2]=z;
+	}
+
+	@Override
+	public int[] getCloestCoordsTo(int x, int y, int z)
+	{
+		int dx = x, dy = y, dz = z;
+		int meta = getBlockMetadata();
+		if (meta >= 0 && meta < SoulStoneMisc.FORMABLE_SIZE.length)
+		{
+			int[] size = SoulStoneMisc.FORMABLE_SIZE[meta];
+			if (x <= originCoords[0])
+				dx = originCoords[0];
+			else if (x >= originCoords[0] + size[0])
+				dx = originCoords[0] + size[0];
+			
+			if (y <= originCoords[1])
+				dy = originCoords[1];
+			else if (y >= originCoords[1] + size[1])
+				dy = originCoords[1] + size[1];
+			
+			if (z <= originCoords[2])
+				dz = originCoords[2];
+			else if (z >= originCoords[2] + size[2])
+				dz = originCoords[2] + size[2];
+		}
+		return new int[] { dx, dy, dz };
 	}
 
 	@Override
@@ -70,6 +106,10 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 		if (nbtCompound.hasKey(TAG_ENERGY_CONTAINER))
 			energyContainer = EnergyContainer.readFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
 		setupEnergyContainer();
+		if (nbtCompound.hasKey(TAG_ORIGN_COORDS))
+			originCoords = nbtCompound.getIntArray(TAG_ORIGN_COORDS);
+		else
+			originCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
 	}
 
 	@Override
@@ -80,6 +120,7 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 		{
 			nbtCompound.setTag(TAG_ENERGY_CONTAINER, energyContainer.writeToNBT(new NBTTagCompound()));
 		}
+		nbtCompound.setIntArray(TAG_ORIGN_COORDS, originCoords);
 	}
 
 	public void transferFrom(TileSoulStone tss)
@@ -104,4 +145,5 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	}
 
 	private static final String TAG_ENERGY_CONTAINER = "energyContainer";
+	private static final String TAG_ORIGN_COORDS = "origin";
 }

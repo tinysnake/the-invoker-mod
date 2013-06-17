@@ -7,7 +7,6 @@ import net.minecraft.util.MathHelper;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
-import snake.mcmods.theinvoker.utils.Utils;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class EnergyCenter
@@ -105,20 +104,11 @@ public class EnergyCenter
 			updateTick = 5;
 	}
 
-	public EnergyContainer getNearestAvailableContainer(EnergyConsumer consumer, boolean includingSelf)
+	public EnergyContainer getNearestAvailableContainer(EnergyUnit unit, boolean includingSelf)
 	{
-		if (consumer.getTileEntity() != null)
+		if (unit.getTileEntity() != null)
 		{
-			return getNearestAvailableContainer(consumer.getTileEntity(), consumer.getEnergyID(), includingSelf);
-		}
-		return null;
-	}
-
-	public EnergyContainer getNearestAvailableContainer(EnergyContainer container, boolean includingSelf)
-	{
-		if (container.getTileEntity() != null)
-		{
-			return getNearestAvailableContainer(container.getTileEntity(), container.getEnergyID(), includingSelf);
+			return getNearestAvailableContainer(unit.getTileEntity(), unit.getEnergyID(), includingSelf);
 		}
 		return null;
 	}
@@ -139,14 +129,44 @@ public class EnergyCenter
 				continue;
 			if (te.worldObj.provider.dimensionId != c.getTileEntity().worldObj.provider.dimensionId)
 				continue;
-			double distance = Utils.getDistanceBetweenTiles(te, c.getTileEntity());
-			if (distance < c.getEffectiveRange() * c.getEffectiveRange() && lastDistance > distance && c.getEnergyLevel() > 0)
+			double distance = getDistanceSqBetweenEnergyUnits(te, c.getTileEntity());
+			if (distance <  c.getEffectiveRangeSq() && lastDistance > distance && c.getEnergyLevel() > 0)
 			{
 				lastDistance = distance;
 				lastContainer = c;
 			}
 		}
 		return lastContainer;
+	}
+
+	public double getDistanceSqBetweenEnergyUnits(TileEntity te1, TileEntity te2)
+	{
+		if (te1 == null || te2 == null)
+			return Integer.MAX_VALUE;
+		int x1 = te1.xCoord;
+		int y1 = te1.yCoord;
+		int z1 = te1.zCoord;
+		int x2 = te2.xCoord;
+		int y2 = te2.yCoord;
+		int z2 = te2.zCoord;
+		if (te1 instanceof IMultiblockEnergyWrapper)
+		{
+			int[] coords = ((IMultiblockEnergyWrapper) te1).getCloestCoordsTo(x2, y2, z2);
+			x1 = coords[0];
+			y1 = coords[1];
+			z1 = coords[2];
+		}
+		if (te2 instanceof IMultiblockEnergyWrapper)
+		{
+			int[] coords = ((IMultiblockEnergyWrapper) te2).getCloestCoordsTo(x1, y1, z1);
+			x2 = coords[0];
+			y2 = coords[1];
+			z2 = coords[2];
+		}
+		double dx = x1 - x2;
+		double dy = y1 - y2;
+		double dz = z1 - z2;
+		return dx * dx + dy * dy + dz * dz;
 	}
 
 	private void evenTheEnergyLevelBetween2Containers(EnergyContainer c1, EnergyContainer c2)

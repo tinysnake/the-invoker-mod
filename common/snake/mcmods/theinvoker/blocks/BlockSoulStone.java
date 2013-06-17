@@ -56,7 +56,7 @@ public class BlockSoulStone extends BlockContainer
 	{
 		if (player.isSneaking())
 			return false;
-		if (player.getHeldItem() != null && player.getHeldItem().itemID == blockID)
+		if (player.getHeldItem() != null && player.getHeldItem().itemID == TIBlocks.soulStoneDummy.blockID)
 			return false;
 
 		TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -123,6 +123,8 @@ public class BlockSoulStone extends BlockContainer
 		{
 			world.setBlockMetadataWithNotify(z, y, z, metadata, 4);
 			tss.getEnergyContainer().setEnergyCapacity(SoulStoneMisc.CAPACITY_OF_METADATA[metadata]);
+			int[] startCoords = SoulStoneMisc.getStructureStartPoint(world, x, y, z);
+			tss.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
 			// reform effect
 		}
 		tss.setIsFormless(false);
