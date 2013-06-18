@@ -12,6 +12,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 public class EnergyCenter
 {
 	public static final EnergyCenter INSTANCE = new EnergyCenter();
+	private static int energyID;
 
 	public EnergyCenter()
 	{
@@ -59,10 +60,16 @@ public class EnergyCenter
 			consumerNodes.remove(index);
 	}
 
-	public void registerEnergyForce(EnergyForce force)
+	public int registerEnergyForce(EnergyForce force)
 	{
 		if (force != null && energyForceRegistry.indexOf(force) < 0)
+		{
+			int validID = getAvailableEnergyID(force.getID());
+			force.id=validID;
 			energyForceRegistry.add(force);
+			return force.getID();
+		}
+		return -1;
 	}
 
 	public EnergyForce getEnergyForce(int id)
@@ -207,5 +214,19 @@ public class EnergyCenter
 		{
 			consumer.acceptEnergy(container.take(actualFlow, true));
 		}
+	}
+	
+	private int getAvailableEnergyID(int defaultID)
+	{
+		ArrayList<Integer> ids = new ArrayList<Integer>(energyForceRegistry.size());
+		for(EnergyForce ef:energyForceRegistry)
+		{
+			ids.add(ef.getID());
+		}
+		if(ids.indexOf(defaultID)<0)
+			return defaultID;
+		while(ids.indexOf(energyID)>=0)
+			energyID++;
+		return energyID;
 	}
 }

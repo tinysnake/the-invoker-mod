@@ -5,8 +5,8 @@ import net.minecraft.network.packet.Packet;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
+import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
-import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.logic.SoulStoneMisc;
 
 public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
@@ -133,7 +133,7 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	{
 		if (energyContainer == null)
 		{
-			energyContainer = new EnergyContainer(this, false, TIItems.soulShard.itemID);
+			energyContainer = new EnergyContainer(this, false, TIEnergy.soul.getID());
 			energyContainer.setEffectiveRange(SoulStoneMisc.EFFECTIVE_RANGE);
 			energyContainer.setEnergyCapacity(SoulStoneMisc.CAPACITY_OF_METADATA[getBlockMetadata()]);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST * (getBlockMetadata() + 1));

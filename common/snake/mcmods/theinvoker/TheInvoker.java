@@ -3,7 +3,7 @@ package snake.mcmods.theinvoker;
 import net.minecraft.creativetab.CreativeTabs;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
 import snake.mcmods.theinvoker.config.Lang;
-import snake.mcmods.theinvoker.energy.EnergyForce;
+import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.gui.TIGuiHanlder;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
@@ -46,7 +46,7 @@ public class TheInvoker
 	{
 		TIBlocks.init();
 		TIItems.init();
-		EnergyForce.init();
+		TIEnergy.init();
 
 		NetworkRegistry.instance().registerGuiHandler(TheInvoker.instance, new TIGuiHanlder());
 

@@ -15,8 +15,8 @@ import net.minecraftforge.liquids.LiquidStack;
 import net.minecraftforge.liquids.LiquidTank;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
+import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
-import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.soulsmelter.SoulSmelterMisc;
@@ -150,7 +150,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	{
 		if (energyContainer == null)
 		{
-			energyContainer = new EnergyContainer(this, true, TIItems.soulShard.itemID);
+			energyContainer = new EnergyContainer(this, true, TIEnergy.soul.getID());
 			energyContainer.setEffectiveRange(ENERGY_RANGE);
 			energyContainer.setEnergyCapacity(MAX_ENERGY_CAPACITY);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST);
@@ -370,7 +370,6 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 				break;
 			default:
 				break;
-
 		}
 	}
 
