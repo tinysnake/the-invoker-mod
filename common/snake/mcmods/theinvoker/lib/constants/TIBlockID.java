@@ -7,4 +7,5 @@ public class TIBlockID
 	public static int SOUL_SMELTER = 3522;
 	public static int SOUL_STONE_DUMMY = 3523;
 	public static int SOUL_STONE = 3524;
+	public static int ELEMENT_PURIFIER = 3525;
 }

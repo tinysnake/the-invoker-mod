@@ -12,6 +12,7 @@ public class Textures
 	public static final String MODEL_TOTEM_MASSACRE = MODEL_BASE_PATH + "totem_massacre.png";
 	public static final String MODEL_SEDUCTION_TOTEM = MODEL_BASE_PATH + "seduction_totem.png";
 	public static final String MODEL_BROKEN_SEDUCTION_TOTEM = MODEL_SEDUCTION_TOTEM;
+	public static final String MODEL_ELEMENT_PURIFIER = MODEL_BASE_PATH + "element_purifier.png";
 
 	public static final String BLOCK_SOUL_SMELTER_TOP_ON = TIGlobal.MOD_ID + ":soul_smelter_top_on";
 	public static final String BLOCK_SOUL_SMELTER_TOP_OFF = TIGlobal.MOD_ID + ":soul_smelter_top_off";

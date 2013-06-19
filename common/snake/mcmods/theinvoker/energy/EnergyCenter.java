@@ -12,7 +12,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 public class EnergyCenter
 {
 	public static final EnergyCenter INSTANCE = new EnergyCenter();
-	private static int energyID;
+	private static int energyID = 1;
 
 	public EnergyCenter()
 	{
@@ -65,7 +65,7 @@ public class EnergyCenter
 		if (force != null && energyForceRegistry.indexOf(force) < 0)
 		{
 			int validID = getAvailableEnergyID(force.getID());
-			force.id=validID;
+			force.id = validID;
 			energyForceRegistry.add(force);
 			return force.getID();
 		}
@@ -93,7 +93,8 @@ public class EnergyCenter
 			if (updateTick <= 0)
 			{
 				TileEntity te = c.getTileEntity();
-				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 128, te.worldObj.provider.dimensionId, PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord, c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
+				PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord,
+				        c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
 			}
 		}
 
@@ -104,7 +105,8 @@ public class EnergyCenter
 			if (updateTick <= 0)
 			{
 				TileEntity te = c.getTileEntity();
-				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 64, te.worldObj.provider.dimensionId, PacketTypeHandler.serialize(new PacketEnergyConsumerUpdate(te.xCoord, te.yCoord, te.zCoord, c.getEnergyIsRequesting(), c.getMaxEnergyRequest())));
+				PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.serialize(new PacketEnergyConsumerUpdate(te.xCoord, te.yCoord, te.zCoord, 
+						c.getEnergyIsRequesting(), c.getMaxEnergyRequest())));
 			}
 		}
 		if (updateTick <= 0)
@@ -137,7 +139,7 @@ public class EnergyCenter
 			if (te.worldObj.provider.dimensionId != c.getTileEntity().worldObj.provider.dimensionId)
 				continue;
 			double distance = getDistanceSqBetweenEnergyUnits(te, c.getTileEntity());
-			if (distance <  c.getEffectiveRangeSq() && lastDistance > distance && c.getEnergyLevel() > 0)
+			if (distance < c.getEffectiveRangeSq() && lastDistance > distance && c.getEnergyLevel() > 0)
 			{
 				lastDistance = distance;
 				lastContainer = c;
@@ -158,14 +160,14 @@ public class EnergyCenter
 		int z2 = te2.zCoord;
 		if (te1 instanceof IMultiblockEnergyWrapper)
 		{
-			int[] coords = ((IMultiblockEnergyWrapper) te1).getCloestCoordsTo(x2, y2, z2);
+			int[] coords = ((IMultiblockEnergyWrapper)te1).getCloestCoordsTo(x2, y2, z2);
 			x1 = coords[0];
 			y1 = coords[1];
 			z1 = coords[2];
 		}
 		if (te2 instanceof IMultiblockEnergyWrapper)
 		{
-			int[] coords = ((IMultiblockEnergyWrapper) te2).getCloestCoordsTo(x1, y1, z1);
+			int[] coords = ((IMultiblockEnergyWrapper)te2).getCloestCoordsTo(x1, y1, z1);
 			x2 = coords[0];
 			y2 = coords[1];
 			z2 = coords[2];
@@ -215,17 +217,17 @@ public class EnergyCenter
 			consumer.acceptEnergy(container.take(actualFlow, true));
 		}
 	}
-	
+
 	private int getAvailableEnergyID(int defaultID)
 	{
 		ArrayList<Integer> ids = new ArrayList<Integer>(energyForceRegistry.size());
-		for(EnergyForce ef:energyForceRegistry)
+		for (EnergyForce ef : energyForceRegistry)
 		{
 			ids.add(ef.getID());
 		}
-		if(ids.indexOf(defaultID)<0)
+		if (ids.indexOf(defaultID) < 0)
 			return defaultID;
-		while(ids.indexOf(energyID)>=0)
+		while (ids.indexOf(energyID) >= 0)
 			energyID++;
 		return energyID;
 	}

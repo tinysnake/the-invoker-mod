@@ -116,6 +116,7 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	public void writeToNBT(NBTTagCompound nbtCompound)
 	{
 		super.writeToNBT(nbtCompound);
+		setupEnergyContainer();
 		if (energyContainer != null)
 		{
 			nbtCompound.setTag(TAG_ENERGY_CONTAINER, energyContainer.writeToNBT(new NBTTagCompound()));

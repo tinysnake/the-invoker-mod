@@ -51,20 +51,20 @@ public class TileTIBase extends TileEntity
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbtCompound)
+	public void readFromNBT(NBTTagCompound nbt)
 	{
-		super.readFromNBT(nbtCompound);
-		if (nbtCompound.hasKey("direction"))
-			setDirection(nbtCompound.getInteger("direction"));
-		if (nbtCompound.hasKey("owner"))
-			setOwnerName(nbtCompound.getString("owner"));
+		super.readFromNBT(nbt);
+		if (nbt.hasKey("direction"))
+			setDirection(nbt.getInteger("direction"));
+		if (nbt.hasKey("owner"))
+			setOwnerName(nbt.getString("owner"));
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtCompound)
+	public void writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(nbtCompound);
-		nbtCompound.setInteger("direction", getDirection().ordinal());
-		nbtCompound.setString("owner", getOwnerName());
+		super.writeToNBT(nbt);
+		nbt.setInteger("direction", getDirection().ordinal());
+		nbt.setString("owner", getOwnerName());
 	}
 }

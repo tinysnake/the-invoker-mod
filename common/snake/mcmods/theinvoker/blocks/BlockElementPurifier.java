@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.lib.constants.TIName;
+import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 
 public class BlockElementPurifier extends BlockContainer
@@ -22,5 +23,23 @@ public class BlockElementPurifier extends BlockContainer
 	public TileEntity createNewTileEntity(World world)
 	{
 		return new TileElementPurifier();
+	}
+
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+	    return false;
+	}
+	
+	@Override
+	public int getRenderType()
+	{
+	    return TIRenderID.ELEMENT_PURIFIER;
 	}
 }

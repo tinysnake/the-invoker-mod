@@ -138,7 +138,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 					sendUpdatePacket();
 				}
 			}
-			idolTicks = 10;
+			idolTicks = 3;
 		}
 		else
 		{
@@ -329,7 +329,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	public void writeToNBT(NBTTagCompound nbtCompound)
 	{
 		super.writeToNBT(nbtCompound);
-		// setupEnergyContainer();
+		setupEnergyContainer();
 		if (inputSlot != null)
 		{
 			nbtCompound.setTag(TAG_INPUT_SLOT, inputSlot.writeToNBT(new NBTTagCompound()));

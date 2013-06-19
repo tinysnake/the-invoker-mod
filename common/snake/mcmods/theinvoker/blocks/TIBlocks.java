@@ -11,6 +11,7 @@ public class TIBlocks
 	public static BlockSoulSmelter soulSmelter;
 	public static BlockSoulStone soulStone;
 	public static BlockSoulStoneDummy soulStoneDummy;
+	public static BlockElementPurifier elementPurifier;
 
 	public static void init()
 	{
@@ -19,8 +20,10 @@ public class TIBlocks
 		soulSmelter = new BlockSoulSmelter(TIBlockID.SOUL_SMELTER);
 		soulStone = new BlockSoulStone(TIBlockID.SOUL_STONE_DUMMY);
 		soulStoneDummy = new BlockSoulStoneDummy(TIBlockID.SOUL_STONE);
+		elementPurifier = new BlockElementPurifier(TIBlockID.ELEMENT_PURIFIER);
 
 		GameRegistry.registerBlock(soulSmelter, TIName.BLOCK_SOUL_SMELTER);
 		GameRegistry.registerBlock(soulStoneDummy, TIName.BLOCK_SOUL_STONE);
+		GameRegistry.registerBlock(elementPurifier, TIName.BLOCK_ELEMENT_PURIFIER);
 	}
 }
