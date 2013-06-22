@@ -21,43 +21,37 @@ public class ModelElementPurifier extends ModelBase
 		textureHeight = 32;
 
 		foundation = new ModelRenderer(this, 0, 0);
-		foundation.addBox(-8F, -3F, -8F, 16, 3, 16);
-		foundation.setRotationPoint(0F, 24F, 0F);
+		foundation.addBox(-8F, -3F, -8F, 16, 5, 16);
+		foundation.setRotationPoint(0F, 22F, 0F);
 		foundation.setTextureSize(64, 32);
 		setRotation(foundation, 0F, 0F, 0F);
-		
 		body = new ModelRenderer(this, 0, 0);
-		body.addBox(-6F, -5F, -6F, 12, 5, 12);
-		body.setRotationPoint(0F, 21F, 0F);
+		body.addBox(-6F, -5F, -6F, 12, 7, 12);
+		body.setRotationPoint(0F, 17F, 0F);
 		body.setTextureSize(64, 32);
 		setRotation(body, 0F, 0F, 0F);
-		
 		plate = new ModelRenderer(this, 4, 19);
-		plate.addBox(-1.5F, -1F, -1.5F, 3, 1, 3);
+		plate.addBox(-2.5F, -5F, -2.5F, 5, 1, 5);
 		plate.setRotationPoint(0F, 16F, 0F);
 		plate.setTextureSize(64, 32);
 		setRotation(plate, 0F, 0F, 0F);
-		
 		rod1 = new ModelRenderer(this, 0, 19);
-		rod1.addBox(-0.5F, -2F, 3.5F, 1, 2, 1);
+		rod1.addBox(-1F, -6F, 3.5F, 2, 2, 2);
 		rod1.setRotationPoint(0F, 16F, 0F);
 		rod1.setTextureSize(64, 32);
 		setRotation(rod1, 0F, 0F, 0F);
-		
 		rod2 = new ModelRenderer(this, 0, 19);
-		rod2.addBox(-0.5F, -2F, -4.5F, 1, 2, 1);
+		rod2.addBox(-1F, -6F, -5.5F, 2, 2, 2);
 		rod2.setRotationPoint(0F, 16F, 0F);
 		rod2.setTextureSize(64, 32);
 		setRotation(rod2, 0F, 0F, 0F);
-		
 		rod3 = new ModelRenderer(this, 0, 19);
-		rod3.addBox(3.5F, -2F, -0.5F, 1, 2, 1);
+		rod3.addBox(3.5F, -6F, -0.5F, 2, 2, 2);
 		rod3.setRotationPoint(0F, 16F, 0F);
 		rod3.setTextureSize(64, 32);
 		setRotation(rod3, 0F, 0F, 0F);
-		
 		rod4 = new ModelRenderer(this, 0, 19);
-		rod4.addBox(-4.5F, -2F, -0.5F, 1, 2, 1);
+		rod4.addBox(-5.5F, -6F, -1F, 2, 2, 2);
 		rod4.setRotationPoint(0F, 16F, 0F);
 		rod4.setTextureSize(64, 32);
 		setRotation(rod4, 0F, 0F, 0F);

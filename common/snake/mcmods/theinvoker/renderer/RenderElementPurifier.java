@@ -17,7 +17,6 @@ public class RenderElementPurifier extends RenderTileBase
 	}
 	
 	private ModelElementPurifier model;
-	private float i;
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float f)
@@ -31,8 +30,7 @@ public class RenderElementPurifier extends RenderTileBase
 		GL11.glScalef(1F, -1F, -1F);
 		GL11.glRotatef(angle, 0F, 1F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(Textures.MODEL_ELEMENT_PURIFIER);
-		i+=0.1;
-		model.render(i);
+		model.render(0);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();
 
