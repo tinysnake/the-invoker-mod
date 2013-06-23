@@ -24,7 +24,8 @@ public class GuiSoulSmelter extends GuiContainer
 	private static final int TANK_Y = 54;
 	private static final int TANK_X = 130;
 	private static final int TANK_HEIGHT = 48;
-	private static final int FIRE_HEIGHT = 11;
+	private static final int FIRE_HEIGHT = 10;
+	private static final int FIRE_WIDTH = 9;
 
 	public GuiSoulSmelter(InventoryPlayer player, TileSoulSmelter soulSmelter)
 	{
@@ -61,7 +62,7 @@ public class GuiSoulSmelter extends GuiContainer
 		if (soulSmelter.getBoilTicksLeft() > 0)
 		{
 			int fireH = (int)(soulSmelter.getBoilProgress() * FIRE_HEIGHT);
-			this.drawTexturedModalRect(xStart + 53, yStart + 25 + fireH, 178, 50 + fireH, 12, FIRE_HEIGHT - fireH);
+			this.drawTexturedModalRect(xStart + 53, yStart + 25 + fireH, 178, 50 + fireH, FIRE_WIDTH, FIRE_HEIGHT - fireH);
 		}
 
 		// draw lava tank

@@ -22,4 +22,5 @@ public class Textures
 	public static final String BLOCK_SOUL_SMELTER_FRONT_ON = TIGlobal.MOD_ID + ":soul_smelter_front_on";
 
 	public static final String GUI_SOUL_SMELTER = GUI_BASE_PATH + "gui_soul_smelter.png";
+	public static final String GUI_ELEMENT_PURIFIER = GUI_BASE_PATH+"gui_element_purifier.png";
 }

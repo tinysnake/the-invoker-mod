@@ -12,7 +12,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerSoulSmelter extends Container
 {
-
 	private final int PLAYER_INVENTORY_ROWS = 3;
 	private final int PLAYER_INVENTORY_COLUMNS = 9;
 

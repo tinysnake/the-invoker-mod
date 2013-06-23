@@ -3,8 +3,10 @@ package snake.mcmods.theinvoker.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import snake.mcmods.theinvoker.inventory.ContainerElementPurifier;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.lib.constants.TIGuiID;
+import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -21,6 +23,10 @@ public class TIGuiHanlder implements IGuiHandler
 				if (te instanceof TileSoulSmelter)
 					return new ContainerSoulSmelter(player.inventory, (TileSoulSmelter)te);
 				break;
+			case TIGuiID.ELEMENT_PURIFIER:
+				if (te instanceof TileElementPurifier)
+					return new ContainerElementPurifier(player.inventory, (TileElementPurifier)te);
+				break;
 		}
 		return null;
 	}
@@ -34,6 +40,10 @@ public class TIGuiHanlder implements IGuiHandler
 			case TIGuiID.SOUL_SMELTER:
 				if (te instanceof TileSoulSmelter)
 					return new GuiSoulSmelter(player.inventory, (TileSoulSmelter)te);
+				break;
+			case TIGuiID.ELEMENT_PURIFIER:
+				if (te instanceof TileElementPurifier)
+					return new GuiElementPurifier(player.inventory, (TileElementPurifier)te);
 				break;
 		}
 		return null;

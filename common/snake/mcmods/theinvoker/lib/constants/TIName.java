@@ -26,7 +26,7 @@ public class TIName
 	public static final String ITEM_EVIL_TOUCH = "evil_touch";
 	
 	public static final String CONTAINER_SOUL_SMELTER = "container." + BLOCK_SOUL_SMELTER;
-	public static final String CONTAINER_ELEMENT_PURIFIER = "cotnainer."+BLOCK_ELEMENT_PURIFIER;
+	public static final String CONTAINER_ELEMENT_PURIFIER = "container."+BLOCK_ELEMENT_PURIFIER;
 	
 	public static final String ENERGY_SOUL = "soul";
 	public static final String ENERGY_ICE = "ice";

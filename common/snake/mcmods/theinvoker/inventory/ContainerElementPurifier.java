@@ -8,12 +8,15 @@ import net.minecraft.inventory.Slot;
 
 public class ContainerElementPurifier extends Container
 {
-
+	private final int INPUT_SLOT_X = 80;
+	private final int INPUT_SLOT_Y = 6;
 	private final int PLAYER_INVENTORY_ROWS = 3;
 	private final int PLAYER_INVENTORY_COLUMNS = 9;
 
 	public ContainerElementPurifier(InventoryPlayer player, TileElementPurifier tep)
 	{
+		this.tep = tep;
+		this.addSlotToContainer(new Slot(tep, 0, INPUT_SLOT_X, INPUT_SLOT_Y));
 		// Add the player's inventory slots to the container
 		for (int inventoryRowIndex = 0; inventoryRowIndex < PLAYER_INVENTORY_ROWS; ++inventoryRowIndex)
 		{
@@ -29,6 +32,8 @@ public class ContainerElementPurifier extends Container
 			this.addSlotToContainer(new Slot(player, actionBarSlotIndex, 9 + actionBarSlotIndex * 18, 119));
 		}
 	}
+	
+	private TileElementPurifier tep;
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer)
