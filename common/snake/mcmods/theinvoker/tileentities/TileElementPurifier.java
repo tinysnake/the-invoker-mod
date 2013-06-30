@@ -13,15 +13,17 @@ import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.items.TIItems;
+import snake.mcmods.theinvoker.lib.constants.TIEnergyID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
+import snake.mcmods.theinvoker.logic.elempurifier.ElementPurifierMisc;
 
-public class TileElementPurifier extends TileTIBase implements IEnergyContainerWrapper, IEnergyConsumerWrapper,
-        IInventory
+public class TileElementPurifier extends TileTIBase implements IEnergyContainerWrapper, IEnergyConsumerWrapper, IInventory
 {
 
-	public static final int INNER_TANK_CAPACITY = 500;
+	public static final int INNER_TANK_CAPACITY = 50;
+	public static final int SOUL_TANK_CAPACITY = 500;
 	public static final int EFFECTIVE_RANGE = 12;
-	public static final int MAX_REQUEST = 5;
+	public static final int MAX_REQUEST = 1;
 
 	public TileElementPurifier()
 	{
@@ -40,6 +42,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	private int ticksThisRound;
 	private int ticksLeft;
 	private int itemIDThisRound;
+	private int itemDamageThisRound;
 	private int energyIDThisRound;
 	private int idolTicks;
 	private boolean isProcessing;
@@ -93,7 +96,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		if (soulContainer == null)
 		{
 			soulContainer = new EnergyContainer(this, true, TIEnergy.soul.getID());
-			soulContainer.setEnergyCapacity(INNER_TANK_CAPACITY);
+			soulContainer.setEnergyCapacity(SOUL_TANK_CAPACITY);
 			soulContainer.setEffectiveRange(EFFECTIVE_RANGE);
 			soulContainer.setMaxEnergyRequest(MAX_REQUEST);
 		}
@@ -157,13 +160,29 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			{
 				if (ticksLeft <= 0 && itemIDThisRound > 0 && energyIDThisRound > 0)
 				{
-
+					isProcessing = false;
+					EnergyContainer container = getContainerByEnergyID(energyIDThisRound);
+					int value = container == soulContainer ? ElementPurifierMisc.SOUL_ENERGY_PER_RUNE : ElementPurifierMisc.ELEMENT_PER_RUNE;
+					int gainValue = container.gain(value, false);
+					if (gainValue > 0)
+						container.gain(gainValue, true);
+					itemIDThisRound = 0;
+					energyIDThisRound = 0;
+					energyConsumer.requestEnergy(0);
+					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
 				isProcessing = false;
 			}
-			else
+			else if (getIsAbleToWork())
 			{
-
+				isProcessing = true;
+				itemIDThisRound = materialSlot.itemID;
+				itemDamageThisRound = materialSlot.getItemDamage();
+				energyConsumer.requestEnergy(ElementPurifierMisc.getTotalBoilTicks(itemIDThisRound, itemDamageThisRound) * MAX_REQUEST);
+				decrStackSize(0, 1);
+				hasWork = true;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				sendUpdatePacket();
 			}
 			idolTicks = 3;
 		}
@@ -171,6 +190,47 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		{
 			idolTicks--;
 		}
+	}
+
+	protected EnergyContainer getContainerByEnergyID(int id)
+	{
+		if (id == TIEnergyID.SOUL)
+			return soulContainer;
+		else if (id == TIEnergyID.ICE)
+			return iceContainer;
+		else if (id == TIEnergyID.FIRE)
+			return fireContainer;
+		else if (id == TIEnergyID.WIND)
+			return windContainer;
+		else if (id == TIEnergyID.DARKNESS)
+			return darknessContainer;
+		else
+			return null;
+	}
+
+	public boolean getIsAbleToWork()
+	{
+		return materialSlot != null && materialSlot.stackSize > 0 && ElementPurifierMisc.getIsValidRecipe(materialSlot.itemID, materialSlot.getItemDamage()) && !getContainerIsFull();
+	}
+
+	public boolean getContainerIsFull()
+	{
+		if (materialSlot == null || materialSlot.stackSize <= 0)
+			return soulContainer.getIsFull() && getTotalEnergyLevelOfElementContainers() >= INNER_TANK_CAPACITY;
+		int energyID = ElementPurifierMisc.getEnergyID(materialSlot.itemID, materialSlot.getItemDamage());
+		if (energyID == TIEnergyID.SOUL)
+		{
+			return soulContainer.getIsFull();
+		}
+		else
+		{
+			return getTotalEnergyLevelOfElementContainers() >= INNER_TANK_CAPACITY;
+		}
+	}
+
+	protected int getTotalEnergyLevelOfElementContainers()
+	{
+		return iceContainer.getEnergyLevel() + fireContainer.getEnergyLevel() + windContainer.getEnergyLevel() + darknessContainer.getEnergyLevel();
 	}
 
 	@Override
@@ -220,6 +280,12 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	{
 		setupEnergyUnit();
 		return super.getDescriptionPacket();
+	}
+
+	public void sendUpdatePacket()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -320,12 +386,12 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	public void sendNetworkGUIData(ContainerSoulSmelter container, ICrafting c)
 	{
-		
+
 	}
 
 	public void receiveNetworkGUIData(int signiture, int value)
 	{
-		
+
 	}
 
 	@Override

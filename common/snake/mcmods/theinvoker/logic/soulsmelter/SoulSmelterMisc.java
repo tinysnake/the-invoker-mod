@@ -17,47 +17,65 @@ public class SoulSmelterMisc
 
 	private static final int SOUL_SHARD_LAVA_COST = 20;
 
-	private static final HashMap<Integer, Integer> boilRegistry = new HashMap<Integer, Integer>();
+	private static final HashMap<String, Integer> boilRegistry = new HashMap<String, Integer>();
 
 	public static final int ENERGY_PER_ITEM = 20;
 
-	public static void registerRecipe(int itemID, int totalBoilTicks)
+	public static void registerRecipe(int itemID, int damageVal, int totalBoilTicks)
 	{
 		if (itemID <= 0 || totalBoilTicks <= 0)
 			return;
-		if (boilRegistry.containsKey(itemID))
+		String key = itemID + ":" + damageVal;
+		if (boilRegistry.containsKey(key))
 		{
-			boilRegistry.remove(itemID);
+			boilRegistry.remove(key);
 		}
-		boilRegistry.put(itemID, totalBoilTicks);
+		boilRegistry.put(key, totalBoilTicks);
 	}
 
 	public static boolean getIsValidRecipe(int itemID)
 	{
-		return boilRegistry.containsKey(itemID);
+		return getIsValidRecipe(itemID, 0);
+	}
+
+	public static boolean getIsValidRecipe(int itemID, int damageVal)
+	{
+		String key = itemID + ":" + damageVal;
+		return boilRegistry.containsKey(key);
 	}
 
 	public static int getTotalBoilTicks(int itemID)
 	{
-		if (getIsValidRecipe(itemID))
+		return getTotalBoilTicks(itemID, 0);
+	}
+
+	public static int getTotalBoilTicks(int itemID, int damageVal)
+	{
+		String key = itemID + ":" + damageVal;
+		if (getIsValidRecipe(itemID, damageVal))
 		{
-			return boilRegistry.get(itemID);
+			return boilRegistry.get(key);
 		}
 		return -1;
 	}
 
 	public static int getLavaBurnAmount(int itemID)
 	{
-		if (getIsValidRecipe(itemID))
+		return getLavaBurnAmount(itemID, 0);
+	}
+
+	public static int getLavaBurnAmount(int itemID, int damageVal)
+	{
+		if (getIsValidRecipe(itemID, damageVal))
 		{
-			return SOUL_SHARD_LAVA_COST * getTotalBoilTicks(itemID) / SOUL_SHARD_BOIL_TICKS;
+			return SOUL_SHARD_LAVA_COST * getTotalBoilTicks(itemID, damageVal) / SOUL_SHARD_BOIL_TICKS;
 		}
 		return -1;
 	}
 
 	public static void initDefaultRecipies()
 	{
-		registerRecipe(TIItems.soulShard.itemID, SOUL_SHARD_BOIL_TICKS);
+		registerRecipe(TIItems.soulShard.itemID, 0, SOUL_SHARD_BOIL_TICKS);
 	}
 
 	public static void syncSoulSmelterState(PacketSoulSmelterUpdate p, EntityPlayer player)

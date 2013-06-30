@@ -71,6 +71,11 @@ public class EnergyContainer extends EnergyUnit
 	{
 		return isEnergyProvider;
 	}
+	
+	public boolean getIsFull()
+	{
+		return getEnergyLevel()<getEnergyCapacity();
+	}
 
 	@Override
 	public void register()

@@ -45,6 +45,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	private int boilTicksLeft;
 	private int idolTicks;
 	private int processingItemID;
+	private int processingItemDamage;
 	private LiquidTank lavaTank;
 	private ItemStack inputSlot;
 	private EnergyContainer energyContainer;
@@ -89,7 +90,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public boolean getIsAbleToWork()
 	{
-		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID) && lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID) && energyContainer.getEnergyCapacity() > energyContainer.getEnergyLevel());
+		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID, inputSlot.getItemDamage()) && lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID, inputSlot.getItemDamage()) && energyContainer.getEnergyCapacity() > energyContainer.getEnergyLevel());
 	}
 
 	public boolean getHasWork()
@@ -117,7 +118,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 				isProccessing = false;
 				if (processingItemID > 0)
 				{
-					this.drain(0, SoulSmelterMisc.getLavaBurnAmount(processingItemID), true);
+					this.drain(0, SoulSmelterMisc.getLavaBurnAmount(processingItemID, processingItemDamage), true);
 					energyContainer.gain(SoulSmelterMisc.ENERGY_PER_ITEM, true);
 				}
 				processingItemID = 0;
@@ -125,18 +126,16 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				sendUpdatePacket();
 			}
-			else
+			else if (getIsAbleToWork())
 			{
-				if (getIsAbleToWork())
-				{
-					isProccessing = true;
-					processingItemID = inputSlot.itemID;
-					setBoilTicks(SoulSmelterMisc.getTotalBoilTicks(processingItemID));
-					decrStackSize(0, 1);
-					hasWork = true;
-					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-					sendUpdatePacket();
-				}
+				isProccessing = true;
+				processingItemID = inputSlot.itemID;
+				processingItemDamage = inputSlot.getItemDamage();
+				setBoilTicks(SoulSmelterMisc.getTotalBoilTicks(processingItemID, processingItemDamage));
+				decrStackSize(0, 1);
+				hasWork = true;
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				sendUpdatePacket();
 			}
 			idolTicks = 3;
 		}
@@ -313,13 +312,13 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 			energyContainer = EnergyContainer.readFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
 		if (nbtCompound.hasKey(TAG_INPUT_SLOT))
 			inputSlot = ItemStack.loadItemStackFromNBT(nbtCompound.getCompoundTag(TAG_INPUT_SLOT));
-		if(nbtCompound.hasKey(TAG_BOIL_TICKS_LEFT))
+		if (nbtCompound.hasKey(TAG_BOIL_TICKS_LEFT))
 			boilTicksLeft = nbtCompound.getInteger(TAG_BOIL_TICKS_LEFT);
-		if(nbtCompound.hasKey(TAG_LAST_BOIL_TICKS))
+		if (nbtCompound.hasKey(TAG_LAST_BOIL_TICKS))
 			lastBoilTicks = nbtCompound.getInteger(TAG_LAST_BOIL_TICKS);
-		if(nbtCompound.hasKey(TAG_BOIL_TICKS_LEFT))
+		if (nbtCompound.hasKey(TAG_BOIL_TICKS_LEFT))
 			processingItemID = nbtCompound.getInteger(TAG_PROCESSING_ITEM_ID);
-		if(nbtCompound.hasKey(TAG_IS_PROCESSING))
+		if (nbtCompound.hasKey(TAG_IS_PROCESSING))
 			isProccessing = nbtCompound.getBoolean(TAG_IS_PROCESSING);
 		hasWork = getIsProcessing();
 		setupEnergyContainer();
