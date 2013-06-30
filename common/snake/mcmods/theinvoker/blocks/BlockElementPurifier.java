@@ -2,7 +2,9 @@ package snake.mcmods.theinvoker.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
@@ -10,6 +12,7 @@ import snake.mcmods.theinvoker.lib.constants.TIGuiID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
+import snake.mcmods.theinvoker.utils.Utils;
 
 public class BlockElementPurifier extends BlockContainer
 {
@@ -37,6 +40,17 @@ public class BlockElementPurifier extends BlockContainer
 	public boolean renderAsNormalBlock()
 	{
 	    return false;
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack itemStack)
+	{
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if(te instanceof TileElementPurifier)
+		{
+			((TileElementPurifier)te).setDirection(Utils.getPlaceDirection(entity));
+			((TileElementPurifier)te).setOwnerName(entity.getEntityName());
+		}
 	}
 	
 	@Override

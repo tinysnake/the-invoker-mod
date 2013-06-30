@@ -8,7 +8,7 @@ import net.minecraft.inventory.Slot;
 
 public class ContainerElementPurifier extends Container
 {
-	private final int INPUT_SLOT_X = 80;
+	private final int INPUT_SLOT_X = 81;
 	private final int INPUT_SLOT_Y = 6;
 	private final int PLAYER_INVENTORY_ROWS = 3;
 	private final int PLAYER_INVENTORY_COLUMNS = 9;

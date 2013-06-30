@@ -142,7 +142,8 @@ public class BlockSoulSmelter extends BlockContainer
 				if (amount > 0)
 				{
 					soulSmelter.fill(0, new LiquidStack(Block.lavaStill, LiquidContainerRegistry.BUCKET_VOLUME), true);
-					player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Item.bucketEmpty);
+					if(!player.capabilities.isCreativeMode)
+						player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Item.bucketEmpty);
 				}
 				return true;
 			}

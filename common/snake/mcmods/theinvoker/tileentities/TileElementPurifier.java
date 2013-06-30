@@ -41,12 +41,20 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	private int ticksThisRound;
 	private int ticksLeft;
-	private int itemIDThisRound;
-	private int itemDamageThisRound;
+	//private int itemIDThisRound;
+	//private int itemDamageThisRound;
+	private ItemStack processItem;
 	private int energyIDThisRound;
 	private int idolTicks;
 	private boolean isProcessing;
 	public boolean hasWork;
+	public float spinValue;
+	public float floatValue;
+	
+	public ItemStack getProcessItem()
+	{
+		return processItem;
+	}
 
 	public boolean getIsProcessing()
 	{
@@ -151,6 +159,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		setupEnergyUnit();
 		if (ticksLeft > 0)
 		{
+			spinValue+=.02;
+			floatValue+=.1;
 			ticksLeft--;
 			idolTicks = 0;
 		}
@@ -158,7 +168,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		{
 			if (isProcessing)
 			{
-				if (ticksLeft <= 0 && itemIDThisRound > 0 && energyIDThisRound > 0)
+				if (ticksLeft <= 0 && processItem !=null && energyIDThisRound > 0)
 				{
 					isProcessing = false;
 					EnergyContainer container = getContainerByEnergyID(energyIDThisRound);
@@ -166,8 +176,9 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 					int gainValue = container.gain(value, false);
 					if (gainValue > 0)
 						container.gain(gainValue, true);
-					itemIDThisRound = 0;
-					energyIDThisRound = 0;
+					//itemIDThisRound = 0;
+					//energyIDThisRound = 0;
+					processItem = null;
 					energyConsumer.requestEnergy(0);
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
@@ -176,9 +187,9 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			else if (getIsAbleToWork())
 			{
 				isProcessing = true;
-				itemIDThisRound = materialSlot.itemID;
-				itemDamageThisRound = materialSlot.getItemDamage();
-				energyConsumer.requestEnergy(ElementPurifierMisc.getTotalBoilTicks(itemIDThisRound, itemDamageThisRound) * MAX_REQUEST);
+				//itemIDThisRound = materialSlot.itemID;
+				//itemDamageThisRound = materialSlot.getItemDamage();
+				energyConsumer.requestEnergy(ElementPurifierMisc.getTotalBoilTicks(materialSlot.itemID, materialSlot.getItemDamage()) * MAX_REQUEST);
 				decrStackSize(0, 1);
 				hasWork = true;
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -249,7 +260,12 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			darknessContainer = EnergyContainer.readFromNBT(nbt.getCompoundTag(TAG_DARKNESS_CONTAINER), this);
 		ticksThisRound = nbt.getInteger(TAG_TICKS_THIS_ROUND);
 		ticksLeft = nbt.getInteger(TAG_TICKS_LEFT);
-		itemIDThisRound = nbt.getInteger(TAG_ITEM_THIS_ROUND);
+		if(nbt.hasKey(TAG_ITEM_ID_THIS_ROUND))
+		{
+			int itemIDThisRound = nbt.getInteger(TAG_ITEM_ID_THIS_ROUND);
+			int itemDmgThisRound = nbt.getInteger(TAG_ITEM_DMG_THIS_ROUND);
+			processItem = new ItemStack(itemIDThisRound, 1, itemDmgThisRound);
+		}
 		energyIDThisRound = nbt.getInteger(TAG_ENERGY_THIS_ROUND);
 		isProcessing = nbt.getBoolean(TAG_IS_PROCESSING);
 		setupEnergyUnit();
@@ -267,7 +283,11 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		nbt.setTag(TAG_DARKNESS_CONTAINER, darknessContainer.writeToNBT(new NBTTagCompound()));
 		nbt.setInteger(TAG_TICKS_THIS_ROUND, ticksThisRound);
 		nbt.setInteger(TAG_TICKS_LEFT, ticksLeft);
-		nbt.setInteger(TAG_ITEM_THIS_ROUND, itemIDThisRound);
+		if(processItem!=null)
+		{
+			nbt.setInteger(TAG_ITEM_ID_THIS_ROUND, processItem.itemID);
+			nbt.setInteger(TAG_ITEM_DMG_THIS_ROUND, processItem.getItemDamage());
+		}
 		nbt.setInteger(TAG_ENERGY_THIS_ROUND, energyIDThisRound);
 		if (materialSlot != null)
 		{
@@ -419,7 +439,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	private static final String TAG_DARKNESS_CONTAINER = "darknessContainer";
 	private static final String TAG_TICKS_THIS_ROUND = "ticksThisRound";
 	private static final String TAG_TICKS_LEFT = "ticksLeft";
-	private static final String TAG_ITEM_THIS_ROUND = "itemID";
+	private static final String TAG_ITEM_ID_THIS_ROUND = "itemID";
+	private static final String TAG_ITEM_DMG_THIS_ROUND = "itemID";
 	private static final String TAG_ENERGY_THIS_ROUND = "energyID";
 	private static final String TAG_IS_PROCESSING = "isProcessing";
 	private static final String TAG_MATERIAL_SLOT = "materialSlot";

@@ -30,27 +30,27 @@ public class ModelElementPurifier extends ModelBase
 		body.setRotationPoint(0F, 17F, 0F);
 		body.setTextureSize(64, 32);
 		setRotation(body, 0F, 0F, 0F);
-		plate = new ModelRenderer(this, 4, 19);
-		plate.addBox(-2.5F, -5F, -2.5F, 5, 1, 5);
+		plate = new ModelRenderer(this, 0, 21);
+		plate.addBox(-1.5F, -5F, -1.5F, 3, 1, 3);
 		plate.setRotationPoint(0F, 16F, 0F);
 		plate.setTextureSize(64, 32);
 		setRotation(plate, 0F, 0F, 0F);
-		rod1 = new ModelRenderer(this, 0, 19);
+		rod1 = new ModelRenderer(this, 12, 21);
 		rod1.addBox(-1F, -6F, 3.5F, 2, 2, 2);
 		rod1.setRotationPoint(0F, 16F, 0F);
 		rod1.setTextureSize(64, 32);
 		setRotation(rod1, 0F, 0F, 0F);
-		rod2 = new ModelRenderer(this, 0, 19);
+		rod2 = new ModelRenderer(this, 12, 21);
 		rod2.addBox(-1F, -6F, -5.5F, 2, 2, 2);
 		rod2.setRotationPoint(0F, 16F, 0F);
 		rod2.setTextureSize(64, 32);
 		setRotation(rod2, 0F, 0F, 0F);
-		rod3 = new ModelRenderer(this, 0, 19);
-		rod3.addBox(3.5F, -6F, -0.5F, 2, 2, 2);
+		rod3 = new ModelRenderer(this, 12, 21);
+		rod3.addBox(3.5F, -6F, -1F, 2, 2, 2);
 		rod3.setRotationPoint(0F, 16F, 0F);
 		rod3.setTextureSize(64, 32);
 		setRotation(rod3, 0F, 0F, 0F);
-		rod4 = new ModelRenderer(this, 0, 19);
+		rod4 = new ModelRenderer(this, 12, 21);
 		rod4.addBox(-5.5F, -6F, -1F, 2, 2, 2);
 		rod4.setRotationPoint(0F, 16F, 0F);
 		rod4.setTextureSize(64, 32);
@@ -88,6 +88,30 @@ public class ModelElementPurifier extends ModelBase
 	{
 		this.render(null, 0F, 0F, -0.1F, 0F, 0F, 0.0625F);
 
+		foundation.render(0.0625F);
+		setRotation(rod4, 0F, r, 0F);
+		setRotation(rod3, 0F, r, 0F);
+		setRotation(rod2, 0F, r, 0F);
+		setRotation(rod1, 0F, r, 0F);
+	}
+	
+	public void renderPlate()
+	{
+		plate.render(0.0625F);
+	}
+	
+	public void renderWithoutPlate(float r)
+	{
+		super.render(null, 0F, 0F, -0.1F, 0F, 0F, 0.0625F);
+		setRotationAngles(0F, 0F, -0.1F, 0F, 0F, 0.0625F, null);
+		foundation.render(0.0625F);
+		body.render(0.0625F);
+		//plate.render(0.0625F);
+		rod1.render(0.0625F);
+		rod2.render(0.0625F);
+		rod3.render(0.0625F);
+		rod4.render(0.0625F);
+		
 		foundation.render(0.0625F);
 		setRotation(rod4, 0F, r, 0F);
 		setRotation(rod3, 0F, r, 0F);
