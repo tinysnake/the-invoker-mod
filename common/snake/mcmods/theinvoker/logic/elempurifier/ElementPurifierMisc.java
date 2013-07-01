@@ -2,9 +2,14 @@ package snake.mcmods.theinvoker.logic.elempurifier;
 
 import java.util.HashMap;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.RuneType;
 import snake.mcmods.theinvoker.lib.constants.TIEnergyID;
+import snake.mcmods.theinvoker.net.packet.PacketElementPurifierUpdate;
+import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 
 public class ElementPurifierMisc
 {
@@ -73,5 +78,17 @@ public class ElementPurifierMisc
 		registerRecipe(TIItems.soulRune.itemID, RuneType.FIRE.ordinal(), TIEnergyID.FIRE, DEFAULT_BOIL_TICKS);
 		registerRecipe(TIItems.soulRune.itemID, RuneType.WIND.ordinal(), TIEnergyID.WIND, DEFAULT_BOIL_TICKS);
 		registerRecipe(TIItems.soulRune.itemID, RuneType.DARKNESS.ordinal(), TIEnergyID.DARKNESS, DEFAULT_BOIL_TICKS);
+	}
+
+	public static void syncState(PacketElementPurifierUpdate p, EntityPlayer player)
+	{
+		TileEntity te = player.worldObj.getBlockTileEntity(p.x,p.y,p.z);
+		if(te instanceof TileElementPurifier)
+		{
+			TileElementPurifier tep = (TileElementPurifier)te;
+			tep.setDirection(p.direction);
+			tep.setOwnerName(p.ownerName);
+			tep.hasWork=p.hasWork;
+		}
 	}
 }

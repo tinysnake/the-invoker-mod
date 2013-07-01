@@ -1,10 +1,14 @@
 package snake.mcmods.theinvoker.inventory;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class ContainerElementPurifier extends Container
 {
@@ -35,10 +39,66 @@ public class ContainerElementPurifier extends Container
 	
 	private TileElementPurifier tep;
 
+
+	@Override
+	public void detectAndSendChanges()
+	{
+		super.detectAndSendChanges();
+		for (Object c : crafters)
+		{
+			tep.sendNetworkGUIData(this, (ICrafting)c);
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int signiture, int value)
+	{
+		super.updateProgressBar(signiture, value);
+		tep.receiveNetworkGUIData(signiture, value);
+	}
+
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer)
 	{
 		return true;
+	}
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex)
+	{
+		ItemStack itemStack = null;
+		Slot slot = (Slot)inventorySlots.get(slotIndex);
+		if (slot != null && slot.getHasStack())
+		{
+			ItemStack slotItemStack = slot.getStack();
+			itemStack = slotItemStack.copy();
+			if (slotIndex < 1)
+			{
+
+				if (!this.mergeItemStack(slotItemStack, 1, inventorySlots.size(), true))
+				{
+					return null;
+				}
+			}
+			else
+			{
+				if (!this.mergeItemStack(slotItemStack, 0, 1, false))
+				{
+					return null;
+				}
+			}
+
+			if (slotItemStack.stackSize == 0)
+			{
+				slot.putStack((ItemStack)null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+		}
+		return itemStack;
 	}
 
 }

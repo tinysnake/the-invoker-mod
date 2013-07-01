@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.tileentities;
 
+import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -11,11 +12,16 @@ import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyConsumerWrapper;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
+import snake.mcmods.theinvoker.inventory.ContainerElementPurifier;
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.items.TIItems;
+import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
 import snake.mcmods.theinvoker.lib.constants.TIEnergyID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.elempurifier.ElementPurifierMisc;
+import snake.mcmods.theinvoker.net.PacketTypeHandler;
+import snake.mcmods.theinvoker.net.packet.PacketElementPurifierUpdate;
+import snake.mcmods.theinvoker.net.packet.PacketSoulSmelterUpdate;
 
 public class TileElementPurifier extends TileTIBase implements IEnergyContainerWrapper, IEnergyConsumerWrapper, IInventory
 {
@@ -181,6 +187,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 					processItem = null;
 					energyConsumer.requestEnergy(0);
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+					sendUpdatePacket();
 				}
 				isProcessing = false;
 			}
@@ -304,8 +311,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	public void sendUpdatePacket()
 	{
-		// TODO Auto-generated method stub
-		
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128, worldObj.provider.dimensionId, PacketTypeHandler.serialize(new PacketElementPurifierUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(), getOwnerName(), this.hasWork)));
 	}
 
 	@Override
@@ -404,9 +410,11 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		return itemstack.itemID == TIItems.soulRune.itemID;
 	}
 
-	public void sendNetworkGUIData(ContainerSoulSmelter container, ICrafting c)
+	public void sendNetworkGUIData(ContainerElementPurifier container, ICrafting c)
 	{
-
+//		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAST_BOIL_TICK.ordinal(), lastBoilTicks);
+//		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.BOIL_PROGRESS.ordinal(), boilTicksLeft);
+//		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAVA_CAPACITY.ordinal(), lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0);
 	}
 
 	public void receiveNetworkGUIData(int signiture, int value)
