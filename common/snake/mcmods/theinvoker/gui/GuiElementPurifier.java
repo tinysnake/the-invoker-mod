@@ -38,6 +38,11 @@ public class GuiElementPurifier extends GuiContainer
 		int xStart = (width - xSize) / 2;
 		int yStart = (height - ySize) / 2;
 		this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
+		
+		if(tep.getIsProcessing())
+		{
+			float p = tep.getProcessProgress();
+		}
 	}
 
 }

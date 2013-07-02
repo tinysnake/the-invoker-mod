@@ -1,6 +1,5 @@
 package snake.mcmods.theinvoker.tileentities;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -13,15 +12,14 @@ import snake.mcmods.theinvoker.energy.IEnergyConsumerWrapper;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.inventory.ContainerElementPurifier;
-import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.items.TIItems;
-import snake.mcmods.theinvoker.lib.SoulSmelterGUINetwork;
+import snake.mcmods.theinvoker.lib.ElementPurifierGUINetwork;
 import snake.mcmods.theinvoker.lib.constants.TIEnergyID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.elempurifier.ElementPurifierMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketElementPurifierUpdate;
-import snake.mcmods.theinvoker.net.packet.PacketSoulSmelterUpdate;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TileElementPurifier extends TileTIBase implements IEnergyContainerWrapper, IEnergyConsumerWrapper, IInventory
 {
@@ -47,8 +45,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	private int ticksThisRound;
 	private int ticksLeft;
-	//private int itemIDThisRound;
-	//private int itemDamageThisRound;
+	// private int itemIDThisRound;
+	// private int itemDamageThisRound;
 	private ItemStack processItem;
 	private int energyIDThisRound;
 	private int idolTicks;
@@ -56,7 +54,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	public boolean hasWork;
 	public float spinValue;
 	public float floatValue;
-	
+
 	public ItemStack getProcessItem()
 	{
 		return processItem;
@@ -165,8 +163,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		setupEnergyUnit();
 		if (ticksLeft > 0)
 		{
-			spinValue+=.02;
-			floatValue+=.1;
+			spinValue += .02;
+			floatValue += .1;
 			ticksLeft--;
 			idolTicks = 0;
 		}
@@ -174,7 +172,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		{
 			if (isProcessing)
 			{
-				if (ticksLeft <= 0 && processItem !=null && energyIDThisRound > 0)
+				if (ticksLeft <= 0 && processItem != null && energyIDThisRound > 0)
 				{
 					isProcessing = false;
 					EnergyContainer container = getContainerByEnergyID(energyIDThisRound);
@@ -182,8 +180,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 					int gainValue = container.gain(value, false);
 					if (gainValue > 0)
 						container.gain(gainValue, true);
-					//itemIDThisRound = 0;
-					//energyIDThisRound = 0;
+					// itemIDThisRound = 0;
+					// energyIDThisRound = 0;
 					processItem = null;
 					energyConsumer.requestEnergy(0);
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -194,8 +192,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			else if (getIsAbleToWork())
 			{
 				isProcessing = true;
-				//itemIDThisRound = materialSlot.itemID;
-				//itemDamageThisRound = materialSlot.getItemDamage();
+				// itemIDThisRound = materialSlot.itemID;
+				// itemDamageThisRound = materialSlot.getItemDamage();
 				energyConsumer.requestEnergy(ElementPurifierMisc.getTotalBoilTicks(materialSlot.itemID, materialSlot.getItemDamage()) * MAX_REQUEST);
 				decrStackSize(0, 1);
 				hasWork = true;
@@ -267,7 +265,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			darknessContainer = EnergyContainer.readFromNBT(nbt.getCompoundTag(TAG_DARKNESS_CONTAINER), this);
 		ticksThisRound = nbt.getInteger(TAG_TICKS_THIS_ROUND);
 		ticksLeft = nbt.getInteger(TAG_TICKS_LEFT);
-		if(nbt.hasKey(TAG_ITEM_ID_THIS_ROUND))
+		if (nbt.hasKey(TAG_ITEM_ID_THIS_ROUND))
 		{
 			int itemIDThisRound = nbt.getInteger(TAG_ITEM_ID_THIS_ROUND);
 			int itemDmgThisRound = nbt.getInteger(TAG_ITEM_DMG_THIS_ROUND);
@@ -290,7 +288,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		nbt.setTag(TAG_DARKNESS_CONTAINER, darknessContainer.writeToNBT(new NBTTagCompound()));
 		nbt.setInteger(TAG_TICKS_THIS_ROUND, ticksThisRound);
 		nbt.setInteger(TAG_TICKS_LEFT, ticksLeft);
-		if(processItem!=null)
+		if (processItem != null)
 		{
 			nbt.setInteger(TAG_ITEM_ID_THIS_ROUND, processItem.itemID);
 			nbt.setInteger(TAG_ITEM_DMG_THIS_ROUND, processItem.getItemDamage());
@@ -412,14 +410,29 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	public void sendNetworkGUIData(ContainerElementPurifier container, ICrafting c)
 	{
-//		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAST_BOIL_TICK.ordinal(), lastBoilTicks);
-//		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.BOIL_PROGRESS.ordinal(), boilTicksLeft);
-//		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAVA_CAPACITY.ordinal(), lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0);
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.PROCESS_TICKS.ordinal(), ticksLeft);
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.TOTAL_TICKS.ordinal(), ticksThisRound);
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.ENERGY_ID.ordinal(), energyIDThisRound);
 	}
 
 	public void receiveNetworkGUIData(int signiture, int value)
 	{
+		ElementPurifierGUINetwork s = ElementPurifierGUINetwork.fromInt(signiture);
+		switch (s)
+		{
+			case ENERGY_ID:
+				energyIDThisRound = value;
+				break;
+			case PROCESS_TICKS:
+				ticksLeft = value;
+				break;
+			case TOTAL_TICKS:
+				ticksThisRound = value;
+				break;
+			default:
+				break;
 
+		}
 	}
 
 	@Override
