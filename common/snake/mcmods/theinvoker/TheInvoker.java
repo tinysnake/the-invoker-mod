@@ -7,6 +7,7 @@ import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.gui.TIGuiHanlder;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
+import snake.mcmods.theinvoker.logic.elempurifier.ElementPurifierMisc;
 import snake.mcmods.theinvoker.logic.soulsmelter.SoulSmelterMisc;
 import snake.mcmods.theinvoker.net.PacketHandler;
 import snake.mcmods.theinvoker.utils.others.CreativeTabTI;
@@ -61,6 +62,7 @@ public class TheInvoker
 		Lang.loadLocalizedFiles();
 
 		SoulSmelterMisc.initDefaultRecipies();
+		ElementPurifierMisc.initDefaultRecipies();
 	}
 
 	@PostInit

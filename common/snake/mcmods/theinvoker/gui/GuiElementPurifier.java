@@ -12,6 +12,9 @@ import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 
 public class GuiElementPurifier extends GuiContainer
 {
+	private static final int INDICATOR_SIZE = 22;
+	private static final int INDICATOR_X = 78;
+	private static final int INDICATOR_Y = 4;
 	
 	public GuiElementPurifier(InventoryPlayer player, TileElementPurifier tep)
 	{
@@ -20,9 +23,9 @@ public class GuiElementPurifier extends GuiContainer
 		xSize = 178;
 		ySize = 142;
 	}
-	
+
 	private TileElementPurifier tep;
-	
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y)
 	{
@@ -38,10 +41,12 @@ public class GuiElementPurifier extends GuiContainer
 		int xStart = (width - xSize) / 2;
 		int yStart = (height - ySize) / 2;
 		this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
-		
-		if(tep.getIsProcessing())
+
+		if (tep.getIsProcessing())
 		{
-			float p = tep.getProcessProgress();
+			int iy = (int)Math.floor(tep.getProcessProgress() / 0.125F) * INDICATOR_SIZE;
+			int ix = 178;
+			this.drawTexturedModalRect(xStart + INDICATOR_X, yStart + INDICATOR_Y, ix, iy, INDICATOR_SIZE, INDICATOR_SIZE);
 		}
 	}
 

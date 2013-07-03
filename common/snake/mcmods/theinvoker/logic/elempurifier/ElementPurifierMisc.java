@@ -38,7 +38,8 @@ public class ElementPurifierMisc
 
 	public static boolean getIsValidRecipe(int itemID, int damageVal)
 	{
-		return boilRegistry.containsKey(itemID);
+		String key = itemID + ":" + damageVal;
+		return boilRegistry.containsKey(key);
 	}
 
 	public static int getEnergyID(int itemID)

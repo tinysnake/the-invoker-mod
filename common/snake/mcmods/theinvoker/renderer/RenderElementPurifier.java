@@ -23,12 +23,14 @@ public class RenderElementPurifier extends RenderTileBase
 	public RenderElementPurifier()
 	{
 		model = new ModelElementPurifier();
-		ghostItemRenderer = new RenderItem(){
+		ghostItemRenderer = new RenderItem()
+		{
 			@Override
-            public boolean shouldBob() {
+			public boolean shouldBob()
+			{
 
-                return false;
-            };
+				return false;
+			};
 		};
 		ghostItemRenderer.setRenderManager(RenderManager.instance);
 	}
@@ -51,7 +53,7 @@ public class RenderElementPurifier extends RenderTileBase
 			GL11.glScalef(1F, -1F, -1F);
 			GL11.glRotatef(angle, 0F, 1F, 0F);
 			Minecraft.getMinecraft().renderEngine.bindTexture(Textures.MODEL_ELEMENT_PURIFIER);
-			if(tep.hasWork)
+			if (tep.hasWork)
 			{
 				float shockX = -.0125F + tep.worldObj.rand.nextFloat() * .025F;
 				float shockZ = -.0125F + tep.worldObj.rand.nextFloat() * .025F;
@@ -69,23 +71,25 @@ public class RenderElementPurifier extends RenderTileBase
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glPopMatrix();
 
-			if (tep.getProcessItem() != null)
+			if (tep.getIsProcessing() && tep.getProcessItem() != null)
 			{
 
 				GL11.glPushMatrix();
 				EntityItem ghostItem = new EntityItem(tep.worldObj);
 				ghostItem.hoverStart = 0.0F;
 				ghostItem.setEntityItemStack(tep.getProcessItem());
-				//ghostItem.setEntityItemStack(new ItemStack(TIItems.totem, 1, 1));
-				//ghostItem.setEntityItemStack(new ItemStack(Block.blockDiamond));
+				// ghostItem.setEntityItemStack(new ItemStack(TIItems.totem, 1,
+				// 1));
+				// ghostItem.setEntityItemStack(new
+				// ItemStack(Block.blockDiamond));
 				translateGhostItem(ghostItem.getEntityItem(), x, y, z);
-				float timeFactor = ((float)(System.currentTimeMillis()&0x3FFFL)/0x3FFFL);
+				float timeFactor = ((float)(System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
 				float rotationAngle = 720.0F * timeFactor;
 				float floatHeight = (float)Math.sin(tep.floatValue);
 				float scaleFactor = getGhostItemScaleFactor(ghostItem.getEntityItem());
 				GL11.glScalef(scaleFactor, scaleFactor, scaleFactor);
 				GL11.glRotatef(rotationAngle, 0, .8F, 0);
-				GL11.glTranslatef(0F, 0.06F*floatHeight, 0F);
+				GL11.glTranslatef(0F, 0.06F * floatHeight, 0F);
 				ghostItemRenderer.doRenderItem(ghostItem, 0, 0, 0, 0, 0);
 				GL11.glPopMatrix();
 			}
@@ -98,11 +102,11 @@ public class RenderElementPurifier extends RenderTileBase
 		{
 			if (item.getItem() instanceof ItemBlock)
 			{
-				GL11.glTranslatef((float)x+.5F, (float)y+ .96F, (float)z+.5F);
+				GL11.glTranslatef((float)x + .5F, (float)y + .96F, (float)z + .5F);
 			}
 			else
 			{
-				GL11.glTranslatef((float)x+.5F, (float)y+ .94F, (float)z+.5F);
+				GL11.glTranslatef((float)x + .5F, (float)y + .94F, (float)z + .5F);
 			}
 		}
 	}

@@ -20,7 +20,7 @@ public class PacketElementPurifierUpdate extends PacketTileEntityUpdate
 	public PacketElementPurifierUpdate(int x, int y, int z, int direction, String ownerName, boolean hasWork)
 	{
 		super(x, y, z, direction, ownerName);
-		this.type = PacketTypeHandler.SOUL_SMELTER_UPDATE;
+		this.type = PacketTypeHandler.ELEMENT_PURIFIER;
 		this.hasWork = hasWork;
 	}
 

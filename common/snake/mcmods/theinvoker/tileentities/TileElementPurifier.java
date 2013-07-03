@@ -45,8 +45,6 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	private int ticksThisRound;
 	private int ticksLeft;
-	// private int itemIDThisRound;
-	// private int itemDamageThisRound;
 	private ItemStack processItem;
 	private int energyIDThisRound;
 	private int idolTicks;
@@ -62,7 +60,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	public boolean getIsProcessing()
 	{
-		return isProcessing;
+		return ticksLeft > 0;
 	}
 
 	public float getProcessProgress()
@@ -180,10 +178,11 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 					int gainValue = container.gain(value, false);
 					if (gainValue > 0)
 						container.gain(gainValue, true);
-					// itemIDThisRound = 0;
-					// energyIDThisRound = 0;
+					energyIDThisRound = 0;
 					processItem = null;
 					energyConsumer.requestEnergy(0);
+					ticksThisRound = 0;
+					hasWork = getIsAbleToWork();
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					sendUpdatePacket();
 				}
@@ -192,9 +191,13 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			else if (getIsAbleToWork())
 			{
 				isProcessing = true;
-				// itemIDThisRound = materialSlot.itemID;
-				// itemDamageThisRound = materialSlot.getItemDamage();
-				energyConsumer.requestEnergy(ElementPurifierMisc.getTotalBoilTicks(materialSlot.itemID, materialSlot.getItemDamage()) * MAX_REQUEST);
+				processItem = materialSlot.copy();
+				processItem.stackSize = 1;
+				energyIDThisRound = ElementPurifierMisc.getEnergyID(materialSlot.itemID, materialSlot.getItemDamage());
+				int boilTicks = ElementPurifierMisc.getTotalBoilTicks(materialSlot.itemID, materialSlot.getItemDamage());
+				energyConsumer.requestEnergy(boilTicks * MAX_REQUEST);
+				ticksThisRound = boilTicks;
+				ticksLeft = boilTicks;
 				decrStackSize(0, 1);
 				hasWork = true;
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -273,6 +276,10 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		}
 		energyIDThisRound = nbt.getInteger(TAG_ENERGY_THIS_ROUND);
 		isProcessing = nbt.getBoolean(TAG_IS_PROCESSING);
+		if(nbt.hasKey(TAG_MATERIAL_SLOT))
+		{
+			materialSlot = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(TAG_MATERIAL_SLOT));
+		}
 		setupEnergyUnit();
 	}
 
