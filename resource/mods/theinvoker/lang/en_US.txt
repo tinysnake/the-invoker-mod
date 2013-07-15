@@ -1,3 +1,8 @@
+energy.soul.name=灵魂
+energy.ice.name=冰魂
+energy.fire.name=火魂
+energy.wind.name=风魂
+energy.darkness.name=暗魂
 itemGroup.theinvoker=召唤者
 item.totem_soul_attractive.name=摄魂图腾
 item.totem_soul.name=灵魂图腾

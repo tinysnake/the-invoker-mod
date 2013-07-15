@@ -25,7 +25,7 @@ public class EnergyConsumer extends EnergyUnit
 	{
 		if (energyRequesting > 0)
 		{
-			int accepted = energyRequesting - energyFlow < 0 ? energyRequesting : energyRequesting - energyFlow;
+			int accepted = energyRequesting - energyFlow <= 0 ? energyRequesting : energyFlow;
 			energyRequesting -= accepted;
 			EnergyUtils.fireEvent(new EnergyConsumerEvent.EnergyAcceptedEvent(getTileEntity().worldObj, this, getTileEntity().xCoord, getTileEntity().yCoord, getTileEntity().zCoord, accepted));
 		}

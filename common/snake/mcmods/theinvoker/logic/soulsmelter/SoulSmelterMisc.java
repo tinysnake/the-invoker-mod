@@ -15,7 +15,7 @@ public class SoulSmelterMisc
 {
 	private static final int SOUL_SHARD_BOIL_TICKS = 50;
 
-	private static final int SOUL_SHARD_LAVA_COST = 20;
+	private static final int SOUL_SHARD_LAVA_COST = 5;
 
 	private static final HashMap<String, Integer> boilRegistry = new HashMap<String, Integer>();
 

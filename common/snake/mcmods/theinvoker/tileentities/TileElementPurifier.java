@@ -43,8 +43,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	private ItemStack materialSlot;
 
-	private int ticksThisRound;
-	private int ticksLeft;
+	private int energyConsumingThisRound;
+	private int energyConsumingLeft;
 	private ItemStack processItem;
 	private int energyIDThisRound;
 	private int idolTicks;
@@ -60,12 +60,17 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	public boolean getIsProcessing()
 	{
-		return ticksLeft > 0;
+		return energyConsumingLeft > 0;
 	}
 
 	public float getProcessProgress()
 	{
-		return (float)(ticksThisRound - ticksLeft) / ticksThisRound;
+		return (float)(energyConsumingThisRound - energyConsumingLeft) / energyConsumingThisRound;
+	}
+	
+	public ItemStack getMaterialSlot()
+	{
+		return materialSlot;
 	}
 
 	@Override
@@ -159,18 +164,18 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	{
 		super.updateEntity();
 		setupEnergyUnit();
-		if (ticksLeft > 0)
+		if (energyConsumingLeft > 0)
 		{
 			spinValue += .02;
 			floatValue += .1;
-			ticksLeft--;
 			idolTicks = 0;
+			energyConsumingLeft = energyConsumer.getEnergyIsRequesting();
 		}
 		else if (idolTicks <= 0)
 		{
 			if (isProcessing)
 			{
-				if (ticksLeft <= 0 && processItem != null && energyIDThisRound > 0)
+				if (energyConsumingLeft <= 0 && processItem != null && energyIDThisRound > 0)
 				{
 					isProcessing = false;
 					EnergyContainer container = getContainerByEnergyID(energyIDThisRound);
@@ -181,7 +186,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 					energyIDThisRound = 0;
 					processItem = null;
 					energyConsumer.requestEnergy(0);
-					ticksThisRound = 0;
+					energyConsumingThisRound = 0;
 					hasWork = getIsAbleToWork();
 					this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 					sendUpdatePacket();
@@ -195,9 +200,9 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 				processItem.stackSize = 1;
 				energyIDThisRound = ElementPurifierMisc.getEnergyID(materialSlot.itemID, materialSlot.getItemDamage());
 				int boilTicks = ElementPurifierMisc.getTotalBoilTicks(materialSlot.itemID, materialSlot.getItemDamage());
-				energyConsumer.requestEnergy(boilTicks * MAX_REQUEST);
-				ticksThisRound = boilTicks;
-				ticksLeft = boilTicks;
+				energyConsumingThisRound = boilTicks * MAX_REQUEST;
+				energyConsumingLeft = boilTicks * MAX_REQUEST;
+				energyConsumer.requestEnergy(energyConsumingThisRound);
 				decrStackSize(0, 1);
 				hasWork = true;
 				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -266,8 +271,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			windContainer = EnergyContainer.readFromNBT(nbt.getCompoundTag(TAG_WIND_CONTAINER), this);
 		if (nbt.hasKey(TAG_DARKNESS_CONTAINER))
 			darknessContainer = EnergyContainer.readFromNBT(nbt.getCompoundTag(TAG_DARKNESS_CONTAINER), this);
-		ticksThisRound = nbt.getInteger(TAG_TICKS_THIS_ROUND);
-		ticksLeft = nbt.getInteger(TAG_TICKS_LEFT);
+		energyConsumingThisRound = nbt.getInteger(TAG_TICKS_THIS_ROUND);
+		energyConsumingLeft = nbt.getInteger(TAG_TICKS_LEFT);
 		if (nbt.hasKey(TAG_ITEM_ID_THIS_ROUND))
 		{
 			int itemIDThisRound = nbt.getInteger(TAG_ITEM_ID_THIS_ROUND);
@@ -293,8 +298,8 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		nbt.setTag(TAG_FIRE_CONTAINER, fireContainer.writeToNBT(new NBTTagCompound()));
 		nbt.setTag(TAG_WIND_CONTAINER, windContainer.writeToNBT(new NBTTagCompound()));
 		nbt.setTag(TAG_DARKNESS_CONTAINER, darknessContainer.writeToNBT(new NBTTagCompound()));
-		nbt.setInteger(TAG_TICKS_THIS_ROUND, ticksThisRound);
-		nbt.setInteger(TAG_TICKS_LEFT, ticksLeft);
+		nbt.setInteger(TAG_TICKS_THIS_ROUND, energyConsumingThisRound);
+		nbt.setInteger(TAG_TICKS_LEFT, energyConsumingLeft);
 		if (processItem != null)
 		{
 			nbt.setInteger(TAG_ITEM_ID_THIS_ROUND, processItem.itemID);
@@ -417,9 +422,15 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 
 	public void sendNetworkGUIData(ContainerElementPurifier container, ICrafting c)
 	{
-		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.PROCESS_TICKS.ordinal(), ticksLeft);
-		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.TOTAL_TICKS.ordinal(), ticksThisRound);
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.PROCESS_TICKS.ordinal(), energyConsumingLeft);
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.TOTAL_TICKS.ordinal(), energyConsumingThisRound);
 		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.ENERGY_ID.ordinal(), energyIDThisRound);
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.SOUL_REQUESTING.ordinal(), energyConsumer.getEnergyIsRequesting());
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.SOUL_LEVEL.ordinal(), soulContainer.getEnergyLevel());
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.ICE_LEVEL.ordinal(), iceContainer.getEnergyLevel());
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.FIRE_LEVEL.ordinal(), fireContainer.getEnergyLevel());
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.WIND_LEVEL.ordinal(), windContainer.getEnergyLevel());
+		c.sendProgressBarUpdate(container, ElementPurifierGUINetwork.DARKNESS_LEVEL.ordinal(), soulContainer.getEnergyLevel());
 	}
 
 	public void receiveNetworkGUIData(int signiture, int value)
@@ -431,10 +442,28 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 				energyIDThisRound = value;
 				break;
 			case PROCESS_TICKS:
-				ticksLeft = value;
+				energyConsumingLeft = value;
 				break;
 			case TOTAL_TICKS:
-				ticksThisRound = value;
+				energyConsumingThisRound = value;
+				break;
+			case SOUL_REQUESTING:
+				energyConsumer.requestEnergy(value);
+				break;
+			case SOUL_LEVEL:
+				soulContainer.setEnergyLevel(value);
+				break;
+			case ICE_LEVEL:
+				iceContainer.setEnergyLevel(value);
+				break;
+			case FIRE_LEVEL:
+				fireContainer.setEnergyLevel(value);
+				break;
+			case WIND_LEVEL:
+				windContainer.setEnergyLevel(value);
+				break;
+			case DARKNESS_LEVEL:
+				darknessContainer.setEnergyLevel(value);
 				break;
 			default:
 				break;

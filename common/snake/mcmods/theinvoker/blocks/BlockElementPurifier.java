@@ -35,24 +35,24 @@ public class BlockElementPurifier extends BlockContainer
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean renderAsNormalBlock()
 	{
-	    return false;
+		return false;
 	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack itemStack)
 	{
 		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if(te instanceof TileElementPurifier)
+		if (te instanceof TileElementPurifier)
 		{
 			((TileElementPurifier)te).setDirection(Utils.getPlaceDirection(entity));
 			((TileElementPurifier)te).setOwnerName(entity.getEntityName());
 		}
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
@@ -60,10 +60,25 @@ public class BlockElementPurifier extends BlockContainer
 			player.openGui(TheInvoker.instance, TIGuiID.ELEMENT_PURIFIER, world, x, y, z);
 		return true;
 	}
-	
+
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	{
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if (te instanceof TileElementPurifier)
+		{
+			TileElementPurifier tep = (TileElementPurifier)te;
+			if (tep.getMaterialSlot() != null && tep.getMaterialSlot().stackSize > 0)
+			{
+				dropBlockAsItem_do(tep.worldObj, x, y, z, tep.getMaterialSlot());
+			}
+		}
+		super.breakBlock(world, x, y, z, id, metadata);
+	}
+
 	@Override
 	public int getRenderType()
 	{
-	    return TIRenderID.ELEMENT_PURIFIER;
+		return TIRenderID.ELEMENT_PURIFIER;
 	}
 }
