@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
@@ -44,14 +45,13 @@ public class TotemCenter
 
 	public boolean updateLogicWhileEntityLivingDrops(LivingDropsEvent event)
 	{
-		EntityLiving e = event.entityLiving;
+		EntityLivingBase e = event.entityLiving;
 		if (e == null || e.isChild())
 			return false;
 		TileTotem tt = getMostPowerfulTotemNearBy(e);
 		if (tt != null && tt.getOwnerName() != null)
 		{
 			event.setCanceled(true);
-			e.experienceValue = 0;
 			TotemMisc.dropItems(e, tt, tt.getOwnerName().equals(Utils.getActualDamageSource(event.source).getEntityName()));
 			entitiesToRemove.add(new AbstractMap.SimpleEntry<Entity, Integer>(e, 25));
 			return true;
@@ -59,7 +59,7 @@ public class TotemCenter
 		return false;
 	}
 
-	private TileTotem getMostPowerfulTotemNearBy(EntityLiving e)
+	private TileTotem getMostPowerfulTotemNearBy(Entity e)
 	{
 		TileTotem ltt = null;
 		for (TileTotem tt : totems)

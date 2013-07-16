@@ -17,7 +17,7 @@ public class MiscEventCenter
 			EntityPlayer p = Minecraft.getMinecraft().thePlayer;
 			if (e.entity == p)
 			{
-				p.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
+				p.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_WELCOME));
 			}
 		}
 	}

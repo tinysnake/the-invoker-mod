@@ -2,7 +2,7 @@ package snake.mcmods.theinvoker.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;
@@ -31,7 +31,7 @@ public abstract class Block2HeightBase extends BlockContainer
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entityLiving, ItemStack itemStack)
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
 	{
 		TileTIBase te = (TileTIBase)world.getBlockTileEntity(x, y, z);
 		te.setOwnerName(entityLiving.getEntityName());

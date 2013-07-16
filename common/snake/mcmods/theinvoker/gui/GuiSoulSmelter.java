@@ -51,7 +51,7 @@ public class GuiSoulSmelter extends GuiContainer
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(Textures.GUI_SOUL_SMELTER);
+		this.mc.func_110434_K().func_110577_a(Textures.GUI_SOUL_SMELTER);
 		int xStart = (width - xSize) / 2;
 		int yStart = (height - ySize) / 2;
 		this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
@@ -75,7 +75,7 @@ public class GuiSoulSmelter extends GuiContainer
 			String textureSheet = lq.getTextureSheet();
 			int start = 0;
 			int lavaH = Utils.getScaledLiquidAmount(lq, soulSmelter.getLavaTank().getCapacity(), TANK_HEIGHT);
-			mc.renderEngine.bindTexture(textureSheet);
+			this.mc.func_110434_K().func_110577_a(textureSheet);
 
 			while (lavaH > 0)
 			{
@@ -94,7 +94,7 @@ public class GuiSoulSmelter extends GuiContainer
 				start += h;
 			}
 
-			mc.renderEngine.bindTexture(Textures.GUI_SOUL_SMELTER);
+			this.mc.func_110434_K().func_110577_a(Textures.GUI_SOUL_SMELTER);
 			this.drawTexturedModalRect(xStart + TANK_X, yStart + TANK_Y - TANK_HEIGHT, 178, 0, 8, TANK_HEIGHT);
 		}
 	}

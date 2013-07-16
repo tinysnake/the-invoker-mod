@@ -3,6 +3,7 @@ package snake.mcmods.theinvoker.blocks;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +44,7 @@ public class BlockElementPurifier extends BlockContainer
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving entity, ItemStack itemStack)
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
 	{
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te instanceof TileElementPurifier)

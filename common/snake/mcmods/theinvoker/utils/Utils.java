@@ -1,11 +1,15 @@
 package snake.mcmods.theinvoker.utils;
 
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.liquids.LiquidStack;
 
@@ -47,6 +51,17 @@ public class Utils
 		return e;
 	}
 
+	public static String getTruelyUnlocalizedName(Block b)
+	{
+		String n = b.getUnlocalizedName();
+		return n.substring(n.indexOf(".") + 1);
+	}
+
+	public static ResourceLocation WrapResourcePath(String path)
+	{
+		return new ResourceLocation(TIGlobal.MOD_ID.toLowerCase(), path);
+	}
+
 	public static int getScaledLiquidAmount(LiquidStack ls, int maxAmount, int scaleFactor)
 	{
 		if (ls == null)
@@ -54,7 +69,7 @@ public class Utils
 		return (int)(ls.amount * scaleFactor / (float)maxAmount);
 	}
 
-	public static int getPlaceDirection(EntityLiving entityLiving)
+	public static int getPlaceDirection(Entity entityLiving)
 	{
 		int direction = 2;
 		int facing = MathHelper.floor_double(entityLiving.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;

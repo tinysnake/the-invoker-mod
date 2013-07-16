@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.config.Lang;
@@ -14,6 +15,7 @@ import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.EvilTouchMisc;
 import snake.mcmods.theinvoker.logic.SoulStoneMisc;
 import snake.mcmods.theinvoker.tileentities.TileSoulStone;
+import snake.mcmods.theinvoker.utils.Utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,7 +33,7 @@ public class BlockSoulStone extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
 	{
-		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + getUnlocalizedName2());
+		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(this));
 	}
 
 	public void setupTileEntity(World world, int x, int y, int z, String playerName)
@@ -79,7 +81,7 @@ public class BlockSoulStone extends BlockContainer
 				else
 				{
 					if (world.isRemote)
-						player.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+						player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
 				}
 			}
 		}
