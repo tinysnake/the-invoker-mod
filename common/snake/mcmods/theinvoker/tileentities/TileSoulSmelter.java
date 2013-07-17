@@ -248,7 +248,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack)
+	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
 		if (itemstack == null)
 			return false;

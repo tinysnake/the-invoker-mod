@@ -1,6 +1,7 @@
 package snake.mcmods.theinvoker.logic.totems;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import scala.Console;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
@@ -28,7 +29,7 @@ public class TotemMisc
 		return TOTEM_EFFECTIVE_RANGES[metadata.ordinal()];
 	}
 
-	public static void dropItems(EntityLiving e, TileTotem tt, boolean doDropRune)
+	public static void dropItems(EntityLivingBase e, TileTotem tt, boolean doDropRune)
 	{
 		TotemType totemType = tt.getType();
 
@@ -47,7 +48,7 @@ public class TotemMisc
 		}
 	}
 
-	private static boolean tryDropEssence(EntityLiving e)
+	private static boolean tryDropEssence(EntityLivingBase e)
 	{
 		int chance = 0;
 		if (e.getEntityName() == "Blaze")

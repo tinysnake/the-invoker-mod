@@ -2,7 +2,7 @@ package snake.mcmods.theinvoker.lib.constants;
 
 import java.util.HashMap;
 
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import snake.mcmods.theinvoker.lib.RuneType;
 
 public class LivingDropMaps
@@ -112,7 +112,7 @@ public class LivingDropMaps
 		RUNE_TYPE_DROP_MAP.put("Villager", null);
 	}
 
-	public static int getSoulDropQuantityByName(EntityLiving e)
+	public static int getSoulDropQuantityByName(EntityLivingBase e)
 	{
 		if (e != null && SOUL_SHARD_DROP_MAP.containsKey(e.getEntityName()))
 		{
@@ -123,7 +123,7 @@ public class LivingDropMaps
 		return 0;
 	}
 
-	public static int getRuneDropQuantityByName(EntityLiving e)
+	public static int getRuneDropQuantityByName(EntityLivingBase e)
 	{
 		if (e != null && RUNE_DROP_MAP.containsKey(e.getEntityName()))
 		{
@@ -133,14 +133,14 @@ public class LivingDropMaps
 		return 0;
 	}
 
-	public static boolean isRuneTypeLockedFor(EntityLiving e)
+	public static boolean isRuneTypeLockedFor(EntityLivingBase e)
 	{
 		if (e != null && RUNE_TYPE_DROP_MAP.containsKey(e.getEntityName()))
 			return RUNE_TYPE_DROP_MAP.get(e.getEntityName()) != null;
 		return false;
 	}
 
-	public static RuneType getRuneTypeBy(EntityLiving e)
+	public static RuneType getRuneTypeBy(EntityLivingBase e)
 	{
 		if (e == null)
 			return RuneType.NEUTRAL;

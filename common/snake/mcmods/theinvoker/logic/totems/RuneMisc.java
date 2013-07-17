@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.RuneType;
@@ -109,7 +110,7 @@ public class RuneMisc
 		return rand.nextInt(100) <= EXTRA_CHANCE_OF_TOTEM_RUNE;
 	}
 
-	public static int dropSoulShardsBy(EntityLiving e, TotemType type)
+	public static int dropSoulShardsBy(EntityLivingBase e, TotemType type)
 	{
 		int drops = LivingDropMaps.getSoulDropQuantityByName(e);
 		drops = Math.round(drops * SOUL_DROP_TOTEM_TYPE_MODIFIERS[type.ordinal()]);
@@ -118,7 +119,7 @@ public class RuneMisc
 		return drops;
 	}
 
-	public static int dropRunesBy(EntityLiving e, TotemType type)
+	public static int dropRunesBy(EntityLivingBase e, TotemType type)
 	{
 		int dropChance = RUNE_OF_TOTEM_DROP_CHANCE[type.ordinal()];
 		if (dropChance <= e.worldObj.rand.nextInt(TIGlobal.NORMAL_CHANCE_MULTIPLIER))
@@ -143,7 +144,7 @@ public class RuneMisc
 		return drops;
 	}
 
-	public static int dropBonusRunes(EntityLiving e, TotemType type)
+	public static int dropBonusRunes(EntityLivingBase e, TotemType type)
 	{
 		if (type.isSomeKindOfRuneTotem() && getExtraDropChanceOfTotemRune(e.worldObj.rand))
 		{

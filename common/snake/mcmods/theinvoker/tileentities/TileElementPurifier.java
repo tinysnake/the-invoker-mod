@@ -412,7 +412,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	}
 
 	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack)
+	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
 		if (itemstack == null)
 			return false;
