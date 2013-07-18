@@ -7,7 +7,7 @@ public class Lang
 {
 	public final static String[] LOCALIZE_FILES = { "en_US", "zh_CN" };
 
-	private final static String FILE_DIR = "/mods/" + TIGlobal.MOD_ID + "/lang/";
+	private final static String FILE_DIR = "/assets/" + TIGlobal.MOD_ID + "/lang/";
 
 	public static void loadLocalizedFiles()
 	{

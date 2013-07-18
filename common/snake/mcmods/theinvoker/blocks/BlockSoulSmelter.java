@@ -1,10 +1,8 @@
 package snake.mcmods.theinvoker.blocks;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,8 +11,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGuiID;
@@ -139,11 +138,11 @@ public class BlockSoulSmelter extends BlockContainer
 			if (te instanceof TileSoulSmelter)
 			{
 				TileSoulSmelter soulSmelter = (TileSoulSmelter)te;
-				int amount = soulSmelter.fill(0, new LiquidStack(Block.lavaStill, LiquidContainerRegistry.BUCKET_VOLUME), false);
+				int amount = soulSmelter.fill(null, new FluidStack(FluidRegistry.LAVA.getID(), FluidContainerRegistry.BUCKET_VOLUME), false);
 				if (amount > 0)
 				{
-					soulSmelter.fill(0, new LiquidStack(Block.lavaStill, LiquidContainerRegistry.BUCKET_VOLUME), true);
-					if(!player.capabilities.isCreativeMode)
+					soulSmelter.fill(null, new FluidStack(FluidRegistry.LAVA.getID(), FluidContainerRegistry.BUCKET_VOLUME), true);
+					if (!player.capabilities.isCreativeMode)
 						player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Item.bucketEmpty);
 				}
 				return true;
@@ -171,10 +170,10 @@ public class BlockSoulSmelter extends BlockContainer
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		if (te != null && te instanceof TileSoulSmelter)
 		{
-			LiquidStack ls = ((TileSoulSmelter)te).getLavaTank().getLiquid();
+			FluidStack ls = ((TileSoulSmelter)te).getLavaTank().getFluid();
 			if (ls != null && ls.amount > 0)
 			{
-				return (int)Math.min(15, ls.amount * 15F / LiquidContainerRegistry.BUCKET_VOLUME);
+				return (int)Math.min(15, ls.amount * 15F / FluidContainerRegistry.BUCKET_VOLUME);
 			}
 		}
 		return super.getLightValue(world, x, y, z);

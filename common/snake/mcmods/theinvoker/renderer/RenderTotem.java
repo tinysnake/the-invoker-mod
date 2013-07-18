@@ -46,7 +46,7 @@ public class RenderTotem extends RenderTileBase
 		GL11.glTranslatef((float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F);
 		GL11.glScalef(1F, -1F, -1F);
 		GL11.glRotatef(angle, 0F, 1F, 0F);
-		Minecraft.getMinecraft().renderEngine.func_110577_a(resources.get(tileentity.getBlockMetadata()));
+		Minecraft.getMinecraft().renderEngine.func_110577_a(resources.get(tileentity.getBlockMetadata()-1));
 		model.render();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();

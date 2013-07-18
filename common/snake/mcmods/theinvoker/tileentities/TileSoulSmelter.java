@@ -1,6 +1,5 @@
 package snake.mcmods.theinvoker.tileentities;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -8,11 +7,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.ILiquidTank;
-import net.minecraftforge.liquids.ITankContainer;
-import net.minecraftforge.liquids.LiquidContainerRegistry;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
@@ -24,9 +25,9 @@ import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketSoulSmelterUpdate;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class TileSoulSmelter extends TileTIBase implements IInventory, ITankContainer, IEnergyContainerWrapper
+public class TileSoulSmelter extends TileTIBase implements IInventory, IFluidHandler, IEnergyContainerWrapper
 {
-	public static final int MAX_LIQUID = LiquidContainerRegistry.BUCKET_VOLUME * 3;
+	public static final int MAX_LIQUID = FluidContainerRegistry.BUCKET_VOLUME * 3;
 
 	public static final int MAX_ENERGY_CAPACITY = 200;
 
@@ -37,7 +38,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	public TileSoulSmelter()
 	{
 		setDirection(ForgeDirection.SOUTH.ordinal());
-		lavaTank = new LiquidTank(Block.lavaStill.blockID, 0, MAX_LIQUID, this);
+		lavaTank = new FluidTank(FluidRegistry.LAVA, 0, MAX_LIQUID);
 	}
 
 	private boolean isProccessing;
@@ -46,7 +47,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	private int idolTicks;
 	private int processingItemID;
 	private int processingItemDamage;
-	private LiquidTank lavaTank;
+	private FluidTank lavaTank;
 	private ItemStack inputSlot;
 	private EnergyContainer energyContainer;
 
@@ -73,7 +74,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 		return energyContainer;
 	}
 
-	public LiquidTank getLavaTank()
+	public FluidTank getLavaTank()
 	{
 		return lavaTank;
 	}
@@ -90,7 +91,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public boolean getIsAbleToWork()
 	{
-		return (inputSlot != null && lavaTank.getLiquid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID, inputSlot.getItemDamage()) && lavaTank.getLiquid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID, inputSlot.getItemDamage()) && energyContainer.getEnergyCapacity() > energyContainer.getEnergyLevel());
+		return (inputSlot != null && lavaTank.getFluid() != null && SoulSmelterMisc.getIsValidRecipe(inputSlot.itemID, inputSlot.getItemDamage()) && lavaTank.getFluid().amount >= SoulSmelterMisc.getTotalBoilTicks(inputSlot.itemID, inputSlot.getItemDamage()) && energyContainer.getEnergyCapacity() > energyContainer.getEnergyLevel());
 	}
 
 	public boolean getHasWork()
@@ -118,7 +119,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 				isProccessing = false;
 				if (processingItemID > 0)
 				{
-					this.drain(0, SoulSmelterMisc.getLavaBurnAmount(processingItemID, processingItemDamage), true);
+					this.drain(null, SoulSmelterMisc.getLavaBurnAmount(processingItemID, processingItemDamage), true);
 					energyContainer.gain(SoulSmelterMisc.ENERGY_PER_ITEM, true);
 				}
 				processingItemID = 0;
@@ -257,57 +258,11 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	}
 
 	@Override
-	public int fill(ForgeDirection from, LiquidStack resource, boolean doFill)
-	{
-		return fill(0, resource, doFill);
-	}
-
-	@Override
-	public int fill(int tankIndex, LiquidStack resource, boolean doFill)
-	{
-		if (resource.itemID == Block.lavaStill.blockID)
-		{
-			int result = lavaTank.fill(resource, doFill);
-			if (doFill)
-				sendUpdatePacket();
-			return result;
-		}
-		return 0;
-	}
-
-	@Override
-	public LiquidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
-	{
-		return drain(0, maxDrain, doDrain);
-	}
-
-	@Override
-	public LiquidStack drain(int tankIndex, int maxDrain, boolean doDrain)
-	{
-		LiquidStack result = lavaTank.drain(maxDrain, doDrain);
-		if (doDrain)
-			sendUpdatePacket();
-		return result;
-	}
-
-	@Override
-	public ILiquidTank[] getTanks(ForgeDirection direction)
-	{
-		return new ILiquidTank[] { lavaTank };
-	}
-
-	@Override
-	public ILiquidTank getTank(ForgeDirection direction, LiquidStack type)
-	{
-		return type.itemID == Block.lavaStill.blockID ? lavaTank : null;
-	}
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbtCompound)
 	{
 		super.readFromNBT(nbtCompound);
 		if (nbtCompound.hasKey(TAG_LAVA_TANK))
-			lavaTank.setLiquid(LiquidStack.loadLiquidStackFromNBT(nbtCompound.getCompoundTag(TAG_LAVA_TANK)));
+			lavaTank.setFluid(FluidStack.loadFluidStackFromNBT(nbtCompound.getCompoundTag(TAG_LAVA_TANK)));
 		if (nbtCompound.hasKey(TAG_ENERGY_CONTAINER))
 			energyContainer = EnergyContainer.readFromNBT(nbtCompound.getCompoundTag(TAG_ENERGY_CONTAINER), this);
 		if (nbtCompound.hasKey(TAG_INPUT_SLOT))
@@ -348,7 +303,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	{
 		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAST_BOIL_TICK.ordinal(), lastBoilTicks);
 		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.BOIL_PROGRESS.ordinal(), boilTicksLeft);
-		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAVA_CAPACITY.ordinal(), lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0);
+		c.sendProgressBarUpdate(container, SoulSmelterGUINetwork.LAVA_CAPACITY.ordinal(), lavaTank.getFluid() != null ? lavaTank.getFluid().amount : 0);
 	}
 
 	public void receiveNetworkGUIData(int signiture, int value)
@@ -362,10 +317,10 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 				this.boilTicksLeft = value;
 				break;
 			case LAVA_CAPACITY:
-				if (this.lavaTank.getLiquid() == null)
-					this.lavaTank.setLiquid(new LiquidStack(Block.lavaStill.blockID, value));
+				if (this.lavaTank.getFluid() == null)
+					this.lavaTank.setFluid(new FluidStack(FluidRegistry.LAVA, value));
 				else
-					this.lavaTank.getLiquid().amount = value;
+					this.lavaTank.getFluid().amount = value;
 				break;
 			default:
 				break;
@@ -389,7 +344,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 
 	public void sendUpdatePacket()
 	{
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128, worldObj.provider.dimensionId, PacketTypeHandler.serialize(new PacketSoulSmelterUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(), getOwnerName(), this.hasWork, lavaTank.getLiquid() != null ? lavaTank.getLiquid().amount : 0)));
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128, worldObj.provider.dimensionId, PacketTypeHandler.serialize(new PacketSoulSmelterUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(), getOwnerName(), this.hasWork, lavaTank.getFluid() != null ? lavaTank.getFluid().amount : 0)));
 	}
 
 	private static final String TAG_LAVA_TANK = "lavaTank";
@@ -399,4 +354,54 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, ITankCont
 	private static final String TAG_BOIL_TICKS_LEFT = "boilTicksLeft";
 	private static final String TAG_PROCESSING_ITEM_ID = "processingItemID";
 	private static final String TAG_IS_PROCESSING = "isProcessing";
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	{
+		if (resource != null && resource.fluidID == FluidRegistry.LAVA.getID())
+		{
+			int result = lavaTank.fill(resource, doFill);
+			if (doFill)
+				sendUpdatePacket();
+			return result;
+		}
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+	{
+		FluidStack result = lavaTank.drain(maxDrain, doDrain);
+		if (doDrain)
+			sendUpdatePacket();
+		return result;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+	{
+		return drain(from, resource != null ? resource.amount : 0, doDrain);
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid)
+	{
+		if (lavaTank.getFluid() != null && fluid.getID() == lavaTank.getFluid().fluidID)
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	{
+		if (lavaTank.getFluid() != null && fluid.getID() == lavaTank.getFluid().fluidID)
+			return true;
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from)
+	{
+		return new FluidTankInfo[] { new FluidTankInfo(lavaTank.getFluid(), lavaTank.getCapacity()) };
+	}
 }

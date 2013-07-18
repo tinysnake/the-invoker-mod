@@ -1,13 +1,17 @@
 package snake.mcmods.theinvoker.lib.constants;
 
 import snake.mcmods.theinvoker.utils.Utils;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 
 public class Textures
 {
-	public static final String ITEM_BASE_PATH = "/mods/" + TIGlobal.MOD_ID + "/textures/items/";
-	public static final String MODEL_BASE_PATH = "/mods/" + TIGlobal.MOD_ID + "/textures/models/";
-	public static final String GUI_BASE_PATH = "/mods/" + TIGlobal.MOD_ID + "/textures/gui/";
+	public static final String ITEM_BASE_PATH = "/textures/items/";
+	public static final String MODEL_BASE_PATH = "/textures/models/";
+	public static final String GUI_BASE_PATH = "/textures/gui/";
+
+    public static final ResourceLocation VANILLA_BLOCK_TEXTURE_SHEET = TextureMap.field_110575_b;
+    public static final ResourceLocation VANILLA_ITEM_TEXTURE_SHEET = TextureMap.field_110576_c;
 
 	public static final ResourceLocation MODEL_TOTEM_SOUL_ATTRACTIVE = Utils.wrapResourcePath(MODEL_BASE_PATH + "totem_soul_attractive.png");
 	public static final ResourceLocation MODEL_TOTEM_SOUL = Utils.wrapResourcePath(MODEL_BASE_PATH + "totem_soul.png");

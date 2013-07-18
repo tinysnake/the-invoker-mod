@@ -10,11 +10,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
-
-import buildcraft.core.DefaultProps;
 
 import snake.mcmods.theinvoker.inventory.ContainerSoulSmelter;
 import snake.mcmods.theinvoker.lib.constants.Textures;
@@ -29,7 +29,6 @@ public class GuiSoulSmelter extends GuiContainer
 	private static final int TANK_HEIGHT = 48;
 	private static final int FIRE_HEIGHT = 10;
 	private static final int FIRE_WIDTH = 9;
-	private static final ResourceLocation BLOCK_TEXTURE = new ResourceLocation("/terrain.png");
 
 	public GuiSoulSmelter(InventoryPlayer player, TileSoulSmelter soulSmelter)
 	{
@@ -71,14 +70,14 @@ public class GuiSoulSmelter extends GuiContainer
 
 		// draw lava tank
 		// 130, 54
-		LiquidStack lq = soulSmelter.getLavaTank().getLiquid();
-		if (lq != null)
+		FluidStack lq = soulSmelter.getLavaTank().getFluid();
+		if (lq != null && lq.amount > 0)
 		{
+			Icon lavaIcon = FluidRegistry.LAVA.getFlowingIcon();
 
-			Icon lavaIcon = lq.getRenderingIcon();
 			int start = 0;
 			int lavaH = Utils.getScaledLiquidAmount(lq, soulSmelter.getLavaTank().getCapacity(), TANK_HEIGHT);
-			this.mc.renderEngine.func_110577_a(BLOCK_TEXTURE);
+			this.mc.renderEngine.func_110577_a(Textures.VANILLA_BLOCK_TEXTURE_SHEET);
 
 			while (lavaH > 0)
 			{
@@ -115,7 +114,7 @@ public class GuiSoulSmelter extends GuiContainer
 		if (mouseX > xStart + 130 && mouseX < xStart + 148 && mouseY > yStart + 6 && mouseY < yStart + 54)
 		{
 			List arr = new ArrayList();
-			String amount = soulSmelter.getLavaTank().getLiquid() != null ? String.valueOf(soulSmelter.getLavaTank().getLiquid().amount) : "0";
+			String amount = soulSmelter.getLavaTank().getFluid() != null ? String.valueOf(soulSmelter.getLavaTank().getFluid().amount) : "0";
 			String capacity = String.valueOf(soulSmelter.getLavaTank().getCapacity());
 			arr.add(EnumChatFormatting.WHITE + amount + "/" + capacity);
 			drawHoveringText(arr, mouseX, mouseY, fontRenderer);

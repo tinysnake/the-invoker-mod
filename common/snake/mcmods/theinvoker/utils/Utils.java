@@ -1,17 +1,16 @@
 package snake.mcmods.theinvoker.utils;
 
-import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.liquids.LiquidStack;
+import net.minecraftforge.fluids.FluidStack;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 
 public class Utils
 {
@@ -62,7 +61,7 @@ public class Utils
 		return new ResourceLocation(TIGlobal.MOD_ID.toLowerCase(), path);
 	}
 
-	public static int getScaledLiquidAmount(LiquidStack ls, int maxAmount, int scaleFactor)
+	public static int getScaledLiquidAmount(FluidStack ls, int maxAmount, int scaleFactor)
 	{
 		if (ls == null)
 			return 0;

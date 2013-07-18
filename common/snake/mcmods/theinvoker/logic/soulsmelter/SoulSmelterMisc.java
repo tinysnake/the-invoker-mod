@@ -2,11 +2,11 @@ package snake.mcmods.theinvoker.logic.soulsmelter;
 
 import java.util.HashMap;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.liquids.LiquidStack;
-import net.minecraftforge.liquids.LiquidTank;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.net.packet.PacketSoulSmelterUpdate;
 import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
@@ -85,17 +85,17 @@ public class SoulSmelterMisc
 		{
 			TileSoulSmelter tss = (TileSoulSmelter)te;
 			tss.setDirection(p.direction);
-			LiquidTank lt = tss.getLavaTank();
+			FluidTank lt = tss.getLavaTank();
 			if (p.lavaAmount > 0)
 			{
-				LiquidStack ls = lt.getLiquid();
+				FluidStack ls = lt.getFluid();
 				if (ls == null)
-					lt.setLiquid(new LiquidStack(Block.lavaStill, p.lavaAmount));
+					lt.setFluid(new FluidStack(FluidRegistry.LAVA, p.lavaAmount));
 				else
-					lt.getLiquid().amount = p.lavaAmount;
+					lt.getFluid().amount = p.lavaAmount;
 			}
 			else
-				lt.setLiquid(null);
+				lt.setFluid(null);
 			tss.hasWork = p.hasWork;
 
 			player.worldObj.updateAllLightTypes(p.x, p.y, p.z);
