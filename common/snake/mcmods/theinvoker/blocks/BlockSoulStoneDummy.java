@@ -13,6 +13,7 @@ import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.EvilTouchMisc;
 import snake.mcmods.theinvoker.logic.SoulStoneMisc;
 import snake.mcmods.theinvoker.tileentities.TileSoulStone;
+import snake.mcmods.theinvoker.utils.Utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,7 +31,7 @@ public class BlockSoulStoneDummy extends Block
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
 	{
-		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + getUnlocalizedName2());
+		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(this));
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class BlockSoulStoneDummy extends Block
 					else
 					{
 						if (world.isRemote)
-							player.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+							player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
 					}
 				}
 				else
@@ -76,7 +77,7 @@ public class BlockSoulStoneDummy extends Block
 			else
 			{
 				if (world.isRemote)
-					player.sendChatToPlayer(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+					player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
 			}
 		}
 		else

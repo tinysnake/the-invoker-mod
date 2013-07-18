@@ -57,7 +57,7 @@ public class Utils
 		return n.substring(n.indexOf(".") + 1);
 	}
 
-	public static ResourceLocation WrapResourcePath(String path)
+	public static ResourceLocation wrapResourcePath(String path)
 	{
 		return new ResourceLocation(TIGlobal.MOD_ID.toLowerCase(), path);
 	}

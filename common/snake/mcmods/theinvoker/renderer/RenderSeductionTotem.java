@@ -2,6 +2,7 @@ package snake.mcmods.theinvoker.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
@@ -46,17 +47,17 @@ public class RenderSeductionTotem extends RenderTileBase
 		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
 
-		String textureFileName;
+		ResourceLocation textureResource;
 		ModelSeductionTotem model;
 		if (tst.getIsBroken())
 		{
-			textureFileName = Textures.MODEL_BROKEN_SEDUCTION_TOTEM;
+			textureResource = Textures.MODEL_BROKEN_SEDUCTION_TOTEM;
 			model = getBrokenModel();
 			normalModel = null;
 		}
 		else
 		{
-			textureFileName = Textures.MODEL_SEDUCTION_TOTEM;
+			textureResource = Textures.MODEL_SEDUCTION_TOTEM;
 			model = getNormalModel();
 			brokenModel = null;
 		}
@@ -65,7 +66,7 @@ public class RenderSeductionTotem extends RenderTileBase
 		GL11.glTranslatef((float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F);
 		GL11.glRotatef(angle, 0F, 1F, 0F);
 		GL11.glScalef(1F, -1F, -1F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(textureFileName);
+		Minecraft.getMinecraft().renderEngine.func_110577_a(textureResource);
 		model.render();
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glPopMatrix();

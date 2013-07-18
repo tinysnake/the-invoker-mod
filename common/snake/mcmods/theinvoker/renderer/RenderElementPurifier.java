@@ -52,7 +52,7 @@ public class RenderElementPurifier extends RenderTileBase
 			GL11.glTranslatef((float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F);
 			GL11.glScalef(1F, -1F, -1F);
 			GL11.glRotatef(angle, 0F, 1F, 0F);
-			Minecraft.getMinecraft().renderEngine.bindTexture(Textures.MODEL_ELEMENT_PURIFIER);
+			Minecraft.getMinecraft().renderEngine.func_110577_a(Textures.MODEL_ELEMENT_PURIFIER);
 			if (tep.hasWork)
 			{
 				float shockX = -.0125F + tep.worldObj.rand.nextFloat() * .025F;

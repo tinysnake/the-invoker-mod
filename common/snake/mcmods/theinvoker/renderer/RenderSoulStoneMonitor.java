@@ -6,14 +6,18 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
+import snake.mcmods.theinvoker.utils.Utils;
 
 public class RenderSoulStoneMonitor extends Render
 {
+	
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pariticalTimer)
 	{
@@ -21,7 +25,7 @@ public class RenderSoulStoneMonitor extends Render
 			return;
 		EntitySoulStoneMonitor essm = (EntitySoulStoneMonitor)entity;
 		String label = essm.getLabel();
-		EntityLiving player = RenderManager.instance.livingPlayer;
+		EntityLivingBase player = RenderManager.instance.livingPlayer;
 		if (player == null)
 			return;
 		double distance = x * x + y * y + z * z;
@@ -92,6 +96,12 @@ public class RenderSoulStoneMonitor extends Render
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	protected ResourceLocation func_110775_a(Entity entity)
+	{
+		return null;
 	}
 
 }
