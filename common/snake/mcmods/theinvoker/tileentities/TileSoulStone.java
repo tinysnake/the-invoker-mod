@@ -2,14 +2,14 @@ package snake.mcmods.theinvoker.tileentities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
+import snake.mcmods.theinvoker.blocks.BlockSoulStone;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
-import snake.mcmods.theinvoker.logic.SoulStoneMisc;
 
-public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
+public class TileSoulStone extends TileMultiBlockBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
 {
 	public static final int MAX_ENERGY_REQUEST = 5;
 
@@ -38,12 +38,12 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	{
 		energyContainer.setIsAvailable(!val);
 	}
-	
+
 	public void setOriginCoords(int x, int y, int z)
 	{
-		originCoords[0]=x;
-		originCoords[1]=y;
-		originCoords[2]=z;
+		originCoords[0] = x;
+		originCoords[1] = y;
+		originCoords[2] = z;
 	}
 
 	@Override
@@ -51,19 +51,19 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 	{
 		int dx = x, dy = y, dz = z;
 		int meta = getBlockMetadata();
-		if (meta >= 0 && meta < SoulStoneMisc.FORMABLE_SIZE.length)
+		if (meta >= 0 && meta < BlockSoulStone.FORMABLE_SIZES.length)
 		{
-			int[] size = SoulStoneMisc.FORMABLE_SIZE[meta];
+			int[] size = BlockSoulStone.FORMABLE_SIZES[meta];
 			if (x <= originCoords[0])
 				dx = originCoords[0];
 			else if (x >= originCoords[0] + size[0])
 				dx = originCoords[0] + size[0];
-			
+
 			if (y <= originCoords[1])
 				dy = originCoords[1];
 			else if (y >= originCoords[1] + size[1])
 				dy = originCoords[1] + size[1];
-			
+
 			if (z <= originCoords[2])
 				dz = originCoords[2];
 			else if (z >= originCoords[2] + size[2])
@@ -124,8 +124,10 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 		nbtCompound.setIntArray(TAG_ORIGN_COORDS, originCoords);
 	}
 
-	public void transferFrom(TileSoulStone tss)
+	@Override
+	public void transferFrom(TileMultiBlockBase tmb)
 	{
+		TileSoulStone tss = (TileSoulStone)tmb;
 		this.ownerName = tss.getOwnerName();
 		this.energyContainer = tss.getEnergyContainer();
 	}
@@ -135,8 +137,8 @@ public class TileSoulStone extends TileTIBase implements IEnergyContainerWrapper
 		if (energyContainer == null)
 		{
 			energyContainer = new EnergyContainer(this, false, TIEnergy.soul.getID());
-			energyContainer.setEffectiveRange(SoulStoneMisc.EFFECTIVE_RANGE);
-			energyContainer.setEnergyCapacity(SoulStoneMisc.CAPACITY_OF_METADATA[getBlockMetadata()]);
+			energyContainer.setEffectiveRange(BlockSoulStone.EFFECTIVE_RANGE);
+			energyContainer.setEnergyCapacity(BlockSoulStone.CAPACITY_OF_METADATA[getBlockMetadata()]);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST * (getBlockMetadata() + 1));
 		}
 		if (!energyContainer.getIsRegistered())

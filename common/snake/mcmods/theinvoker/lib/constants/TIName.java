@@ -5,6 +5,7 @@ public class TIName
 	public static final String BLOCK_SOUL_STONE = "soul_stone";
 	public static final String BLOCK_ELEMENT_PURIFIER = "element_purifier";
 	public static final String BLOCK_SOUL_SMELTER = "soul_smelter";
+	public static final String BLOCK_ELEMENT_PILLAR = "element_pillar";
 	
 	public static final String ITEM_TOTEM = "totem";
 	public static final String ITEM_TOTEM_SOUL_ATTRACTIVE = "totem_soul_attractive";

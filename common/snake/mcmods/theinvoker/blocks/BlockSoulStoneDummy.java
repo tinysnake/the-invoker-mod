@@ -1,25 +1,27 @@
 package snake.mcmods.theinvoker.blocks;
 
-import net.minecraft.block.Block;
+import java.util.ArrayList;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.lib.constants.LangKeys;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.lib.constants.TIName;
-import snake.mcmods.theinvoker.logic.EvilTouchMisc;
-import snake.mcmods.theinvoker.logic.SoulStoneMisc;
+import snake.mcmods.theinvoker.logic.MultiBlockStructureHelper;
+import snake.mcmods.theinvoker.tileentities.TileMultiBlockBase;
 import snake.mcmods.theinvoker.tileentities.TileSoulStone;
 import snake.mcmods.theinvoker.utils.Utils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockSoulStoneDummy extends Block
+public class BlockSoulStoneDummy extends BlockMultiBlockBaseDummy
 {
-
+	
 	public BlockSoulStoneDummy(int id)
 	{
 		super(id, Material.iron);
@@ -31,70 +33,79 @@ public class BlockSoulStoneDummy extends Block
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
 	{
-		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(this));
+		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(TIBlocks.soulStone));
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	public int[][] getPossibleFormTypes()
 	{
-		if (player.isSneaking())
-			return false;
-		if (player.getHeldItem() != null && player.getHeldItem().itemID == blockID)
-			return false;
-		if (EvilTouchMisc.isPlayHoldingEvilTouch(player))
-		{
-			TileSoulStone tss = SoulStoneMisc.getFormedTileSoulStone(world, x, y, z);
-			if (tss != null)
-			{
-				if (tss.getIsFormless())
-				{
-					if (SoulStoneMisc.getIsFormable(world, x, y, z))
-					{
-						reform(tss);
-					}
-					else
-					{
-						if (world.isRemote)
-							player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
-					}
-				}
-				else
-				{
-					reform(tss);
-				}
-			}
-			else if (SoulStoneMisc.getIsFormable(world, x, y, z))
-			{
-				if (world.setBlock(x, y, z, TIBlocks.soulStone.blockID, SoulStoneMisc.getMetadataOfFormSize(world, x, y, z), 4))
-				{
-					TIBlocks.soulStone.setupTileEntity(world, x, y, z, player.getEntityName());
-					tss = (TileSoulStone)world.getBlockTileEntity(x, y, z);
-					int[] startCoords = SoulStoneMisc.getStructureStartPoint(tss.worldObj, tss.xCoord, tss.yCoord, tss.zCoord);
-					tss.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
-					world.spawnParticle("hugeexplosion", x, y, z, 0, 0, 0);
-				}
-			}
-			else
-			{
-				if (world.isRemote)
-					player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
-			}
-		}
-		else
-		{
-			SoulStoneMisc.spawnSoulStoneMonitor(world, x, y, z, side);
-		}
-		return true;
+		return TIBlocks.soulStone.getPossibleFormTypes();
 	}
 
-	private void reform(TileSoulStone tss)
+	@Override
+	public int[] getMaximumSize()
 	{
-		int metadata = SoulStoneMisc.getMetadataOfFormSize(tss.worldObj, tss.xCoord, tss.yCoord, tss.zCoord);
-		tss.worldObj.setBlockMetadataWithNotify(tss.xCoord, tss.yCoord, tss.zCoord, metadata, 4);
-		tss.getEnergyContainer().setEnergyCapacity(SoulStoneMisc.CAPACITY_OF_METADATA[metadata]);
-		int[] startCoords = SoulStoneMisc.getStructureStartPoint(tss.worldObj, tss.xCoord, tss.yCoord, tss.zCoord);
-		tss.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
-		tss.setIsFormless(false);
-		// reform effect
+		return null;
+	}
+
+	@Override
+	public int[] getMinimumSize()
+	{
+		return null;
+	}
+
+	@Override
+	public boolean getIsFreeSized()
+	{
+		return false;
+	}
+
+	@Override
+	public ArrayList<Integer> getSupportedBlockIDs()
+	{
+		return TIBlocks.soulStone.getSupportedBlockIDs();
+	}
+
+	@Override
+	public Item getStructureFormerItem()
+	{
+		return TIBlocks.soulStone.getStructureFormerItem();
+	}
+
+	@Override
+	protected void onReformed(TileMultiBlockBase tmb)
+	{
+		onFormed(tmb);
+	}
+
+	@Override
+	protected void onFormed(TileMultiBlockBase tmb)
+	{
+		int index = MultiBlockStructureHelper.getIndexOfFormSizes(BlockSoulStone.FORMABLE_SIZES, tmb.xCoord, tmb.yCoord, tmb.zCoord);
+		if(index>-1)
+		{
+			((TileSoulStone)tmb).getEnergyContainer().setEnergyCapacity(BlockSoulStone.CAPACITY_OF_METADATA[index]);
+		}
+		tmb.worldObj.spawnParticle("bigexplosion", tmb.xCoord, tmb.yCoord, tmb.zCoord, 0, 0, 0);
+	}
+
+	@Override
+	protected void onNotAbleToReform(World world, int x, int y, int z, EntityPlayer player, int side)
+	{
+		onNotAbleToForm(world, x, y, z, player, side);
+	}
+
+	@Override
+	protected void onNotAbleToForm(World world, int x, int y, int z, EntityPlayer player, int side)
+	{
+		if (world.isRemote)
+			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+	}
+
+	@Override
+	protected boolean onActivatedWithoutStructureFormerItem(World world, int x, int y, int z, EntityPlayer player, int side)
+	{
+		TIBlocks.soulStone.spawnSoulStoneMonitor(world, x, y, z, side);
+		return true;
 	}
 }
