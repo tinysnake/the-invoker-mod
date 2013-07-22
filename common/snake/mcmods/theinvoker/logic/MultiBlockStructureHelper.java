@@ -2,6 +2,7 @@ package snake.mcmods.theinvoker.logic;
 
 import java.util.ArrayList;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.blocks.IMultiBlockStructure;
@@ -12,13 +13,14 @@ public class MultiBlockStructureHelper
 
 	public static boolean getIsFormable(World world, int x, int y, int z, IMultiBlockStructure mbd)
 	{
+		int metadata = world.getBlockMetadata(x, y, z);
 		int mi = 0, mj = 0, mk = 0;
-		int[] tCoords = getStructureStartPoint(world, mbd.getSupportedBlockIDs(), x, y, z);
+		int[] tCoords = getStructureStartPoint(world, mbd.getSupportedBlockIDs(), x, y, z, metadata);
 		int tx = tCoords[0], ty = tCoords[1], tz = tCoords[2];
 		x = tx;
 		y = ty;
 		z = tz;
-		tCoords = getStructureEndPoint(world, mbd.getSupportedBlockIDs(), x, y, z);
+		tCoords = getStructureEndPoint(world, mbd.getSupportedBlockIDs(), x, y, z, metadata);
 		tx = tCoords[0];
 		ty = tCoords[1];
 		tz = tCoords[2];
@@ -32,22 +34,22 @@ public class MultiBlockStructureHelper
 			{
 				return true;
 			}
-			if (checkIfOuterBoundIsOk(world, mbd.getSupportedBlockIDs(), x, y, z, tx, ty, tz))
+			if (checkIfOuterBoundIsOk(world, mbd.getSupportedBlockIDs(), x, y, z, tx, ty, tz, metadata))
 			{
-				return checkIsInnerBoundSolid(world, mbd.getSupportedBlockIDs(), x, y, z, tx, ty, tz);
+				return checkIsInnerBoundSolid(world, mbd.getSupportedBlockIDs(), x, y, z, tx, ty, tz, metadata);
 			}
 		}
 		return false;
 	}
 
-	public static <T extends TileMultiBlockBase> T getFormedTileSoulStone(Class<T> claz, World world, ArrayList<Integer> supportedIDs, int x, int y, int z)
+	public static <T extends TileMultiBlockBase> T getFormedMultiBlockTileEntity(Class<T> claz, World world, ArrayList<Integer> supportedIDs, int x, int y, int z, int metadata)
 	{
-		int[] tCoords = getStructureStartPoint(world, supportedIDs, x, y, z);
+		int[] tCoords = getStructureStartPoint(world, supportedIDs, x, y, z, metadata);
 		int tx = tCoords[0], ty = tCoords[1], tz = tCoords[2];
 		x = tx;
 		y = ty;
 		z = tz;
-		tCoords = getStructureEndPoint(world, supportedIDs, x, y, z);
+		tCoords = getStructureEndPoint(world, supportedIDs, x, y, z, metadata);
 		tx = tCoords[0];
 		ty = tCoords[1];
 		tz = tCoords[2];
@@ -67,37 +69,37 @@ public class MultiBlockStructureHelper
 		return null;
 	}
 
-	public static int[] getStructureStartPoint(World world, ArrayList<Integer> supportedIDs, int x, int y, int z)
+	public static int[] getStructureStartPoint(World world, ArrayList<Integer> supportedIDs, int x, int y, int z, int metadata)
 	{
 		int tx = x, ty = y, tz = z;
 
-		while (supportedIDs.indexOf(world.getBlockId(tx - 1, y, z)) >= 0)
+		while (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(tx - 1, y, z), world.getBlockMetadata(tx - 1, y, z)))
 		{
 			--tx;
 		}
-		while (supportedIDs.indexOf(world.getBlockId(x, ty - 1, z)) >= 0)
+		while (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, ty - 1, z), world.getBlockMetadata(x, ty - 1, z)))
 		{
 			--ty;
 		}
-		while (supportedIDs.indexOf(world.getBlockId(x, y, tz - 1)) >= 0)
+		while (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, y, tz - 1), world.getBlockMetadata(x, y, tz - 1)))
 		{
 			--tz;
 		}
 		return new int[] { tx, ty, tz };
 	}
 
-	public static int[] getStructureEndPoint(World world, ArrayList<Integer> supportedIDs, int x, int y, int z)
+	public static int[] getStructureEndPoint(World world, ArrayList<Integer> supportedIDs, int x, int y, int z, int metadata)
 	{
 		int tx = x, ty = y, tz = z;
-		while (supportedIDs.indexOf(world.getBlockId(tx + 1, y, z)) >= 0)
+		while (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(tx + 1, y, z), world.getBlockMetadata(tx + 1, y, z)))
 		{
 			++tx;
 		}
-		while (supportedIDs.indexOf(world.getBlockId(x, ty + 1, z)) >= 0)
+		while (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, ty + 1, z), world.getBlockMetadata(x, ty + 1, z)))
 		{
 			++ty;
 		}
-		while (supportedIDs.indexOf(world.getBlockId(x, y, tz + 1)) >= 0)
+		while (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, y, tz + 1), world.getBlockMetadata(x, y, tz + 1)))
 		{
 			++tz;
 		}
@@ -119,19 +121,19 @@ public class MultiBlockStructureHelper
 	public static int getFormSizeType(World world, int x, int y, int z, IMultiBlockStructure mbd)
 	{
 		int[][] sizes = mbd.getPossibleFormTypes();
-		int[] size = getFormSize(world, mbd.getSupportedBlockIDs(), x, y, z);
+		int[] size = getFormSize(world, mbd.getSupportedBlockIDs(), x, y, z, world.getBlockMetadata(x, y, z));
 		return getIndexOfFormSizes(sizes, size[0], size[1], size[2]);
 	}
 
-	public static int[] getFormSize(World world, ArrayList<Integer> supportedIDs, int x, int y, int z)
+	public static int[] getFormSize(World world, ArrayList<Integer> supportedIDs, int x, int y, int z, int metadata)
 	{
 		int[] result = new int[3];
-		int[] tCoords = getStructureStartPoint(world, supportedIDs, x, y, z);
+		int[] tCoords = getStructureStartPoint(world, supportedIDs, x, y, z, metadata);
 		int tx = tCoords[0], ty = tCoords[1], tz = tCoords[2];
 		x = tx;
 		y = ty;
 		z = tz;
-		tCoords = getStructureEndPoint(world, supportedIDs, x, y, z);
+		tCoords = getStructureEndPoint(world, supportedIDs, x, y, z, metadata);
 		tx = tCoords[0];
 		ty = tCoords[1];
 		tz = tCoords[2];
@@ -142,43 +144,60 @@ public class MultiBlockStructureHelper
 		return result;
 	}
 
-	public static int[] getAdjacentDummyBlockCoords(World world, ArrayList<Integer> supportedIDs, int x, int y, int z)
+	public static int[] getAdjacentDummyBlockCoords(World world, ArrayList<Integer> supportedIDs, int x, int y, int z, int metadata)
 	{
-		if (supportedIDs.indexOf(world.getBlockId(x - 1, y, z)) >= 0)
+		if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x - 1, y, z), world.getBlockMetadata(x - 1, y, z)))
 		{
 			return new int[] { x - 1, y, z };
 		}
-		else if (supportedIDs.indexOf(world.getBlockId(x + 1, y, z)) >= 0)
+		else if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x + 1, y, z), world.getBlockMetadata(x + 1, y, z)))
 		{
 			return new int[] { x + 1, y, z };
 		}
-		else if (supportedIDs.indexOf(world.getBlockId(x, y - 1, z)) >= 0)
+		else if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, y - 1, z), world.getBlockMetadata(x, y - 1, z)))
 		{
 			return new int[] { x, y - 1, z };
 		}
-		else if (supportedIDs.indexOf(world.getBlockId(x, y + 1, z)) >= 0)
+		else if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, y + 1, z), world.getBlockMetadata(x, y + 1, z)))
 		{
 			return new int[] { x, y + 1, z };
 		}
-		else if (supportedIDs.indexOf(world.getBlockId(x, y, z - 1)) >= 0)
+		else if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, y, z - 1), world.getBlockMetadata(x, y, z - 1)))
 		{
 			return new int[] { x, y, z - 1 };
 		}
-		else if (supportedIDs.indexOf(world.getBlockId(x, y, z + 1)) >= 0)
+		else if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(x, y, z + 1), world.getBlockMetadata(x, y, z + 1)))
 		{
 			return new int[] { x, y, z + 1 };
 		}
 		else
 			return null;
 	}
+	
+	public static void reformStructure(IMultiBlockStructure imbs, TileMultiBlockBase tmb, ArrayList<Integer> supportedIDs)
+	{
+		int[] startCoords = MultiBlockStructureHelper.getStructureStartPoint(tmb.worldObj, supportedIDs, tmb.xCoord, tmb.yCoord, tmb.zCoord, tmb.worldObj.getBlockMetadata(tmb.xCoord, tmb.yCoord, tmb.zCoord));
+		tmb.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
+		tmb.setIsFormless(false);
+		imbs.onReformed(tmb);
+	}
+	
+	public static boolean getIsPlayerHoldingStructureFormerItem(IMultiBlockStructure imbs, EntityPlayer player)
+	{
+		if ((imbs.getStructureFormerItem() == null && player.getHeldItem() == null) ||
+				(player.getHeldItem() != null && player.getHeldItem().itemID == imbs.getStructureFormerItem().itemID))
+			return true;
+		return false;
+	}
 
-	private static boolean checkIfOuterBoundIsOk(World world, ArrayList<Integer> supportedID, int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+	private static boolean checkIfOuterBoundIsOk(World world, ArrayList<Integer> supportedIDs, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int metadata)
 	{
 		for (int i = minX; i <= maxX; i++)
 		{
 			for (int k = minZ; k <= maxZ; k++)
 			{
-				if (supportedID.indexOf(world.getBlockId(i, minY - 1, k)) >= 0 || supportedID.indexOf(world.getBlockId(i, maxY + 1, k)) >= 0)
+				if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, minY - 1, k), world.getBlockMetadata(i, minY - 1, k)) ||
+						checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, maxY + 1, k), world.getBlockMetadata(i, maxY + 1, k)))
 				{
 					return false;
 				}
@@ -188,7 +207,8 @@ public class MultiBlockStructureHelper
 		{
 			for (int k = minZ; k <= maxZ; k++)
 			{
-				if (supportedID.indexOf(world.getBlockId(minX - 1, j, k)) >= 0 || supportedID.indexOf(world.getBlockId(maxX + 1, j, k)) >= 0)
+				if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(minX - 1, j, k), world.getBlockMetadata(minX - 1, j, k)) ||
+						checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(maxX + 1, j, k), world.getBlockMetadata(minX + 1, j, k)))
 				{
 					return false;
 				}
@@ -198,7 +218,8 @@ public class MultiBlockStructureHelper
 		{
 			for (int i = minX; i <= maxX; i++)
 			{
-				if (supportedID.indexOf(world.getBlockId(i, j, minZ - 1)) >= 0 || supportedID.indexOf(world.getBlockId(i, j, maxZ + 1)) >= 0)
+				if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, j, minZ - 1), world.getBlockMetadata(i, j, minZ - 1)) ||
+						checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, j, maxZ + 1), world.getBlockMetadata(i, j, maxZ + 1)))
 				{
 					return false;
 				}
@@ -207,7 +228,7 @@ public class MultiBlockStructureHelper
 		return true;
 	}
 
-	private static boolean checkIsInnerBoundSolid(World world, ArrayList<Integer> supportedID, int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+	private static boolean checkIsInnerBoundSolid(World world, ArrayList<Integer> supportedIDs, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int metadata)
 	{
 		for (int i = minX; i <= maxX; i++)
 		{
@@ -215,11 +236,16 @@ public class MultiBlockStructureHelper
 			{
 				for (int k = minZ; k <= maxZ; k++)
 				{
-					if (supportedID.indexOf(world.getBlockId(i, j, k)) < 0)
+					if (!checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, j, k), world.getBlockMetadata(i, j, k)))
 						return false;
 				}
 			}
 		}
 		return true;
+	}
+
+	private static boolean checkIsBlockSupported(ArrayList<Integer> supportedIDs, int metadata, int blockID, int blockMeta)
+	{
+		return supportedIDs.indexOf(blockID) >= 0 && blockMeta == metadata;
 	}
 }

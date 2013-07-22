@@ -13,18 +13,19 @@ import net.minecraftforge.common.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
+import snake.mcmods.theinvoker.entities.IEntityNameTagSprite;
 import snake.mcmods.theinvoker.utils.Utils;
 
-public class RenderSoulStoneMonitor extends Render
+public class RenderIEntityNameTagSprite extends Render
 {
 	
 	@Override
 	public void doRender(Entity entity, double x, double y, double z, float yaw, float pariticalTimer)
 	{
-		if (!(entity instanceof EntitySoulStoneMonitor))
+		if (!(entity instanceof IEntityNameTagSprite))
 			return;
-		EntitySoulStoneMonitor essm = (EntitySoulStoneMonitor)entity;
-		String label = essm.getLabel();
+		IEntityNameTagSprite ents = (IEntityNameTagSprite)entity;
+		String label = ents.getLabel();
 		EntityLivingBase player = RenderManager.instance.livingPlayer;
 		if (player == null)
 			return;
@@ -36,7 +37,7 @@ public class RenderSoulStoneMonitor extends Render
 		float f1 = 0.016666668F * f0;
 		GL11.glPushMatrix();
 
-		ForgeDirection dir = essm.getDirection();
+		ForgeDirection dir = ents.getDirection();
 		float xOff = 0, yOff = 0, zOff = 0;
 		if (dir != null)
 		{

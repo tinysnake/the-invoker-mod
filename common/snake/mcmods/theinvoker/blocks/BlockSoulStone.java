@@ -28,7 +28,7 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 
 	public static final int MAX_X_SIZE = 7;
 	public static final int MAX_Y_SIZE = 3;
-	public static final int[] CAPACITY_OF_METADATA = { 4000, 16000, 96000, 420000 };
+	public static final int[] CAPACITY_OF_SIZES = { 4000, 16000, 96000, 420000 };
 	public static final int EFFECTIVE_RANGE = 16;
 	public static final int[][] FORMABLE_SIZES = { { 1, 1, 1 }, { 2, 1, 2 }, { 3, 2, 4 }, { MAX_X_SIZE, MAX_Y_SIZE, 5 } };
 
@@ -38,7 +38,7 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 		this.setCreativeTab(TheInvoker.tab);
 		this.setUnlocalizedName(TIName.BLOCK_SOUL_STONE);
 	}
-	
+
 	private ArrayList<Integer> supportedIDs;
 
 	@Override
@@ -46,17 +46,6 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	public void registerIcons(IconRegister iconRegister)
 	{
 		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(this));
-	}
-
-	public void setupTileEntity(World world, int x, int y, int z, String playerName)
-	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if (te != null && te instanceof TileSoulStone)
-		{
-			TileSoulStone tss = (TileSoulStone)te;
-			tss.setDirection(0);
-			tss.setOwnerName(playerName);
-		}
 	}
 
 	@Override
@@ -69,7 +58,7 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	{
 		if (world.isRemote)
 		{
-			TileSoulStone tss = MultiBlockStructureHelper.getFormedTileSoulStone(TileSoulStone.class, world, getSupportedBlockIDs(), x, y, z);
+			TileSoulStone tss = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileSoulStone.class, world, getSupportedBlockIDs(), x, y, z, world.getBlockMetadata(x, y, z));
 			if (tss != null)
 			{
 				if (tss.getIsFormless())
@@ -138,11 +127,11 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	@Override
 	public ArrayList<Integer> getSupportedBlockIDs()
 	{
-		if(supportedIDs==null)
+		if (supportedIDs == null)
 		{
 			supportedIDs = new ArrayList<Integer>();
-			supportedIDs.add(TIBlocks.soulStone.blockID);
 			supportedIDs.add(blockID);
+			supportedIDs.add(TIBlocks.soulStoneDummy.blockID);
 		}
 		return supportedIDs;
 	}
@@ -154,39 +143,39 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	}
 
 	@Override
-	protected void onReformed(TileMultiBlockBase tmb)
+	public void onReformed(TileMultiBlockBase tmb)
 	{
 		onFormed(tmb);
 	}
 
 	@Override
-	protected void onFormed(TileMultiBlockBase tmb)
+	public void onFormed(TileMultiBlockBase tmb)
 	{
 		int index = MultiBlockStructureHelper.getIndexOfFormSizes(BlockSoulStone.FORMABLE_SIZES, tmb.xCoord, tmb.yCoord, tmb.zCoord);
-		if(index>-1)
+		if (index > -1)
 		{
-			((TileSoulStone)tmb).getEnergyContainer().setEnergyCapacity(BlockSoulStone.CAPACITY_OF_METADATA[index]);
+			((TileSoulStone)tmb).getEnergyContainer().setEnergyCapacity(BlockSoulStone.CAPACITY_OF_SIZES[index]);
 		}
 		tmb.worldObj.spawnParticle("bigexplosion", tmb.xCoord, tmb.yCoord, tmb.zCoord, 0, 0, 0);
 	}
 
 	@Override
-	protected void onNotAbleToReform(World world, int x, int y, int z, EntityPlayer player, int side)
+	public void onNotAbleToReform(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
 		onNotAbleToForm(world, x, y, z, player, side);
 	}
 
 	@Override
-	protected void onNotAbleToForm(World world, int x, int y, int z, EntityPlayer player, int side)
+	public void onNotAbleToForm(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
 		if (world.isRemote)
 			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
 	}
 
 	@Override
-	protected boolean onActivatedWithoutStructureFormerItem(World world, int x, int y, int z, EntityPlayer player, int side)
+	public boolean onActivatedWithoutStructureFormerItem(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
-		TIBlocks.soulStone.spawnSoulStoneMonitor(world, x, y, z, side);
+		spawnSoulStoneMonitor(world, x, y, z, side);
 		return true;
 	}
 }

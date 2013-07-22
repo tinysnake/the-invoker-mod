@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.tileentities;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import snake.mcmods.theinvoker.blocks.BlockSoulStone;
@@ -7,7 +8,6 @@ import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
-import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 
 public class TileSoulStone extends TileMultiBlockBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
 {
@@ -17,11 +17,13 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 	{
 		setDirection(0);
 		originCoords = new int[3];
+		structureSize = new int[3];
 	}
 
-	private EnergyContainer energyContainer;
-	private int[] originCoords;
-	public EntitySoulStoneMonitor monitor;
+	protected EnergyContainer energyContainer;
+	protected int[] originCoords;
+	protected int[] structureSize;
+	public Entity monitor;
 
 	@Override
 	public EnergyContainer getEnergyContainer()
@@ -39,6 +41,13 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 		energyContainer.setIsAvailable(!val);
 	}
 
+	public void setStructureSize(int x, int y, int z)
+	{
+		structureSize[0] = x;
+		structureSize[1] = y;
+		structureSize[2] = z;
+	}
+
 	public void setOriginCoords(int x, int y, int z)
 	{
 		originCoords[0] = x;
@@ -50,25 +59,22 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 	public int[] getCloestCoordsTo(int x, int y, int z)
 	{
 		int dx = x, dy = y, dz = z;
-		int meta = getBlockMetadata();
-		if (meta >= 0 && meta < BlockSoulStone.FORMABLE_SIZES.length)
-		{
-			int[] size = BlockSoulStone.FORMABLE_SIZES[meta];
-			if (x <= originCoords[0])
-				dx = originCoords[0];
-			else if (x >= originCoords[0] + size[0])
-				dx = originCoords[0] + size[0];
 
-			if (y <= originCoords[1])
-				dy = originCoords[1];
-			else if (y >= originCoords[1] + size[1])
-				dy = originCoords[1] + size[1];
+		if (x <= originCoords[0])
+			dx = originCoords[0];
+		else if (x >= originCoords[0] + structureSize[0])
+			dx = originCoords[0] + structureSize[0];
 
-			if (z <= originCoords[2])
-				dz = originCoords[2];
-			else if (z >= originCoords[2] + size[2])
-				dz = originCoords[2] + size[2];
-		}
+		if (y <= originCoords[1])
+			dy = originCoords[1];
+		else if (y >= originCoords[1] + structureSize[1])
+			dy = originCoords[1] + structureSize[1];
+
+		if (z <= originCoords[2])
+			dz = originCoords[2];
+		else if (z >= originCoords[2] + structureSize[2])
+			dz = originCoords[2] + structureSize[2];
+		
 		return new int[] { dx, dy, dz };
 	}
 
@@ -110,6 +116,11 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 			originCoords = nbtCompound.getIntArray(TAG_ORIGN_COORDS);
 		else
 			originCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
+
+		if (nbtCompound.hasKey(TAG_STRUCTURE_SIZE))
+			originCoords = nbtCompound.getIntArray(TAG_STRUCTURE_SIZE);
+		else
+			originCoords = new int[] { 1, 1, 1 };
 	}
 
 	@Override
@@ -132,13 +143,13 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 		this.energyContainer = tss.getEnergyContainer();
 	}
 
-	private void setupEnergyContainer()
+	protected void setupEnergyContainer()
 	{
 		if (energyContainer == null)
 		{
 			energyContainer = new EnergyContainer(this, false, TIEnergy.soul.getID());
 			energyContainer.setEffectiveRange(BlockSoulStone.EFFECTIVE_RANGE);
-			energyContainer.setEnergyCapacity(BlockSoulStone.CAPACITY_OF_METADATA[getBlockMetadata()]);
+			energyContainer.setEnergyCapacity(BlockSoulStone.CAPACITY_OF_SIZES[getBlockMetadata()]);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST * (getBlockMetadata() + 1));
 		}
 		if (!energyContainer.getIsRegistered())
@@ -149,4 +160,5 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 
 	private static final String TAG_ENERGY_CONTAINER = "energyContainer";
 	private static final String TAG_ORIGN_COORDS = "origin";
+	private static final String TAG_STRUCTURE_SIZE = "size";
 }

@@ -12,6 +12,8 @@ public class TIBlocks
 	public static BlockSoulStone soulStone;
 	public static BlockSoulStoneDummy soulStoneDummy;
 	public static BlockElementPurifier elementPurifier;
+	public static BlockElemPillar elemPillar;
+	public static BlockElemPillarDummy elemPillarDummy;
 
 	public static void init()
 	{
@@ -19,11 +21,14 @@ public class TIBlocks
 		seductionTotem = new BlockSeductionTotem(TIBlockID.SEDUCTION_TOTEM);
 		soulSmelter = new BlockSoulSmelter(TIBlockID.SOUL_SMELTER);
 		soulStone = new BlockSoulStone(TIBlockID.SOUL_STONE_DUMMY);
-		soulStoneDummy = new BlockSoulStoneDummy(TIBlockID.SOUL_STONE);
+		soulStoneDummy = new BlockSoulStoneDummy(TIBlockID.SOUL_STONE, soulStone);
 		elementPurifier = new BlockElementPurifier(TIBlockID.ELEMENT_PURIFIER);
+		elemPillar = new BlockElemPillar(TIBlockID.ELEM_PILLAR);
+		elemPillarDummy = new BlockElemPillarDummy(TIBlockID.ELEM_PILLAR_DUMMY, elemPillar);
 
 		GameRegistry.registerBlock(soulSmelter, TIName.BLOCK_SOUL_SMELTER);
 		GameRegistry.registerBlock(soulStoneDummy, TIName.BLOCK_SOUL_STONE);
 		GameRegistry.registerBlock(elementPurifier, TIName.BLOCK_ELEMENT_PURIFIER);
+		GameRegistry.registerBlock(elemPillarDummy, TIName.BLOCK_ELEMENT_PILLAR);
 	}
 }

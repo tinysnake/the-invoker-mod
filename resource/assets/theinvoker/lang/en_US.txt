@@ -26,4 +26,5 @@ tile.element_purifier.name=净魂坛
 container.soul_smelter=灵魂熔炉
 container.element_purifier=净魂坛
 text.welcome=您安装了召唤者MOD.
-text.soul_stone_not_formable=这种奇怪的镇魂石排列方式没有形成有效的灵魂容器..
+text.soul_stone_not_formable=这种奇怪的镇魂石排列方式并没有出现什么神奇的魔法效果..
+text.elem_pillar_not_formable=这种奇怪的元素之柱排列方式并没有出现什么神奇的魔法效果..

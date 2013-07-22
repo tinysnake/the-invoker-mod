@@ -3,12 +3,13 @@ package snake.mcmods.theinvoker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import snake.mcmods.theinvoker.entities.EntityElemPillarMonitor;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.renderer.RenderElementPurifier;
 import snake.mcmods.theinvoker.renderer.RenderSeductionTotem;
-import snake.mcmods.theinvoker.renderer.RenderSoulStoneMonitor;
+import snake.mcmods.theinvoker.renderer.RenderIEntityNameTagSprite;
 import snake.mcmods.theinvoker.renderer.RenderTotem;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
@@ -30,7 +31,9 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileSeductionTotem.class, new RenderSeductionTotem());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileElementPurifier.class, new RenderElementPurifier());
 
-		RenderingRegistry.registerEntityRenderingHandler(EntitySoulStoneMonitor.class, new RenderSoulStoneMonitor());
+		RenderIEntityNameTagSprite monitorRenderer = new RenderIEntityNameTagSprite();
+		RenderingRegistry.registerEntityRenderingHandler(EntitySoulStoneMonitor.class, monitorRenderer);
+		RenderingRegistry.registerEntityRenderingHandler(EntityElemPillarMonitor.class, monitorRenderer);
 	}
 
 	@Override

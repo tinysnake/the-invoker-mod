@@ -4,27 +4,27 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import snake.mcmods.theinvoker.tileentities.TileSoulStone;
+import snake.mcmods.theinvoker.tileentities.TileElemPillar;
 
-public class EntitySoulStoneMonitor extends Entity implements IEntityNameTagSprite
+public class EntityElemPillarMonitor extends Entity implements IEntityNameTagSprite
 {
 	public static final int LIFE_SPAN = 100;
 
-	public EntitySoulStoneMonitor(World world, TileSoulStone tss)
+	public EntityElemPillarMonitor(World world, TileElemPillar tep)
 	{
 		super(world);
-		this.tss = tss;
-		if (tss.monitor != null)
+		this.tep = tep;
+		if (tep.monitor != null)
 		{
-			tss.monitor.isDead = true;
+			tep.monitor.isDead = true;
 		}
-		tss.monitor = this;
+		tep.monitor = this;
 		this.setSize(0.25F, 0.25F);
 		this.ignoreFrustumCheck = true;
 
 	}
 
-	private TileSoulStone tss;
+	private TileElemPillar tep;
 
 	private int age = 0;
 
@@ -52,19 +52,19 @@ public class EntitySoulStoneMonitor extends Entity implements IEntityNameTagSpri
 		super.onEntityUpdate();
 		if (isDead)
 			return;
-		if (age == LIFE_SPAN)
-		{
-			int len = rand.nextInt(2) + 3;
-			for (int i = 0; i < len; i++)
-			{
-				this.worldObj.spawnParticle("flame", this.posX + 0.5F + (rand.nextFloat() * 2 - 1) / 6, this.posY + 0.5F + (rand.nextFloat() * 2 - 1) / 3, this.posZ + 0.5F + (rand.nextFloat() * 2 - 1) / 6, 0, 0, 0);
-			}
-		}
+//		if (age == LIFE_SPAN)
+//		{
+//			int len = rand.nextInt(2) + 3;
+//			for (int i = 0; i < len; i++)
+//			{
+//				this.worldObj.spawnParticle("flame", this.posX + 0.5F + (rand.nextFloat() * 2 - 1) / 6, this.posY + 0.5F + (rand.nextFloat() * 2 - 1) / 3, this.posZ + 0.5F + (rand.nextFloat() * 2 - 1) / 6, 0, 0, 0);
+//			}
+//		}
 		age--;
 
 		if (age < 0)
 		{
-			tss.monitor = null;
+			tep.monitor = null;
 			this.isDead = true;
 		}
 	}
@@ -85,14 +85,9 @@ public class EntitySoulStoneMonitor extends Entity implements IEntityNameTagSpri
 	{
 		age = LIFE_SPAN;
 	}
-	
-	@Override
+
 	public String getLabel()
 	{
-		if (tss != null && tss.getEnergyContainer() != null)
-		{
-			return String.valueOf(tss.getEnergyContainer().getEnergyLevel());
-		}
-		return "";
+		return "test";
 	}
 }
