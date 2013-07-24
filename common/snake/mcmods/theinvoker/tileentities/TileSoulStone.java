@@ -8,6 +8,9 @@ import snake.mcmods.theinvoker.energy.EnergyContainer;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
+import snake.mcmods.theinvoker.net.PacketTypeHandler;
+import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TileSoulStone extends TileMultiBlockBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
 {
@@ -16,12 +19,10 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 	public TileSoulStone()
 	{
 		setDirection(0);
-		originCoords = new int[3];
 		structureSize = new int[3];
 	}
 
 	protected EnergyContainer energyContainer;
-	protected int[] originCoords;
 	protected int[] structureSize;
 	public Entity monitor;
 
@@ -31,11 +32,13 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 		return energyContainer;
 	}
 
+	@Override
 	public boolean getIsFormless()
 	{
 		return !energyContainer.getIsAvailable();
 	}
 
+	@Override
 	public void setIsFormless(boolean val)
 	{
 		energyContainer.setIsAvailable(!val);
@@ -46,13 +49,6 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 		structureSize[0] = x;
 		structureSize[1] = y;
 		structureSize[2] = z;
-	}
-
-	public void setOriginCoords(int x, int y, int z)
-	{
-		originCoords[0] = x;
-		originCoords[1] = y;
-		originCoords[2] = z;
 	}
 
 	@Override
@@ -74,7 +70,7 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 			dz = originCoords[2];
 		else if (z >= originCoords[2] + structureSize[2])
 			dz = originCoords[2] + structureSize[2];
-		
+
 		return new int[] { dx, dy, dz };
 	}
 

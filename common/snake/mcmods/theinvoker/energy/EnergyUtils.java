@@ -24,6 +24,7 @@ public class EnergyUtils
 			EnergyContainer c = ((IEnergyContainerWrapper)te).getEnergyContainer();
 			if (c != null)
 			{
+				c.setIsAvailable(p.available);
 				c.setEnergyLevel(p.energyLevel);
 				c.setEnergyCapacity(p.capacity);
 				c.setMaxEnergyRequest(p.maxRequest);
@@ -41,6 +42,7 @@ public class EnergyUtils
 			EnergyConsumer c = ((IEnergyConsumerWrapper)te).getEnergyConsumer();
 			if (c != null)
 			{
+				c.setIsAvailable(p.available);
 				c.setMaxEnergyRequest(p.maxRequest);
 				c.requestEnergy(p.energyLevel);
 			}

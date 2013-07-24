@@ -22,7 +22,7 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 	{
 		if (player.isSneaking())
 			return false;
-		if (player.getHeldItem() != null && getSupportedBlockIDs().indexOf(blockID) >= 0)
+		if (player.getHeldItem() != null && getSupportedBlockIDs().indexOf(player.getHeldItem().itemID) >= 0)
 			return false;
 
 		TileEntity te = world.getBlockTileEntity(x, y, z);
@@ -48,38 +48,30 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 					onNotAbleToReform(world, x, y, z, player, side);
 				}
 			}
+			return true;
 		}
-		else
-		{
-			return onActivatedWithoutStructureFormerItem(world, x, y, z, player, side);
-		}
-		return false;
+		return onActivatedWithoutStructureFormerItem(world, x, y, z, player, side);
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int metadata, int id)
+	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
 	{
-		TileMultiBlockBase tmb = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class, world, getSupportedBlockIDs(), x, y, z, metadata);
-		if(tmb!=null)
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if (te != null && te instanceof TileMultiBlockBase)
 		{
-			if(tmb.xCoord!=x||tmb.yCoord!=y||tmb.zCoord!=z)
+			TileMultiBlockBase tmb = (TileMultiBlockBase)te;
+			tmb.setIsFormless(true);
+			int[] dummyCoords = MultiBlockStructureHelper.getAdjacentDummyBlockCoords(world, getSupportedBlockIDs(), x, y, z, metadata);
+			if (dummyCoords != null)
 			{
-				tmb.setIsFormless(true);
-			}
-			else
-			{
-				int[] dummyCoords = MultiBlockStructureHelper.getAdjacentDummyBlockCoords(world, getSupportedBlockIDs(), x, y, z, metadata);
-				if (dummyCoords != null)
+				if (world.setBlock(dummyCoords[0], dummyCoords[1], dummyCoords[2], blockID, world.getBlockMetadata(x, y, z), 2))
 				{
-					if (world.setBlock(dummyCoords[0], dummyCoords[1], dummyCoords[2], blockID, world.getBlockMetadata(x, y, z), 2))
+					TileEntity teNew = world.getBlockTileEntity(dummyCoords[0], dummyCoords[1], dummyCoords[2]);
+					if (teNew != null && teNew instanceof TileMultiBlockBase)
 					{
-						TileEntity teNew = world.getBlockTileEntity(dummyCoords[0], dummyCoords[1], dummyCoords[2]);
-						if (teNew != null && teNew instanceof TileMultiBlockBase)
-						{
-							TileMultiBlockBase tmbNew = (TileMultiBlockBase)teNew;
-							tmbNew.transferFrom(tmb);
-							tmbNew.setIsFormless(true);
-						}
+						TileMultiBlockBase tmbNew = (TileMultiBlockBase)teNew;
+						tmbNew.transferFrom(tmb);
+						tmbNew.setIsFormless(true);
 					}
 				}
 			}

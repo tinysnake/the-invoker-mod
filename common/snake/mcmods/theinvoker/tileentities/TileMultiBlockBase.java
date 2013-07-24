@@ -9,9 +9,9 @@ public abstract class TileMultiBlockBase extends TileTIBase
 		originCoords = new int[3];
 	}
 
-	private boolean isFormless;
+	protected boolean isFormless;
 
-	private int[] originCoords;
+	protected int[] originCoords;
 
 	public boolean getIsFormless()
 	{

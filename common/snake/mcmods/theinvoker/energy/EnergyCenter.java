@@ -93,8 +93,9 @@ public class EnergyCenter
 			if (updateTick <= 0)
 			{
 				TileEntity te = c.getTileEntity();
-				PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord,
-				        c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
+				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 128, te.worldObj.provider.dimensionId,
+				        PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord,
+				                c.isAvailable, c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
 			}
 		}
 
@@ -105,8 +106,9 @@ public class EnergyCenter
 			if (updateTick <= 0)
 			{
 				TileEntity te = c.getTileEntity();
-				PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.serialize(new PacketEnergyConsumerUpdate(te.xCoord, te.yCoord, te.zCoord, 
-						c.getEnergyIsRequesting(), c.getMaxEnergyRequest())));
+				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 128, te.worldObj.provider.dimensionId,
+				        PacketTypeHandler.serialize(new PacketEnergyConsumerUpdate(te.xCoord, te.yCoord, te.zCoord,
+				                c.isAvailable, c.getEnergyIsRequesting(), c.getMaxEnergyRequest())));
 			}
 		}
 		if (updateTick <= 0)

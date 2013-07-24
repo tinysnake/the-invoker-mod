@@ -173,7 +173,7 @@ public class MultiBlockStructureHelper
 		else
 			return null;
 	}
-	
+
 	public static void reformStructure(IMultiBlockStructure imbs, TileMultiBlockBase tmb, ArrayList<Integer> supportedIDs)
 	{
 		int[] startCoords = MultiBlockStructureHelper.getStructureStartPoint(tmb.worldObj, supportedIDs, tmb.xCoord, tmb.yCoord, tmb.zCoord, tmb.worldObj.getBlockMetadata(tmb.xCoord, tmb.yCoord, tmb.zCoord));
@@ -181,13 +181,72 @@ public class MultiBlockStructureHelper
 		tmb.setIsFormless(false);
 		imbs.onReformed(tmb);
 	}
-	
+
 	public static boolean getIsPlayerHoldingStructureFormerItem(IMultiBlockStructure imbs, EntityPlayer player)
 	{
 		if ((imbs.getStructureFormerItem() == null && player.getHeldItem() == null) ||
-				(player.getHeldItem() != null && player.getHeldItem().itemID == imbs.getStructureFormerItem().itemID))
+		        (player.getHeldItem() != null && player.getHeldItem().itemID == imbs.getStructureFormerItem().itemID))
 			return true;
 		return false;
+	}
+
+	public static TileMultiBlockBase FindFormedMultiBlockTileEntity(World world, ArrayList<Integer> supportedBlockIDs, int x, int y, int z, int metadata)
+	{
+		int tx = x;
+		int ty = y;
+		int tz = z;
+		int minX = x;
+		int minY = y;
+		int minZ = z;
+		int maxX = x;
+		int maxY = y;
+		int maxZ = z;
+		do
+		{
+			maxX = ++tx;
+		}
+		while (checkIsBlockSupported(supportedBlockIDs, metadata, world.getBlockId(tx, y, z), world.getBlockMetadata(tx, y, z)));
+		do
+		{
+			maxY = ++ty;
+		}
+		while (checkIsBlockSupported(supportedBlockIDs, metadata, world.getBlockId(x, ty, z), world.getBlockMetadata(x, ty, z)));
+		do
+		{
+			maxZ = ++tz;
+		}
+		while (checkIsBlockSupported(supportedBlockIDs, metadata, world.getBlockId(x, y, tz), world.getBlockMetadata(x, y, tz)));
+		tx = x;
+		ty = y;
+		tz = z;
+		do
+		{
+			minX = --tx;
+		}
+		while (checkIsBlockSupported(supportedBlockIDs, metadata, world.getBlockId(tx, y, z), world.getBlockMetadata(tx, y, z)));
+		do
+		{
+			minY = --ty;
+		}
+		while (checkIsBlockSupported(supportedBlockIDs, metadata, world.getBlockId(x, ty, z), world.getBlockMetadata(x, ty, z)));
+		do
+		{
+			minZ = --tz;
+		}
+		while (checkIsBlockSupported(supportedBlockIDs, metadata, world.getBlockId(x, y, tz), world.getBlockMetadata(x, y, tz)));
+		for (tx = minX + 1; tx < maxX; tx++)
+		{
+			for (ty = minY + 1; ty < maxY; ty++)
+			{
+				for (tz = minZ + 1; tz < maxZ; tz++)
+				{
+					TileEntity te = world.getBlockTileEntity(tx, ty, tz);
+					if(te!=null && te instanceof TileMultiBlockBase)
+						return (TileMultiBlockBase)te;
+				}
+			}
+		}
+		return null;
 	}
 
 	private static boolean checkIfOuterBoundIsOk(World world, ArrayList<Integer> supportedIDs, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, int metadata)
@@ -197,7 +256,7 @@ public class MultiBlockStructureHelper
 			for (int k = minZ; k <= maxZ; k++)
 			{
 				if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, minY - 1, k), world.getBlockMetadata(i, minY - 1, k)) ||
-						checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, maxY + 1, k), world.getBlockMetadata(i, maxY + 1, k)))
+				        checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, maxY + 1, k), world.getBlockMetadata(i, maxY + 1, k)))
 				{
 					return false;
 				}
@@ -208,7 +267,7 @@ public class MultiBlockStructureHelper
 			for (int k = minZ; k <= maxZ; k++)
 			{
 				if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(minX - 1, j, k), world.getBlockMetadata(minX - 1, j, k)) ||
-						checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(maxX + 1, j, k), world.getBlockMetadata(minX + 1, j, k)))
+				        checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(maxX + 1, j, k), world.getBlockMetadata(minX + 1, j, k)))
 				{
 					return false;
 				}
@@ -219,7 +278,7 @@ public class MultiBlockStructureHelper
 			for (int i = minX; i <= maxX; i++)
 			{
 				if (checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, j, minZ - 1), world.getBlockMetadata(i, j, minZ - 1)) ||
-						checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, j, maxZ + 1), world.getBlockMetadata(i, j, maxZ + 1)))
+				        checkIsBlockSupported(supportedIDs, metadata, world.getBlockId(i, j, maxZ + 1), world.getBlockMetadata(i, j, maxZ + 1)))
 				{
 					return false;
 				}

@@ -40,7 +40,7 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 	{
 		if (player.isSneaking())
 			return false;
-		if (player.getHeldItem() != null && getSupportedBlockIDs().indexOf(blockID) >= 0)
+		if (player.getHeldItem() != null && getSupportedBlockIDs().indexOf(player.getHeldItem().itemID) >= 0)
 			return false;
 		if (MultiBlockStructureHelper.getIsPlayerHoldingStructureFormerItem(this, player))
 		{
@@ -67,6 +67,7 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 			}
 			else if (MultiBlockStructureHelper.getIsFormable(world, x, y, z, this))
 			{
+				world.setBlockToAir(x, y, z);
 				world.setBlock(x, y, z, realBlock.blockID, world.getBlockMetadata(x, y, z), 2);
 				setupTileEntity(world, x, y, z, player);
 				tmb = (TileSoulStone)world.getBlockTileEntity(x, y, z);
@@ -78,12 +79,21 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 			{
 				onNotAbleToForm(world, x, y, z, player, side);
 			}
+			return true;
 		}
-		else
+		return onActivatedWithoutStructureFormerItem(world, x, y, z, player, side);
+	}
+
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	{
+		TileMultiBlockBase tmb = MultiBlockStructureHelper.FindFormedMultiBlockTileEntity(world, getSupportedBlockIDs(), x, y, z, metadata);
+		//TileMultiBlockBase tmb = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class, world, getSupportedBlockIDs(), x, y, z, metadata);
+		if (tmb != null)
 		{
-			return onActivatedWithoutStructureFormerItem(world, x, y, z, player, side);
+			tmb.setIsFormless(true);
 		}
-		return false;
+		super.breakBlock(world, x, y, z, metadata, id);
 	}
 
 	@Override

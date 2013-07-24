@@ -15,12 +15,13 @@ public class PacketEnergyContainerUpdate extends PacketTI
 		super(PacketTypeHandler.ENERGY_CONTAINER, false);
 	}
 
-	public PacketEnergyContainerUpdate(int x, int y, int z, int energyLevel, int capacity, int maxRequest, int range)
+	public PacketEnergyContainerUpdate(int x, int y, int z, boolean availabe, int energyLevel, int capacity, int maxRequest, int range)
 	{
 		this();
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.available = availabe;
 		this.energyLevel = energyLevel;
 		this.capacity = capacity;
 		this.maxRequest = maxRequest;
@@ -30,6 +31,7 @@ public class PacketEnergyContainerUpdate extends PacketTI
 	public int x;
 	public int y;
 	public int z;
+	public boolean available;
 	public int energyLevel;
 	public int capacity;
 	public int maxRequest;
@@ -41,6 +43,7 @@ public class PacketEnergyContainerUpdate extends PacketTI
 		x = dis.readInt();
 		y = dis.readInt();
 		z = dis.readInt();
+		available = dis.readBoolean();
 		energyLevel = dis.readInt();
 		capacity = dis.readInt();
 		maxRequest = dis.readInt();
@@ -53,6 +56,7 @@ public class PacketEnergyContainerUpdate extends PacketTI
 		dos.writeInt(x);
 		dos.writeInt(y);
 		dos.writeInt(z);
+		dos.writeBoolean(available);
 		dos.writeInt(energyLevel);
 		dos.writeInt(capacity);
 		dos.writeInt(maxRequest);
