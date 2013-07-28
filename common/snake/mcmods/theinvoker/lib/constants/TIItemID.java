@@ -8,4 +8,5 @@ public class TIItemID
 	public static int SEDUCTION_TOTEM = 21133;
 	public static int BROKEN_SEDUCTION_TOTEM = 21134;
 	public static int EVIL_TOUCH = 21135;
+	public static int ELEM_PILLAR = 21136;
 }

@@ -9,9 +9,6 @@ import snake.mcmods.theinvoker.energy.EnergyUtils;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
-import snake.mcmods.theinvoker.net.PacketTypeHandler;
-import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TileSoulStone extends TileMultiBlockBase implements IEnergyContainerWrapper, IMultiblockEnergyWrapper
 {
@@ -115,9 +112,9 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 			originCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
 
 		if (nbtCompound.hasKey(TAG_STRUCTURE_SIZE))
-			originCoords = nbtCompound.getIntArray(TAG_STRUCTURE_SIZE);
+			structureSize = nbtCompound.getIntArray(TAG_STRUCTURE_SIZE);
 		else
-			originCoords = new int[] { 1, 1, 1 };
+			structureSize = new int[] { 1, 1, 1 };
 	}
 
 	@Override
@@ -130,12 +127,16 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 			nbtCompound.setTag(TAG_ENERGY_CONTAINER, energyContainer.writeToNBT(new NBTTagCompound()));
 		}
 		nbtCompound.setIntArray(TAG_ORIGN_COORDS, originCoords);
+		nbtCompound.setIntArray(TAG_STRUCTURE_SIZE, structureSize);
 	}
 
 	@Override
 	public void transferFrom(TileMultiBlockBase tmb)
 	{
 		TileSoulStone tss = (TileSoulStone)tmb;
+		this.originCoords = tss.originCoords;
+		this.structureSize = tss.structureSize;
+		this.direction =tss.direction;
 		this.ownerName = tss.getOwnerName();
 		this.energyContainer = EnergyUtils.containerTransferToTE(this, tss.getEnergyContainer());
 	}
@@ -149,7 +150,7 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 			energyContainer.setEnergyCapacity(BlockSoulStone.CAPACITY_OF_SIZES[getBlockMetadata()]);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST * (getBlockMetadata() + 1));
 		}
-		if (!energyContainer.getIsRegistered() && !worldObj.isRemote)
+		if (!energyContainer.getIsRegistered())
 		{
 			energyContainer.register();
 		}

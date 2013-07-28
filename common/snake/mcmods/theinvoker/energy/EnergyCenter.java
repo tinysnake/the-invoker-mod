@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.world.WorldEvent.Unload;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
@@ -25,6 +27,16 @@ public class EnergyCenter
 	private ArrayList<EnergyConsumer> consumerNodes;
 	private ArrayList<EnergyForce> energyForceRegistry;
 	private int updateTick;
+
+	@ForgeSubscribe
+	public void onWorldUnloaded(Unload e)
+	{
+		if (e.world.provider.dimensionId == 0)
+		{
+			containerNodes.clear();
+			consumerNodes.clear();
+		}
+	}
 
 	public boolean registerContainer(EnergyContainer energyContainer)
 	{
@@ -94,8 +106,8 @@ public class EnergyCenter
 			{
 				TileEntity te = c.getTileEntity();
 				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 128, te.worldObj.provider.dimensionId,
-				        PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord,
-				                c.isAvailable, c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
+						PacketTypeHandler.serialize(new PacketEnergyContainerUpdate(te.xCoord, te.yCoord, te.zCoord,
+								c.isAvailable, c.getEnergyLevel(), c.getEnergyCapacity(), c.getMaxEnergyRequest(), c.getEffectiveRange())));
 			}
 		}
 
@@ -107,8 +119,8 @@ public class EnergyCenter
 			{
 				TileEntity te = c.getTileEntity();
 				PacketDispatcher.sendPacketToAllAround(te.xCoord, te.yCoord, te.zCoord, 128, te.worldObj.provider.dimensionId,
-				        PacketTypeHandler.serialize(new PacketEnergyConsumerUpdate(te.xCoord, te.yCoord, te.zCoord,
-				                c.isAvailable, c.getEnergyIsRequesting(), c.getMaxEnergyRequest())));
+						PacketTypeHandler.serialize(new PacketEnergyConsumerUpdate(te.xCoord, te.yCoord, te.zCoord,
+								c.isAvailable, c.getEnergyIsRequesting(), c.getMaxEnergyRequest())));
 			}
 		}
 		if (updateTick <= 0)
@@ -182,7 +194,7 @@ public class EnergyCenter
 
 	private void evenTheEnergyLevelBetween2Containers(EnergyContainer c1, EnergyContainer c2)
 	{
-		if (c1 == null || c2 == null || c1.getIsEnergyProvider() || c2.getIsEnergyProvider())
+		if (c1 == null || c2 == null || !c1.getIsAvailable() || !c2.getIsAvailable() || c1.getIsEnergyProvider() || c2.getIsEnergyProvider())
 			return;
 		EnergyContainer toGain = c1.getEnergyLevel() > c2.getEnergyLevel() ? c2 : c1;
 		EnergyContainer toTake = toGain == c1 ? c2 : c1;
@@ -196,7 +208,7 @@ public class EnergyCenter
 
 	private void pullEnergyFromProvider(EnergyContainer c1, EnergyContainer c2)
 	{
-		if (c1 == null || c2 == null || (!c1.getIsEnergyProvider() && !c2.getIsEnergyProvider()) || (c1.getIsEnergyProvider() && c2.getIsEnergyProvider()) || c1.getEnergyID() != c2.getEnergyID())
+		if (c1 == null || c2 == null || !c1.getIsAvailable() || !c2.getIsAvailable() || (!c1.getIsEnergyProvider() && !c2.getIsEnergyProvider()) || (c1.getIsEnergyProvider() && c2.getIsEnergyProvider()) || c1.getEnergyID() != c2.getEnergyID())
 			return;
 		EnergyContainer provider = c1.getIsEnergyProvider() ? c1 : c2;
 		EnergyContainer container = c1.getIsEnergyProvider() ? c2 : c1;
@@ -210,7 +222,7 @@ public class EnergyCenter
 
 	private void applyEnergyToConsumer(EnergyContainer container, EnergyConsumer consumer)
 	{
-		if (container == null || consumer == null || !consumer.getIsRequestingEnergy() || consumer.getEnergyID() != container.getEnergyID())
+		if (container == null || consumer == null || !container.getIsAvailable() || !consumer.getIsAvailable() || !consumer.getIsRequestingEnergy() || consumer.getEnergyID() != container.getEnergyID())
 			return;
 		int expectedFlow = Math.min(container.getEnergyLevel(), consumer.getMaxEnergyRequest());
 		int actualFlow = container.take(expectedFlow, false);

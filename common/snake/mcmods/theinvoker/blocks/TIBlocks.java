@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.blocks;
 
+import snake.mcmods.theinvoker.items.ItemElemPillar;
 import snake.mcmods.theinvoker.lib.constants.TIBlockID;
 import snake.mcmods.theinvoker.lib.constants.TIName;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -29,6 +30,6 @@ public class TIBlocks
 		GameRegistry.registerBlock(soulSmelter, TIName.BLOCK_SOUL_SMELTER);
 		GameRegistry.registerBlock(soulStoneDummy, TIName.BLOCK_SOUL_STONE);
 		GameRegistry.registerBlock(elementPurifier, TIName.BLOCK_ELEMENT_PURIFIER);
-		GameRegistry.registerBlock(elemPillarDummy, TIName.BLOCK_ELEMENT_PILLAR);
+		GameRegistry.registerBlock(elemPillarDummy, ItemElemPillar.class, TIName.BLOCK_ELEMENT_PILLAR);
 	}
 }

@@ -2,6 +2,7 @@ package snake.mcmods.theinvoker;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
+import snake.mcmods.theinvoker.energy.EnergyCenter;
 import snake.mcmods.theinvoker.energy.EnergyTickHandler;
 import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.handlers.MiscEventCenter;
@@ -41,6 +42,7 @@ public class CommonProxy
 		MinecraftForge.EVENT_BUS.register(new MiscEventCenter());
 		MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
 		MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
+		MinecraftForge.EVENT_BUS.register(EnergyCenter.INSTANCE);
 	}
 
 	public void registerTickHandlers()

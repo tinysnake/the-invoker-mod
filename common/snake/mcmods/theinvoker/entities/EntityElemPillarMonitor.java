@@ -52,14 +52,17 @@ public class EntityElemPillarMonitor extends Entity implements IEntityNameTagSpr
 		super.onEntityUpdate();
 		if (isDead)
 			return;
-//		if (age == LIFE_SPAN)
-//		{
-//			int len = rand.nextInt(2) + 3;
-//			for (int i = 0; i < len; i++)
-//			{
-//				this.worldObj.spawnParticle("flame", this.posX + 0.5F + (rand.nextFloat() * 2 - 1) / 6, this.posY + 0.5F + (rand.nextFloat() * 2 - 1) / 3, this.posZ + 0.5F + (rand.nextFloat() * 2 - 1) / 6, 0, 0, 0);
-//			}
-//		}
+		// if (age == LIFE_SPAN)
+		// {
+		// int len = rand.nextInt(2) + 3;
+		// for (int i = 0; i < len; i++)
+		// {
+		// this.worldObj.spawnParticle("flame", this.posX + 0.5F +
+		// (rand.nextFloat() * 2 - 1) / 6, this.posY + 0.5F + (rand.nextFloat()
+		// * 2 - 1) / 3, this.posZ + 0.5F + (rand.nextFloat() * 2 - 1) / 6, 0,
+		// 0, 0);
+		// }
+		// }
 		age--;
 
 		if (age < 0)
@@ -88,6 +91,6 @@ public class EntityElemPillarMonitor extends Entity implements IEntityNameTagSpr
 
 	public String getLabel()
 	{
-		return "test";
+		return String.valueOf(tep.getEnergyContainer().getEnergyLevel());
 	}
 }

@@ -145,21 +145,18 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			darknessContainer.setEffectiveRange(EFFECTIVE_RANGE);
 			darknessContainer.setMaxEnergyRequest(MAX_REQUEST);
 		}
-		if (!worldObj.isRemote)
-		{
-			if (!energyConsumer.getIsRegistered())
-				energyConsumer.register();
-			if (!soulContainer.getIsRegistered())
-				soulContainer.register();
-			if (!iceContainer.getIsRegistered())
-				iceContainer.register();
-			if (!fireContainer.getIsRegistered())
-				fireContainer.register();
-			if (!windContainer.getIsRegistered())
-				windContainer.register();
-			if (!darknessContainer.getIsRegistered())
-				darknessContainer.register();
-		}
+		if (!energyConsumer.getIsRegistered())
+			energyConsumer.register();
+		if (!soulContainer.getIsRegistered())
+			soulContainer.register();
+		if (!iceContainer.getIsRegistered())
+			iceContainer.register();
+		if (!fireContainer.getIsRegistered())
+			fireContainer.register();
+		if (!windContainer.getIsRegistered())
+			windContainer.register();
+		if (!darknessContainer.getIsRegistered())
+			darknessContainer.register();
 	}
 
 	@Override

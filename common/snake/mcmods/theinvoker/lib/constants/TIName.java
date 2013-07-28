@@ -6,7 +6,11 @@ public class TIName
 	public static final String BLOCK_ELEMENT_PURIFIER = "element_purifier";
 	public static final String BLOCK_SOUL_SMELTER = "soul_smelter";
 	public static final String BLOCK_ELEMENT_PILLAR = "element_pillar";
-	
+	public static final String BLOCK_NAME_ICE_ELEM_PILLAR = "ice";
+	public static final String BLOCK_NAME_FIRE_ELEM_PILLAR = "fire";
+	public static final String BLOCK_NAME_WIND_ELEM_PILLAR = "wind";
+	public static final String BLOCK_NAME_DARKNESS_ELEM_PILLAR = "darkness";
+
 	public static final String ITEM_TOTEM = "totem";
 	public static final String ITEM_TOTEM_SOUL_ATTRACTIVE = "totem_soul_attractive";
 	public static final String ITEM_TOTEM_SOUL = "totem_soul";
@@ -25,10 +29,10 @@ public class TIName
 	public static final String ITEM_SEDUCTION_TOTEM = "seduction_totem";
 	public static final String ITEM_BROKEN_SEDUCTION_TOTEM = "broken_seduction_totem";
 	public static final String ITEM_EVIL_TOUCH = "evil_touch";
-	
+
 	public static final String CONTAINER_SOUL_SMELTER = "container." + BLOCK_SOUL_SMELTER;
-	public static final String CONTAINER_ELEMENT_PURIFIER = "container."+BLOCK_ELEMENT_PURIFIER;
-	
+	public static final String CONTAINER_ELEMENT_PURIFIER = "container." + BLOCK_ELEMENT_PURIFIER;
+
 	public static final String ENERGY_SOUL = "soul";
 	public static final String ENERGY_ICE = "ice";
 	public static final String ENERGY_FIRE = "fire";
