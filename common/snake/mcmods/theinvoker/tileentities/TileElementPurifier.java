@@ -67,7 +67,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 	{
 		return (float)(energyConsumingThisRound - energyConsumingLeft) / energyConsumingThisRound;
 	}
-	
+
 	public ItemStack getMaterialSlot()
 	{
 		return materialSlot;
@@ -145,18 +145,21 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 			darknessContainer.setEffectiveRange(EFFECTIVE_RANGE);
 			darknessContainer.setMaxEnergyRequest(MAX_REQUEST);
 		}
-		if (!energyConsumer.getIsRegistered())
-			energyConsumer.register();
-		if (!soulContainer.getIsRegistered())
-			soulContainer.register();
-		if (!iceContainer.getIsRegistered())
-			iceContainer.register();
-		if (!fireContainer.getIsRegistered())
-			fireContainer.register();
-		if (!windContainer.getIsRegistered())
-			windContainer.register();
-		if (!darknessContainer.getIsRegistered())
-			darknessContainer.register();
+		if (!worldObj.isRemote)
+		{
+			if (!energyConsumer.getIsRegistered())
+				energyConsumer.register();
+			if (!soulContainer.getIsRegistered())
+				soulContainer.register();
+			if (!iceContainer.getIsRegistered())
+				iceContainer.register();
+			if (!fireContainer.getIsRegistered())
+				fireContainer.register();
+			if (!windContainer.getIsRegistered())
+				windContainer.register();
+			if (!darknessContainer.getIsRegistered())
+				darknessContainer.register();
+		}
 	}
 
 	@Override
@@ -281,7 +284,7 @@ public class TileElementPurifier extends TileTIBase implements IEnergyContainerW
 		}
 		energyIDThisRound = nbt.getInteger(TAG_ENERGY_THIS_ROUND);
 		isProcessing = nbt.getBoolean(TAG_IS_PROCESSING);
-		if(nbt.hasKey(TAG_MATERIAL_SLOT))
+		if (nbt.hasKey(TAG_MATERIAL_SLOT))
 		{
 			materialSlot = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(TAG_MATERIAL_SLOT));
 		}

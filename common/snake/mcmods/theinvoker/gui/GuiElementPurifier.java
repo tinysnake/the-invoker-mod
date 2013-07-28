@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import snake.mcmods.theinvoker.energy.EnergyCenter;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
-import snake.mcmods.theinvoker.energy.EnergyForce;
 import snake.mcmods.theinvoker.inventory.ContainerElementPurifier;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.RuneType;

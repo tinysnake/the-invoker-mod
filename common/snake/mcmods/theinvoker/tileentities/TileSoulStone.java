@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import snake.mcmods.theinvoker.blocks.BlockSoulStone;
 import snake.mcmods.theinvoker.energy.EnergyContainer;
+import snake.mcmods.theinvoker.energy.EnergyUtils;
 import snake.mcmods.theinvoker.energy.IEnergyContainerWrapper;
 import snake.mcmods.theinvoker.energy.IMultiblockEnergyWrapper;
 import snake.mcmods.theinvoker.energy.TIEnergy;
@@ -136,7 +137,7 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 	{
 		TileSoulStone tss = (TileSoulStone)tmb;
 		this.ownerName = tss.getOwnerName();
-		this.energyContainer = tss.getEnergyContainer();
+		this.energyContainer = EnergyUtils.containerTransferToTE(this, tss.getEnergyContainer());
 	}
 
 	protected void setupEnergyContainer()
@@ -148,7 +149,7 @@ public class TileSoulStone extends TileMultiBlockBase implements IEnergyContaine
 			energyContainer.setEnergyCapacity(BlockSoulStone.CAPACITY_OF_SIZES[getBlockMetadata()]);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST * (getBlockMetadata() + 1));
 		}
-		if (!energyContainer.getIsRegistered())
+		if (!energyContainer.getIsRegistered() && !worldObj.isRemote)
 		{
 			energyContainer.register();
 		}

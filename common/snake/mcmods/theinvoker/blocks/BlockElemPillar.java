@@ -10,13 +10,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.entities.EntityElemPillarMonitor;
-import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.LangKeys;
 import snake.mcmods.theinvoker.logic.MultiBlockStructureHelper;
 import snake.mcmods.theinvoker.tileentities.TileElemPillar;
 import snake.mcmods.theinvoker.tileentities.TileMultiBlockBase;
-import snake.mcmods.theinvoker.tileentities.TileSoulStone;
 
 public class BlockElemPillar extends BlockMultiBlockBase
 {

@@ -64,7 +64,9 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 			int[] dummyCoords = MultiBlockStructureHelper.getAdjacentDummyBlockCoords(world, getSupportedBlockIDs(), x, y, z, metadata);
 			if (dummyCoords != null)
 			{
-				if (world.setBlock(dummyCoords[0], dummyCoords[1], dummyCoords[2], blockID, world.getBlockMetadata(x, y, z), 2))
+				tmb.setBeginTransfer();
+				if (world.setBlockToAir(dummyCoords[0], dummyCoords[1], dummyCoords[2])&&
+						world.setBlock(dummyCoords[0], dummyCoords[1], dummyCoords[2], blockID, metadata, 2))
 				{
 					TileEntity teNew = world.getBlockTileEntity(dummyCoords[0], dummyCoords[1], dummyCoords[2]);
 					if (teNew != null && teNew instanceof TileMultiBlockBase)
@@ -74,6 +76,7 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 						tmbNew.setIsFormless(true);
 					}
 				}
+				tmb.setEndTransfer();
 			}
 		}
 		super.breakBlock(world, x, y, z, metadata, id);

@@ -155,7 +155,7 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, IFluidHan
 			energyContainer.setEnergyCapacity(MAX_ENERGY_CAPACITY);
 			energyContainer.setMaxEnergyRequest(MAX_ENERGY_REQUEST);
 		}
-		if (!energyContainer.getIsRegistered())
+		if (!energyContainer.getIsRegistered() && !worldObj.isRemote)
 		{
 			energyContainer.register();
 		}

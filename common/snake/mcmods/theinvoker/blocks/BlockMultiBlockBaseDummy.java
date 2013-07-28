@@ -2,6 +2,7 @@ package snake.mcmods.theinvoker.blocks;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 {
-
 	public BlockMultiBlockBaseDummy(int par1, Material par2Material, BlockMultiBlockBase realBlock)
 	{
 		super(par1, par2Material);
@@ -88,12 +88,18 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
 	{
 		TileMultiBlockBase tmb = MultiBlockStructureHelper.FindFormedMultiBlockTileEntity(world, getSupportedBlockIDs(), x, y, z, metadata);
-		//TileMultiBlockBase tmb = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class, world, getSupportedBlockIDs(), x, y, z, metadata);
-		if (tmb != null)
+		// TileMultiBlockBase tmb =
+		// MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class,
+		// world, getSupportedBlockIDs(), x, y, z, metadata);
+		if (tmb != null && !tmb.getIsTransforming())
 		{
 			tmb.setIsFormless(true);
 		}
-		super.breakBlock(world, x, y, z, metadata, id);
+		if (hasTileEntity(metadata) && !(this instanceof BlockContainer))
+		{
+			world.removeBlockTileEntity(x, y, z);
+		}
+		world.removeBlockTileEntity(x, y, z);
 	}
 
 	@Override

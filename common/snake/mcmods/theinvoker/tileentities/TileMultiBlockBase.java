@@ -12,6 +12,8 @@ public abstract class TileMultiBlockBase extends TileTIBase
 	protected boolean isFormless;
 
 	protected int[] originCoords;
+	
+	protected boolean isTransforming;
 
 	public boolean getIsFormless()
 	{
@@ -36,4 +38,19 @@ public abstract class TileMultiBlockBase extends TileTIBase
 	}
 	
 	public abstract void transferFrom(TileMultiBlockBase tmb);
+	
+	public Boolean getIsTransforming()
+	{
+		return isTransforming;
+	}
+
+	public void setBeginTransfer()
+	{
+		isTransforming=true;
+	}
+
+	public void setEndTransfer()
+	{
+		isTransforming=false;
+	}
 }

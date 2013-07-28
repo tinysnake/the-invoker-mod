@@ -48,4 +48,25 @@ public class EnergyUtils
 			}
 		}
 	}
+	
+	public static EnergyContainer containerTransferToTE(TileEntity te, EnergyContainer c)
+	{
+		EnergyContainer nc = new EnergyContainer(te, c.getIsEnergyProvider(), c.getEnergyID());
+		nc.setEffectiveRange(c.getEffectiveRange());
+		nc.setEnergyCapacity(c.getEnergyCapacity());
+		nc.setEnergyLevel(c.getEnergyLevel());
+		nc.setIsAvailable(c.getIsAvailable());
+		nc.setMaxEnergyRequest(c.getMaxEnergyRequest());
+		return nc;
+	}
+	
+	public static EnergyConsumer consumerTransferToTE(TileEntity te, EnergyConsumer c)
+	{
+		EnergyConsumer nc = new EnergyConsumer(te, c.getEnergyID());
+		nc.effectiveRange=c.effectiveRange;
+		nc.energyRequesting=c.energyRequesting;
+		nc.isAvailable=c.isAvailable;
+		nc.maxEnergyRequest = c.maxEnergyRequest;
+		return nc;
+	}
 }
