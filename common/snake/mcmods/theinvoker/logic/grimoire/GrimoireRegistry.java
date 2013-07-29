@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.logic.grimoires;
+package snake.mcmods.theinvoker.logic.grimoire;
 
 import java.util.ArrayList;
 import java.util.HashMap;
