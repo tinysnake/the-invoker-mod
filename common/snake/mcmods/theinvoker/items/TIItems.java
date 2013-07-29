@@ -12,6 +12,7 @@ public class TIItems
 	public static ItemSeductionTotem seductionTotem;
 	public static ItemBrokenSeductionTotem brokenSeductionTotem;
 	public static ItemEvilTouch evilTouch;
+	public static ItemGrimoire grimoire;
 
 	public static void init()
 	{
@@ -21,6 +22,7 @@ public class TIItems
 		seductionTotem = new ItemSeductionTotem(TIItemID.SEDUCTION_TOTEM);
 		brokenSeductionTotem = new ItemBrokenSeductionTotem(TIItemID.BROKEN_SEDUCTION_TOTEM);
 		evilTouch = new ItemEvilTouch(TIItemID.EVIL_TOUCH);
+		grimoire = new ItemGrimoire(TIItemID.GRIMOIRE);
 
 		GameRegistry.registerItem(totem, TIName.ITEM_TOTEM);
 		GameRegistry.registerItem(soulShard, TIName.ITEM_SOUL_SHARD);
@@ -28,5 +30,6 @@ public class TIItems
 		GameRegistry.registerItem(seductionTotem, TIName.ITEM_SEDUCTION_TOTEM);
 		GameRegistry.registerItem(brokenSeductionTotem, TIName.ITEM_BROKEN_SEDUCTION_TOTEM);
 		GameRegistry.registerItem(evilTouch, TIName.ITEM_EVIL_TOUCH);
+		GameRegistry.registerItem(grimoire, TIName.ITEM_GRIMOIRE);
 	}
 }

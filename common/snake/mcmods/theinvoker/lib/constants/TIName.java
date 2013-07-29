@@ -29,6 +29,7 @@ public class TIName
 	public static final String ITEM_SEDUCTION_TOTEM = "seduction_totem";
 	public static final String ITEM_BROKEN_SEDUCTION_TOTEM = "broken_seduction_totem";
 	public static final String ITEM_EVIL_TOUCH = "evil_touch";
+	public static final String ITEM_GRIMOIRE = "grimoire";
 
 	public static final String CONTAINER_SOUL_SMELTER = "container." + BLOCK_SOUL_SMELTER;
 	public static final String CONTAINER_ELEMENT_PURIFIER = "container." + BLOCK_ELEMENT_PURIFIER;

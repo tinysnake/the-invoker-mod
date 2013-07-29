@@ -20,6 +20,7 @@ item.soul_rune_darkness.name=暗之灵魂符印
 item.seduction_totem.name=魅惑图腾
 item.broken_seduction_totem.name=损坏了的魅惑图腾
 item.evil_touch.name=邪恶之触
+item.grimoire.name=魔典
 tile.soul_smelter.name=灵魂熔炉
 tile.soul_stone.name=镇魂石
 tile.element_purifier.name=净魂坛
