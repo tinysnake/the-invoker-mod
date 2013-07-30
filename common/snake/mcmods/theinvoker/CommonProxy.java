@@ -7,6 +7,7 @@ import snake.mcmods.theinvoker.energy.EnergyTickHandler;
 import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.handlers.MiscEventCenter;
 import snake.mcmods.theinvoker.lib.constants.TITileEntityID;
+import snake.mcmods.theinvoker.logic.grimoire.GrimoireSystem;
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
@@ -49,6 +50,7 @@ public class CommonProxy
 	{
 		TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
 		TickRegistry.registerTickHandler(new EnergyTickHandler(), Side.SERVER);
+		TickRegistry.registerTickHandler(GrimoireSystem.INSTANCE, Side.CLIENT);
 	}
 
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)
