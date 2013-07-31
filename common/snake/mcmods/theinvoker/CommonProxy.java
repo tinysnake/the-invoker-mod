@@ -3,12 +3,11 @@ package snake.mcmods.theinvoker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import snake.mcmods.theinvoker.energy.EnergyCenter;
-import snake.mcmods.theinvoker.energy.EnergyTickHandler;
-import snake.mcmods.theinvoker.handlers.ForgeTickHandler;
 import snake.mcmods.theinvoker.handlers.MiscEventCenter;
 import snake.mcmods.theinvoker.lib.constants.TITileEntityID;
 import snake.mcmods.theinvoker.logic.grimoire.GrimoireSystem;
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
+import snake.mcmods.theinvoker.logic.totems.TotemCenter;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 import snake.mcmods.theinvoker.tileentities.TileElemPillar;
@@ -48,8 +47,8 @@ public class CommonProxy
 
 	public void registerTickHandlers()
 	{
-		TickRegistry.registerTickHandler(new ForgeTickHandler(), Side.SERVER);
-		TickRegistry.registerTickHandler(new EnergyTickHandler(), Side.SERVER);
+		TickRegistry.registerTickHandler(TotemCenter.INSTANCE, Side.SERVER);
+		TickRegistry.registerTickHandler(EnergyCenter.INSTANCE, Side.SERVER);
 		TickRegistry.registerTickHandler(GrimoireSystem.INSTANCE, Side.CLIENT);
 	}
 

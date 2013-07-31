@@ -1,6 +1,7 @@
 package snake.mcmods.theinvoker.energy;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
@@ -9,9 +10,11 @@ import net.minecraftforge.event.world.WorldEvent.Unload;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class EnergyCenter
+public class EnergyCenter implements ITickHandler
 {
 	public static final EnergyCenter INSTANCE = new EnergyCenter();
 	private static int energyID = 1;
@@ -36,6 +39,30 @@ public class EnergyCenter
 			containerNodes.clear();
 			consumerNodes.clear();
 		}
+	}
+
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	{
+		EnergyCenter.INSTANCE.updateEnergyFlow();
+	}
+
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData)
+	{
+
+	}
+
+	@Override
+	public EnumSet<TickType> ticks()
+	{
+		return EnumSet.of(TickType.SERVER);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return "EnergyLogicCenter";
 	}
 
 	public boolean registerContainer(EnergyContainer energyContainer)

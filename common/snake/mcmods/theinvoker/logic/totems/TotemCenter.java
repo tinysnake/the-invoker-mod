@@ -2,19 +2,21 @@ package snake.mcmods.theinvoker.logic.totems;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import snake.mcmods.theinvoker.lib.TotemType;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import snake.mcmods.theinvoker.utils.Utils;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
 
-public class TotemCenter
+public class TotemCenter implements ITickHandler
 {
 	public static final TotemCenter INSTANCE = new TotemCenter();
 
@@ -26,6 +28,30 @@ public class TotemCenter
 
 	private List<TileTotem> totems;
 	private List<Entry<Entity, Integer>> entitiesToRemove;
+
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	{
+		update();
+	}
+
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData)
+	{
+
+	}
+
+	@Override
+	public EnumSet<TickType> ticks()
+	{
+		return EnumSet.of(TickType.SERVER);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return "TotemCenter";
+	}
 
 	public void registerTotem(TileTotem tt)
 	{
