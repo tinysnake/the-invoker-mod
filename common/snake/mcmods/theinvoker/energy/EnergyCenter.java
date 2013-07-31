@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent.Unload;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyConsumerUpdate;
 import snake.mcmods.theinvoker.net.packet.PacketEnergyContainerUpdate;
@@ -62,7 +63,7 @@ public class EnergyCenter implements ITickHandler
 	@Override
 	public String getLabel()
 	{
-		return "EnergyLogicCenter";
+		return  TIGlobal.MOD_ID + ":"+this.getClass().getSimpleName();
 	}
 
 	public boolean registerContainer(EnergyContainer energyContainer)

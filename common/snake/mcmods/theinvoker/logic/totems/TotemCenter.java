@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import snake.mcmods.theinvoker.lib.TotemType;
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import snake.mcmods.theinvoker.utils.Utils;
 import cpw.mods.fml.common.ITickHandler;
@@ -50,7 +51,7 @@ public class TotemCenter implements ITickHandler
 	@Override
 	public String getLabel()
 	{
-		return "TotemCenter";
+		return TIGlobal.MOD_ID + ":"+this.getClass().getSimpleName();
 	}
 
 	public void registerTotem(TileTotem tt)

@@ -4,17 +4,100 @@ import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
-import scala.Console;
-import snake.mcmods.theinvoker.items.ItemGrimoire;
 import snake.mcmods.theinvoker.items.TIItems;
-
+import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class GrimoireSystem implements ITickHandler
 {
 	public static final GrimoireSystem INSTANCE = new GrimoireSystem();
+	
+	private boolean isHoldingGrimoire;
+	
+	private boolean isCasting;
+	
+	private boolean isCharging;
+	
+	private int castTimer;
+	
+	private int maxCastTimer;
+	
+	private int chargeTimer;
+	
+	private int maxChargeTimer;
+
+	public boolean getIsHoldingGrimoire()
+	{
+		return isHoldingGrimoire;
+	}
+
+	public void setIsHoldingGrimoire(boolean isHoldingGrimoire)
+	{
+		this.isHoldingGrimoire = isHoldingGrimoire;
+	}
+
+	public boolean getIsCasting()
+	{
+		return isCasting;
+	}
+
+	public void setIsCasting(boolean isCasting)
+	{
+		this.isCasting = isCasting;
+		if(!isCasting)
+			castTimer=0;
+	}
+
+	public boolean getIsCharging()
+	{
+		return isCharging;
+	}
+
+	public void setIsCharging(boolean isCharging)
+	{
+		this.isCharging = isCharging;
+	}
+
+	public int getCastTimer()
+	{
+		return castTimer;
+	}
+
+//	public void setCastTimer(int castTimer)
+//	{
+//		this.castTimer = castTimer;
+//	}
+
+	public int getMaxCastTimer()
+	{
+		return maxCastTimer;
+	}
+
+	public void setMaxCastTimer(int maxCastTimer)
+	{
+		this.maxCastTimer = maxCastTimer;
+	}
+
+	public int getChargeTimer()
+	{
+		return chargeTimer;
+	}
+
+//	public void setChargeTimer(int chargeTimer)
+//	{
+//		this.chargeTimer = chargeTimer;
+//	}
+
+	public int getMaxChargeTimer()
+	{
+		return maxChargeTimer;
+	}
+
+	public void setMaxChargeTimer(int maxChargeTimer)
+	{
+		this.maxChargeTimer = maxChargeTimer;
+	}
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -33,15 +116,13 @@ public class GrimoireSystem implements ITickHandler
 			}
 			if (grimoire != null)
 			{
-				if(grimoire.getItemDamage() > 0)
+				if (GrimoireNBT.getOwnerName(grimoire) == null)
 				{
-				int stepSize = GrimoireMisc.getCDStepSize(grimoire);
-				int dmg = Math.max(0, grimoire.getItemDamage() - stepSize);
-				grimoire.setItemDamage(dmg);
-				Console.println("charging girmoire");
-				}else if(GrimoireMisc.getOwnerName(grimoire)==null)
+					GrimoireNBT.setOwner(grimoire, ep);
+				}
+				if(getIsCasting())
 				{
-					GrimoireMisc.setOwner(grimoire, ep);
+					castTimer++;
 				}
 			}
 		}
@@ -61,15 +142,6 @@ public class GrimoireSystem implements ITickHandler
 	@Override
 	public String getLabel()
 	{
-		return this.getClass().getSimpleName();
-	}
-
-	public void startCDCounting(ItemStack grimoire)
-	{
-		if (grimoire != null && grimoire.itemID == TIItems.grimoire.itemID)
-		{
-			grimoire.setItemDamage(ItemGrimoire.MAX_DAMAGE_VALUE);
-			GrimoireMisc.setCDStepSize(grimoire, 5);
-		}
+		return  TIGlobal.MOD_ID + ":"+this.getClass().getSimpleName();
 	}
 }

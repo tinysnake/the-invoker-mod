@@ -8,4 +8,6 @@ public class TIGlobal
 	public final static String VERSION = "@VERSION@.@BUILD_NUM@";
 	public final static int NORMAL_CHANCE_MULTIPLIER = 100;
 	public final static int RARE_CHANCE_MULTIPLIER = 10000;
+	public final static int GAME_WIDTH = 427;
+	public final static int GAME_HEIGHT = 240;
 }

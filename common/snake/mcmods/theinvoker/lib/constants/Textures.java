@@ -30,4 +30,6 @@ public class Textures
 
 	public static final ResourceLocation GUI_SOUL_SMELTER = Utils.wrapResourcePath(GUI_BASE_PATH + "gui_soul_smelter.png");
 	public static final ResourceLocation GUI_ELEMENT_PURIFIER = Utils.wrapResourcePath(GUI_BASE_PATH + "gui_element_purifier.png");
+	
+	public static final ResourceLocation GRIMOIRE_HUD = Utils.wrapResourcePath(GUI_BASE_PATH+"grimoire_hud.png");
 }

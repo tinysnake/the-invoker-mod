@@ -2,7 +2,7 @@ package snake.mcmods.theinvoker.items;
 
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.lib.constants.TIName;
-import snake.mcmods.theinvoker.logic.grimoire.GrimoireMisc;
+import snake.mcmods.theinvoker.logic.grimoire.GrimoireNBT;
 import snake.mcmods.theinvoker.logic.grimoire.GrimoireSystem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -26,7 +26,7 @@ public class ItemGrimoire extends ItemTIBase
 	@Override
 	public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityPlayer player, int itemInUseCount)
 	{
-		GrimoireSystem.INSTANCE.startCDCounting(itemStack);
+		GrimoireSystem.INSTANCE.setIsCasting(false);
 	}
 	
 	@Override
@@ -35,6 +35,8 @@ public class ItemGrimoire extends ItemTIBase
 		if(itemStack.isItemDamaged())
 			return itemStack;
 		entityPlayer.setItemInUse(itemStack, getMaxItemUseDuration(itemStack));
+		GrimoireSystem.INSTANCE.setIsCasting(true);
+		GrimoireSystem.INSTANCE.setMaxCastTimer(100);
 		return itemStack;
 	}
 	
