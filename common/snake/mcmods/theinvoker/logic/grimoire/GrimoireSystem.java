@@ -12,20 +12,18 @@ import cpw.mods.fml.common.TickType;
 public class GrimoireSystem implements ITickHandler
 {
 	public static final GrimoireSystem INSTANCE = new GrimoireSystem();
-	
+
 	private boolean isHoldingGrimoire;
-	
+
 	private boolean isCasting;
-	
+
 	private boolean isCharging;
-	
+
 	private int castTimer;
-	
-	private int maxCastTimer;
-	
+
 	private int chargeTimer;
 	
-	private int maxChargeTimer;
+	private ISpiritState state;
 
 	public boolean getIsHoldingGrimoire()
 	{
@@ -45,8 +43,8 @@ public class GrimoireSystem implements ITickHandler
 	public void setIsCasting(boolean isCasting)
 	{
 		this.isCasting = isCasting;
-		if(!isCasting)
-			castTimer=0;
+		if (!isCasting)
+			castTimer = 0;
 	}
 
 	public boolean getIsCharging()
@@ -64,19 +62,9 @@ public class GrimoireSystem implements ITickHandler
 		return castTimer;
 	}
 
-//	public void setCastTimer(int castTimer)
-//	{
-//		this.castTimer = castTimer;
-//	}
-
-	public int getMaxCastTimer()
+	public int getMaxCastDuration()
 	{
-		return maxCastTimer;
-	}
-
-	public void setMaxCastTimer(int maxCastTimer)
-	{
-		this.maxCastTimer = maxCastTimer;
+		return state.getCurrentSpell().getMaxCastDuration();
 	}
 
 	public int getChargeTimer()
@@ -84,19 +72,19 @@ public class GrimoireSystem implements ITickHandler
 		return chargeTimer;
 	}
 
-//	public void setChargeTimer(int chargeTimer)
-//	{
-//		this.chargeTimer = chargeTimer;
-//	}
-
 	public int getMaxChargeTimer()
 	{
-		return maxChargeTimer;
+		return state.getCurrentSpell().getMaxChargeDuration();
 	}
-
-	public void setMaxChargeTimer(int maxChargeTimer)
+	
+	public void startCasting()
 	{
-		this.maxChargeTimer = maxChargeTimer;
+		
+	}
+	
+	public void stopCasting()
+	{
+		
 	}
 
 	@Override
@@ -120,7 +108,7 @@ public class GrimoireSystem implements ITickHandler
 				{
 					GrimoireNBT.setOwner(grimoire, ep);
 				}
-				if(getIsCasting())
+				if (getIsCasting())
 				{
 					castTimer++;
 				}
@@ -142,6 +130,6 @@ public class GrimoireSystem implements ITickHandler
 	@Override
 	public String getLabel()
 	{
-		return  TIGlobal.MOD_ID + ":"+this.getClass().getSimpleName();
+		return TIGlobal.MOD_ID + ":" + this.getClass().getSimpleName();
 	}
 }

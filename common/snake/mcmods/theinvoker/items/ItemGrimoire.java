@@ -35,8 +35,6 @@ public class ItemGrimoire extends ItemTIBase
 		if(itemStack.isItemDamaged())
 			return itemStack;
 		entityPlayer.setItemInUse(itemStack, getMaxItemUseDuration(itemStack));
-		GrimoireSystem.INSTANCE.setIsCasting(true);
-		GrimoireSystem.INSTANCE.setMaxCastTimer(100);
 		return itemStack;
 	}
 	

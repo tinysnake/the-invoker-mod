@@ -43,10 +43,10 @@ public class GrimoireHUD implements ITickHandler
 					mc.renderEngine.func_110577_a(Textures.GRIMOIRE_HUD);
 					if (gsys.getIsCasting())
 					{
-						float prog = (float)gsys.getCastTimer() / gsys.getMaxCastTimer();
+						float prog = (float)gsys.getCastTimer() / gsys.getMaxCastDuration();
 						RenderUtils.drawTexturedModalRect(HUD_X, HUD_Y, 0, 0, HUD_WIDTH, HUD_HEIGHT);
 						RenderUtils.drawTexturedModalRect(HUD_X, HUD_Y, 0, HUD_HEIGHT * 2, (int)(prog * HUD_WIDTH), HUD_HEIGHT);
-						String secStr = String.format("%.1f", (1F - Math.min(1, prog)) * (gsys.getMaxCastTimer() / 20F));
+						String secStr = String.format("%.1f", (1F - Math.min(1, prog)) * (gsys.getMaxCastDuration() / 20F));
 						int fontWidth = mc.fontRenderer.getStringWidth(secStr);
 						mc.fontRenderer.drawString(secStr, (TIGlobal.GAME_WIDTH - fontWidth) >> 1, 181, 0x333333);
 					}

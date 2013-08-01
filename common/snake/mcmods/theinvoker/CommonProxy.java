@@ -56,6 +56,6 @@ public class CommonProxy
 
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)
 	{
-
+		
 	}
 }
