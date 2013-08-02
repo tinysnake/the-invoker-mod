@@ -11,6 +11,7 @@ import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
 import snake.mcmods.theinvoker.logic.totems.TotemCenter;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
+import snake.mcmods.theinvoker.potions.PotionTickHandler;
 import snake.mcmods.theinvoker.tileentities.TileElemPillar;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
@@ -52,10 +53,11 @@ public class CommonProxy
 		TickRegistry.registerTickHandler(EnergyCenter.INSTANCE, Side.SERVER);
 		TickRegistry.registerTickHandler(GrimoireSystem.INSTANCE, Side.CLIENT);
 		TickRegistry.registerTickHandler(GrimoireHUD.INSTANCE, Side.CLIENT);
+		TickRegistry.registerTickHandler(new PotionTickHandler(), Side.CLIENT);
 	}
 
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)
 	{
-		
+
 	}
 }
