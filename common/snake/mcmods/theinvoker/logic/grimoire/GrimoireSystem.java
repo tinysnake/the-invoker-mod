@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
+import snake.mcmods.theinvoker.spirits.ISpiritState;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -22,7 +23,7 @@ public class GrimoireSystem implements ITickHandler
 	private int castTimer;
 
 	private int chargeTimer;
-	
+
 	private ISpiritState state;
 
 	public boolean getIsHoldingGrimoire()
@@ -76,21 +77,35 @@ public class GrimoireSystem implements ITickHandler
 	{
 		return state.getCurrentSpell().getMaxChargeDuration();
 	}
-	
+
 	public void startCasting()
 	{
-		
+
 	}
-	
+
 	public void stopCasting()
 	{
-		
+
 	}
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
+	}
+
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData)
+	{
 		EntityPlayer ep = (EntityPlayer)tickData[0];
+		if (ep.getHeldItem() != null && ep.getHeldItem().itemID == TIItems.grimoire.itemID)
+		{
+			if (!isHoldingGrimoire)
+				setIsHoldingGrimoire(true);
+		}
+		else if (isHoldingGrimoire)
+		{
+			setIsHoldingGrimoire(false);
+		}
 		if (ep.inventory.hasItem(TIItems.grimoire.itemID))
 		{
 			ItemStack grimoire = null;
@@ -114,11 +129,6 @@ public class GrimoireSystem implements ITickHandler
 				}
 			}
 		}
-	}
-
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData)
-	{
 	}
 
 	@Override

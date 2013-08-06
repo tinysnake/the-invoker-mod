@@ -1,13 +1,12 @@
 package snake.mcmods.theinvoker.items;
 
-import snake.mcmods.theinvoker.TheInvoker;
-import snake.mcmods.theinvoker.lib.constants.TIName;
-import snake.mcmods.theinvoker.logic.grimoire.GrimoireNBT;
-import snake.mcmods.theinvoker.logic.grimoire.GrimoireSystem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import snake.mcmods.theinvoker.TheInvoker;
+import snake.mcmods.theinvoker.lib.constants.TIName;
+import snake.mcmods.theinvoker.logic.grimoire.GrimoireSystem;
 
 public class ItemGrimoire extends ItemTIBase
 {

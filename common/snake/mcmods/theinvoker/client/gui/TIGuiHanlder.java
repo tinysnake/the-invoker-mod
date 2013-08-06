@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.gui;
+package snake.mcmods.theinvoker.client.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

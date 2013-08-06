@@ -1,10 +1,14 @@
 package snake.mcmods.theinvoker;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.potion.Potion;
 import snake.mcmods.theinvoker.blocks.TIBlocks;
+import snake.mcmods.theinvoker.client.gui.TIGuiHanlder;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.energy.TIEnergy;
-import snake.mcmods.theinvoker.gui.TIGuiHanlder;
 import snake.mcmods.theinvoker.items.TIItems;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.logic.elempurifier.ElementPurifierMisc;
@@ -29,7 +33,7 @@ public class TheInvoker
 	@Instance(TIGlobal.MOD_ID)
 	public static TheInvoker instance;
 
-	@SidedProxy(clientSide = "snake.mcmods.theinvoker.ClientProxy", serverSide = "snake.mcmods.theinvoker.CommonProxy")
+	@SidedProxy(clientSide = "snake.mcmods.theinvoker.client.ClientProxy", serverSide = "snake.mcmods.theinvoker.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static CreativeTabs tab = new CreativeTabTI(CreativeTabs.getNextID(), TIGlobal.MOD_ID);
@@ -37,7 +41,28 @@ public class TheInvoker
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e)
 	{
-
+		for(Field f:Potion.class.getDeclaredFields())
+		{
+			int modifier = f.getModifiers();
+			if(Modifier.isStatic(modifier)&&Modifier.isFinal(modifier)&&f.getType().equals(Potion[].class))
+			{
+				try
+                {
+					Field modfield;
+	                modfield = Field.class.getDeclaredField("modifiers");
+					modfield.setAccessible(true);
+					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
+					Potion[] potionTypes = (Potion[])f.get(null);
+					final Potion[] newPotionTypes = new Potion[256];
+					System.arraycopy(potionTypes, 0, newPotionTypes, 0, potionTypes.length);
+					f.set(null, newPotionTypes);
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+			}
+		}
 	}
 
 	@EventHandler

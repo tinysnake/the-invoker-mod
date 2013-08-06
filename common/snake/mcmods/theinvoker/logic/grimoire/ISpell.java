@@ -6,6 +6,7 @@ public interface ISpell
 {
 	String getName();
 	boolean getIsInstant();
+	boolean autoStopCasting();
 	int getMaxCastDuration();
 	int getMaxChargeDuration();
 	void cast(EntityPlayer p);

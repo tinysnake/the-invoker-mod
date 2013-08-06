@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.renderer;
+package snake.mcmods.theinvoker.client.renderer;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;

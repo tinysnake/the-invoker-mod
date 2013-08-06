@@ -7,11 +7,11 @@ import snake.mcmods.theinvoker.handlers.MiscEventCenter;
 import snake.mcmods.theinvoker.lib.constants.TITileEntityID;
 import snake.mcmods.theinvoker.logic.grimoire.GrimoireHUD;
 import snake.mcmods.theinvoker.logic.grimoire.GrimoireSystem;
+import snake.mcmods.theinvoker.logic.potion.PotionCenter;
 import snake.mcmods.theinvoker.logic.seductiontotems.SeductionTotemEventHooks;
 import snake.mcmods.theinvoker.logic.totems.TotemCenter;
 import snake.mcmods.theinvoker.logic.totems.TotemEventHooks;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
-import snake.mcmods.theinvoker.potions.PotionTickHandler;
 import snake.mcmods.theinvoker.tileentities.TileElemPillar;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
@@ -45,6 +45,7 @@ public class CommonProxy
 		MinecraftForge.EVENT_BUS.register(new TotemEventHooks());
 		MinecraftForge.EVENT_BUS.register(new SeductionTotemEventHooks());
 		MinecraftForge.EVENT_BUS.register(EnergyCenter.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new PotionCenter());
 	}
 
 	public void registerTickHandlers()
@@ -53,7 +54,6 @@ public class CommonProxy
 		TickRegistry.registerTickHandler(EnergyCenter.INSTANCE, Side.SERVER);
 		TickRegistry.registerTickHandler(GrimoireSystem.INSTANCE, Side.CLIENT);
 		TickRegistry.registerTickHandler(GrimoireHUD.INSTANCE, Side.CLIENT);
-		TickRegistry.registerTickHandler(new PotionTickHandler(), Side.CLIENT);
 	}
 
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)

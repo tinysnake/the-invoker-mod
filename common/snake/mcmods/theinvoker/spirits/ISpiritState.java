@@ -1,6 +1,6 @@
-package snake.mcmods.theinvoker.logic.grimoire;
+package snake.mcmods.theinvoker.spirits;
 
-import net.minecraft.entity.player.EntityPlayer;
+import snake.mcmods.theinvoker.logic.grimoire.ISpell;
 import net.minecraft.potion.Potion;
 
 public interface ISpiritState
@@ -11,6 +11,4 @@ public interface ISpiritState
 	int getCurrentSpellIndex();
 	void setCurrentSpellIndex(int val);
 	ISpell getCurrentSpell();
-	void onHit(EntityPlayer ep);
-	void onAttacked(EntityPlayer p);
 }

@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.renderer;
+package snake.mcmods.theinvoker.client.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;

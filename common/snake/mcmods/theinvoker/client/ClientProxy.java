@@ -1,16 +1,17 @@
-package snake.mcmods.theinvoker;
+package snake.mcmods.theinvoker.client;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import snake.mcmods.theinvoker.CommonProxy;
+import snake.mcmods.theinvoker.client.renderer.RenderElementPurifier;
+import snake.mcmods.theinvoker.client.renderer.RenderIEntityNameTagSprite;
+import snake.mcmods.theinvoker.client.renderer.RenderSeductionTotem;
+import snake.mcmods.theinvoker.client.renderer.RenderTotem;
 import snake.mcmods.theinvoker.entities.EntityElemPillarMonitor;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
-import snake.mcmods.theinvoker.renderer.RenderElementPurifier;
-import snake.mcmods.theinvoker.renderer.RenderSeductionTotem;
-import snake.mcmods.theinvoker.renderer.RenderIEntityNameTagSprite;
-import snake.mcmods.theinvoker.renderer.RenderTotem;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import snake.mcmods.theinvoker.tileentities.TileSeductionTotem;
 import snake.mcmods.theinvoker.tileentities.TileTIBase;

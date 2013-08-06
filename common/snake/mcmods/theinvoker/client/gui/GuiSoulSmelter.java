@@ -1,4 +1,4 @@
-package snake.mcmods.theinvoker.gui;
+package snake.mcmods.theinvoker.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;
