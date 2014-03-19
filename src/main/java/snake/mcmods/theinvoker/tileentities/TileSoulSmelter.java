@@ -5,8 +5,8 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.network.Packet;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -23,7 +23,6 @@ import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.logic.soulsmelter.SoulSmelterMisc;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketSoulSmelterUpdate;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TileSoulSmelter extends TileTIBase implements IInventory, IFluidHandler, IEnergyContainerWrapper
 {
@@ -236,16 +235,6 @@ public class TileSoulSmelter extends TileTIBase implements IInventory, IFluidHan
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
 		return true;
-	}
-
-	@Override
-	public void openChest()
-	{
-	}
-
-	@Override
-	public void closeChest()
-	{
 	}
 
 	@Override

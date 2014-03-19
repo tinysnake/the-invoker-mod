@@ -22,11 +22,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod(modid = TIGlobal.MOD_ID, name = TIGlobal.MOD_NAME, version = TIGlobal.VERSION)
-@NetworkMod(serverSideRequired = true, clientSideRequired = false, channels = { TIGlobal.CHANNEL }, packetHandler = PacketHandler.class)
 public class TheInvoker
 {
 
@@ -72,7 +70,7 @@ public class TheInvoker
 		TIItems.init();
 		TIEnergy.init();
 
-		NetworkRegistry.instance().registerGuiHandler(TheInvoker.instance, new TIGuiHanlder());
+		NetworkRegistry.INSTANCE.registerGuiHandler(TheInvoker.instance, new TIGuiHanlder());
 
 		proxy.registerTileEntities();
 
@@ -82,7 +80,7 @@ public class TheInvoker
 
 		proxy.registerEventHooks();
 
-		Lang.loadLocalizedFiles();
+//		Lang.loadLocalizedFiles();
 
 		SoulSmelterMisc.initDefaultRecipies();
 		ElementPurifierMisc.initDefaultRecipies();

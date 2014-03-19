@@ -2,13 +2,14 @@ package snake.mcmods.theinvoker.blocks;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
@@ -32,24 +33,24 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	public static final int EFFECTIVE_RANGE = 16;
 	public static final int[][] FORMABLE_SIZES = { { 1, 1, 1 }, { 2, 1, 2 }, { 3, 2, 4 }, { MAX_X_SIZE, MAX_Y_SIZE, 5 } };
 
-	public BlockSoulStone(int id)
+	public BlockSoulStone()
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 		this.setCreativeTab(TheInvoker.tab);
-		this.setUnlocalizedName(TIName.BLOCK_SOUL_STONE);
+		this.setBlockName(TIName.BLOCK_SOUL_STONE);
 	}
 
-	private ArrayList<Integer> supportedIDs;
+	private ArrayList<Block> supportedBlocks;
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(this));
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world,int i)
 	{
 		return new TileSoulStone();
 	}
@@ -58,7 +59,7 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	{
 		if (world.isRemote)
 		{
-			TileSoulStone tss = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileSoulStone.class, world, getSupportedBlockIDs(), x, y, z, world.getBlockMetadata(x, y, z));
+			TileSoulStone tss = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileSoulStone.class, world, getSupportedBlocks(), x, y, z, world.getBlockMetadata(x, y, z));
 			if (tss != null)
 			{
 				if (tss.getIsFormless())
@@ -125,15 +126,15 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	}
 
 	@Override
-	public ArrayList<Integer> getSupportedBlockIDs()
+	public ArrayList<Block> getSupportedBlocks()
 	{
-		if (supportedIDs == null)
+		if (supportedBlocks == null)
 		{
-			supportedIDs = new ArrayList<Integer>();
-			supportedIDs.add(blockID);
-			supportedIDs.add(TIBlocks.soulStoneDummy.blockID);
+			supportedBlocks = new ArrayList<Block>();
+			supportedBlocks.add(this);
+			supportedBlocks.add(TIBlocks.soulStoneDummy);
 		}
-		return supportedIDs;
+		return supportedBlocks;
 	}
 
 	@Override
@@ -156,7 +157,7 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 		{
 			((TileSoulStone)tmb).getEnergyContainer().setEnergyCapacity(BlockSoulStone.CAPACITY_OF_SIZES[index]);
 		}
-		tmb.worldObj.spawnParticle("bigexplosion", tmb.xCoord, tmb.yCoord, tmb.zCoord, 0, 0, 0);
+		tmb.getWorldObj().spawnParticle("bigexplosion", tmb.xCoord, tmb.yCoord, tmb.zCoord, 0, 0, 0);
 	}
 
 	@Override
@@ -169,7 +170,9 @@ public class BlockSoulStone extends BlockMultiBlockBase implements IMultiBlockSt
 	public void onNotAbleToForm(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
 		if (world.isRemote)
-			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		{
+//			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		}
 	}
 
 	@Override

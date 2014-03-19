@@ -3,7 +3,7 @@ package snake.mcmods.theinvoker.entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import snake.mcmods.theinvoker.tileentities.TileElemPillar;
 
 public class EntityElemPillarMonitor extends Entity implements IEntityNameTagSprite

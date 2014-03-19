@@ -2,11 +2,11 @@ package snake.mcmods.theinvoker.blocks;
 
 import java.util.ArrayList;
 
-import snake.mcmods.theinvoker.tileentities.TileMultiBlockBase;
-
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import snake.mcmods.theinvoker.tileentities.TileMultiBlockBase;
 
 public interface IMultiBlockStructure
 {
@@ -18,7 +18,7 @@ public interface IMultiBlockStructure
 	
 	boolean getIsFreeSized();
 
-	ArrayList<Integer> getSupportedBlockIDs();
+	ArrayList<Block> getSupportedBlocks();
 	
 	Item getStructureFormerItem();
 	

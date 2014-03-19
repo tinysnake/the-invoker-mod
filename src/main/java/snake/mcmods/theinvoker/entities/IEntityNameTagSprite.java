@@ -1,6 +1,6 @@
 package snake.mcmods.theinvoker.entities;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IEntityNameTagSprite
 {

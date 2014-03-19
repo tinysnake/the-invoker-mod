@@ -1,14 +1,15 @@
 package snake.mcmods.theinvoker.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -28,25 +29,25 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockSoulSmelter extends BlockContainer
 {
 
-	public BlockSoulSmelter(int id)
+	public BlockSoulSmelter()
 	{
-		super(id, Material.iron);
-		this.setUnlocalizedName(TIName.BLOCK_SOUL_SMELTER);
+		super(Material.iron);
+		this.setBlockName(TIName.BLOCK_SOUL_SMELTER);
 		this.setCreativeTab(TheInvoker.tab);
 	}
 
-	private Icon iconFrontOff;
+	private IIcon iconFrontOff;
 
-	private Icon iconFrontOn;
+	private IIcon iconFrontOn;
 
-	private Icon iconTopOff;
+	private IIcon iconTopOff;
 
-	private Icon iconTopOn;
+	private IIcon iconTopOn;
 
-	private Icon iconBottom;
+	private IIcon iconBottom;
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int i)
 	{
 		return new TileSoulSmelter();
 	}
@@ -54,43 +55,43 @@ public class BlockSoulSmelter extends BlockContainer
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack itemStack)
 	{
-		TileTIBase te = (TileTIBase)world.getBlockTileEntity(x, y, z);
-		te.setOwnerName(entityLiving.getEntityName());
+		TileTIBase te = (TileTIBase)world.getTileEntity(x, y, z);
+//		te.setOwnerName(entityLiving.getEntityName());
 		te.setDirection(Utils.getPlaceDirection(entityLiving));
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess iBlockAccess, int x, int y, int z, int side)
-	{
-		if (iBlockAccess == null)
-			return getIcon(side, 0);
-		TileSoulSmelter tss = (TileSoulSmelter)iBlockAccess.getBlockTileEntity(x, y, z);
-		if (tss != null)
-		{
-			if (tss.getDirection().ordinal() == side)
-			{
-				return tss.getHasWork() ? iconFrontOn : iconFrontOff;
-			}
-			else
-			{
-				switch (side)
-				{
-					case 0:
-						return iconBottom;
-					case 1:
-						return tss.getHasWork() ? iconTopOn : iconTopOff;
-					default:
-						return blockIcon;
-				}
-			}
-		}
-		return blockIcon;
-	}
+//	@Override
+//	@SideOnly(Side.CLIENT)
+//	public IIcon getBlockTexture(IBlockAccess iBlockAccess, int x, int y, int z, int side)
+//	{
+//		if (iBlockAccess == null)
+//			return getIcon(side, 0);
+//		TileSoulSmelter tss = (TileSoulSmelter)iBlockAccess.getTileEntity(x, y, z);
+//		if (tss != null)
+//		{
+//			if (tss.getDirection().ordinal() == side)
+//			{
+//				return tss.getHasWork() ? iconFrontOn : iconFrontOff;
+//			}
+//			else
+//			{
+//				switch (side)
+//				{
+//					case 0:
+//						return iconBottom;
+//					case 1:
+//						return tss.getHasWork() ? iconTopOn : iconTopOff;
+//					default:
+//						return blockIcon;
+//				}
+//			}
+//		}
+//		return blockIcon;
+//	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int side, int metadata)
+	public IIcon getIcon(int side, int metadata)
 	{
 		switch (side)
 		{
@@ -107,7 +108,7 @@ public class BlockSoulSmelter extends BlockContainer
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		iconBottom = iconRegister.registerIcon(Textures.BLOCK_SOUL_SMELTER_BOTTOM);
 		blockIcon = iconRegister.registerIcon(Textures.BLOCK_SOUL_SMELTER_SIDE);
@@ -128,13 +129,13 @@ public class BlockSoulSmelter extends BlockContainer
 				player.openGui(TheInvoker.instance, TIGuiID.SOUL_SMELTER, world, x, y, z);
 			return true;
 		}
-		else if (player.getHeldItem().itemID == TIItems.evilTouch.itemID)
+		else if (player.getHeldItem().getItem() == TIItems.evilTouch)
 		{
 
 		}
-		else if (player.getHeldItem().itemID == Item.bucketLava.itemID)
+		else if (player.getHeldItem().getItem() == (Item)Item.itemRegistry.getObject("lava_bucket"))
 		{
-			TileEntity te = world.getBlockTileEntity(x, y, z);
+			TileEntity te = world.getTileEntity(x, y, z);
 			if (te instanceof TileSoulSmelter)
 			{
 				TileSoulSmelter soulSmelter = (TileSoulSmelter)te;
@@ -143,7 +144,7 @@ public class BlockSoulSmelter extends BlockContainer
 				{
 					soulSmelter.fill(null, new FluidStack(FluidRegistry.LAVA.getID(), FluidContainerRegistry.BUCKET_VOLUME), true);
 					if (!player.capabilities.isCreativeMode)
-						player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Item.bucketEmpty);
+						player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack((Item)Item.itemRegistry.getObject("bucket"));
 				}
 				return true;
 			}
@@ -158,16 +159,16 @@ public class BlockSoulSmelter extends BlockContainer
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	public void breakBlock(World world, int x, int y, int z, Block b, int metadata)
 	{
 		dropItems(world, x, y, z);
-		super.breakBlock(world, x, y, z, id, metadata);
+		super.breakBlock(world, x, y, z, b, metadata);
 	}
 
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null && te instanceof TileSoulSmelter)
 		{
 			FluidStack ls = ((TileSoulSmelter)te).getLavaTank().getFluid();
@@ -181,10 +182,10 @@ public class BlockSoulSmelter extends BlockContainer
 
 	private void dropItems(World world, int x, int y, int z)
 	{
-		TileSoulSmelter tss = (TileSoulSmelter)world.getBlockTileEntity(x, y, z);
+		TileSoulSmelter tss = (TileSoulSmelter)world.getTileEntity(x, y, z);
 		if (tss != null && tss.getInputSlot() != null)
 		{
-			this.dropBlockAsItem_do(world, x, y, z, tss.getInputSlot().copy());
+			this.dropBlockAsItem(world, x, y, z, tss.getInputSlot().copy());
 		}
 	}
 }

@@ -2,12 +2,13 @@ package snake.mcmods.theinvoker.blocks;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import snake.mcmods.theinvoker.config.Lang;
 import snake.mcmods.theinvoker.entities.EntityElemPillarMonitor;
 import snake.mcmods.theinvoker.items.TIItems;
@@ -22,12 +23,12 @@ public class BlockElemPillar extends BlockMultiBlockBase
 
 	public static final int[] CAPACITY_OF_SIZES = new int[] { 50, 100, 600, 1600 };
 
-	protected BlockElemPillar(int id)
+	protected BlockElemPillar()
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 	}
 
-	private ArrayList<Integer> supportedIDs;
+	private ArrayList<Block> supportedBlocks;
 
 	@Override
 	public int[][] getPossibleFormTypes()
@@ -54,15 +55,15 @@ public class BlockElemPillar extends BlockMultiBlockBase
 	}
 
 	@Override
-	public ArrayList<Integer> getSupportedBlockIDs()
+	public ArrayList<Block> getSupportedBlocks()
 	{
-		if (supportedIDs == null)
+		if (supportedBlocks == null)
 		{
-			supportedIDs = new ArrayList<Integer>();
-			supportedIDs.add(blockID);
-			supportedIDs.add(TIBlocks.elemPillarDummy.blockID);
+			supportedBlocks = new ArrayList<Block>();
+			supportedBlocks.add(this);
+			supportedBlocks.add(TIBlocks.elemPillarDummy);
 		}
-		return supportedIDs;
+		return supportedBlocks;
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class BlockElemPillar extends BlockMultiBlockBase
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int i)
 	{
 		return new TileElemPillar();
 	}
@@ -91,21 +92,25 @@ public class BlockElemPillar extends BlockMultiBlockBase
 		{
 			((TileElemPillar)tmb).getEnergyContainer().setEnergyCapacity(BlockSoulStone.CAPACITY_OF_SIZES[index]);
 		}
-		tmb.worldObj.spawnParticle("bigexplosion", tmb.xCoord, tmb.yCoord, tmb.zCoord, 0, 0, 0);
+		tmb.getWorldObj().spawnParticle("bigexplosion", tmb.xCoord, tmb.yCoord, tmb.zCoord, 0, 0, 0);
 	}
 
 	@Override
 	public void onNotAbleToReform(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
 		if (world.isRemote)
-			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		{
+//			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		}
 	}
 
 	@Override
 	public void onNotAbleToForm(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
 		if (world.isRemote)
-			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		{
+//			player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+		}
 	}
 
 	@Override
@@ -119,7 +124,7 @@ public class BlockElemPillar extends BlockMultiBlockBase
 	{
 		if (world.isRemote)
 		{
-			TileElemPillar tep = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileElemPillar.class, world, getSupportedBlockIDs(), x, y, z, world.getBlockMetadata(x, y, z));
+			TileElemPillar tep = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileElemPillar.class, world, getSupportedBlocks(), x, y, z, world.getBlockMetadata(x, y, z));
 			if (tep != null)
 			{
 				if (tep.getIsFormless())

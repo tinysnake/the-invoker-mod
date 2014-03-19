@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import snake.mcmods.theinvoker.TheInvoker;
 import snake.mcmods.theinvoker.lib.constants.TIGuiID;
-import snake.mcmods.theinvoker.lib.constants.TIName;
 import snake.mcmods.theinvoker.lib.constants.TIRenderID;
 import snake.mcmods.theinvoker.tileentities.TileElementPurifier;
 import snake.mcmods.theinvoker.utils.Utils;
@@ -17,15 +17,15 @@ import snake.mcmods.theinvoker.utils.Utils;
 public class BlockElementPurifier extends BlockContainer
 {
 
-	public BlockElementPurifier(int id)
+	public BlockElementPurifier()
 	{
-		super(id, Material.iron);
+		super(Material.iron);
 		this.setCreativeTab(TheInvoker.tab);
-		this.setUnlocalizedName(TIName.BLOCK_ELEMENT_PURIFIER);
+//		this.setUnlocalizedName(TIName.BLOCK_ELEMENT_PURIFIER);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int id)
 	{
 		return new TileElementPurifier();
 	}
@@ -45,11 +45,11 @@ public class BlockElementPurifier extends BlockContainer
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		if (te instanceof TileElementPurifier)
 		{
 			((TileElementPurifier)te).setDirection(Utils.getPlaceDirection(entity));
-			((TileElementPurifier)te).setOwnerName(entity.getEntityName());
+//			((TileElementPurifier)te).setOwnerName(entity.getEntityName());
 		}
 	}
 
@@ -62,15 +62,15 @@ public class BlockElementPurifier extends BlockContainer
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	public void breakBlock(World world, int x, int y, int z, Block id, int metadata)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		if (te instanceof TileElementPurifier)
 		{
 			TileElementPurifier tep = (TileElementPurifier)te;
 			if (tep.getMaterialSlot() != null && tep.getMaterialSlot().stackSize > 0)
 			{
-				dropBlockAsItem_do(tep.worldObj, x, y, z, tep.getMaterialSlot());
+				dropBlockAsItem(tep.getWorldObj(), x, y, z, tep.getMaterialSlot());
 			}
 		}
 		super.breakBlock(world, x, y, z, id, metadata);

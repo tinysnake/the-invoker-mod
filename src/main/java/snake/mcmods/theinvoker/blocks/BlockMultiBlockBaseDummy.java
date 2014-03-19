@@ -2,14 +2,13 @@ package snake.mcmods.theinvoker.blocks;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import snake.mcmods.theinvoker.config.Lang;
-import snake.mcmods.theinvoker.lib.constants.LangKeys;
 import snake.mcmods.theinvoker.lib.constants.TIGlobal;
 import snake.mcmods.theinvoker.logic.MultiBlockStructureHelper;
 import snake.mcmods.theinvoker.tileentities.TileMultiBlockBase;
@@ -20,9 +19,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 {
-	public BlockMultiBlockBaseDummy(int par1, Material par2Material, BlockMultiBlockBase realBlock)
+	public BlockMultiBlockBaseDummy(Material par2Material, BlockMultiBlockBase realBlock)
 	{
-		super(par1, par2Material);
+		super(par2Material);
 		this.realBlock = realBlock;
 	}
 
@@ -30,7 +29,7 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerBlockIcons(IIconRegister iconRegister)
 	{
 		blockIcon = iconRegister.registerIcon(TIGlobal.MOD_ID + ":" + Utils.getTruelyUnlocalizedName(this));
 	}
@@ -40,38 +39,40 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 	{
 		if (player.isSneaking())
 			return false;
-		if (player.getHeldItem() != null && getSupportedBlockIDs().indexOf(player.getHeldItem().itemID) >= 0)
+		if (player.getHeldItem() != null && getSupportedBlocks().indexOf(player.getHeldItem().getItem()) >= 0)
 			return false;
 		if (MultiBlockStructureHelper.getIsPlayerHoldingStructureFormerItem(this, player))
 		{
-			TileMultiBlockBase tmb = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class, world, getSupportedBlockIDs(), x, y, z, world.getBlockMetadata(x, y, z));
+			TileMultiBlockBase tmb = MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class, world, getSupportedBlocks(), x, y, z, world.getBlockMetadata(x, y, z));
 			if (tmb != null)
 			{
 				if (tmb.getIsFormless())
 				{
 					if (MultiBlockStructureHelper.getIsFormable(world, x, y, z, this))
 					{
-						MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlockIDs());
+						MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlocks());
 					}
 					else
 					{
 						if (world.isRemote)
-							player.addChatMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+						{
+//							player.addChatComponentMessage(Lang.getLocalizedStr(LangKeys.TEXT_SOUL_STONE_NOT_FORMABLE));
+						}
 						onNotAbleToReform(world, x, y, z, player, side);
 					}
 				}
 				else
 				{
-					MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlockIDs());
+					MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlocks());
 				}
 			}
 			else if (MultiBlockStructureHelper.getIsFormable(world, x, y, z, this))
 			{
 				world.setBlockToAir(x, y, z);
-				world.setBlock(x, y, z, realBlock.blockID, world.getBlockMetadata(x, y, z), 2);
+				world.setBlock(x, y, z, realBlock, world.getBlockMetadata(x, y, z), 2);
 				setupTileEntity(world, x, y, z, player);
-				tmb = (TileSoulStone)world.getBlockTileEntity(x, y, z);
-				int[] startCoords = MultiBlockStructureHelper.getStructureStartPoint(tmb.worldObj, this.getSupportedBlockIDs(), tmb.xCoord, tmb.yCoord, tmb.zCoord, world.getBlockMetadata(x, y, z));
+				tmb = (TileSoulStone)world.getTileEntity(x, y, z);
+				int[] startCoords = MultiBlockStructureHelper.getStructureStartPoint(tmb.getWorldObj(), this.getSupportedBlocks(), tmb.xCoord, tmb.yCoord, tmb.zCoord, world.getBlockMetadata(x, y, z));
 				tmb.setOriginCoords(startCoords[0], startCoords[1], startCoords[2]);
 				onFormed(tmb);
 			}
@@ -85,9 +86,9 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
 	{
-		TileMultiBlockBase tmb = MultiBlockStructureHelper.FindFormedMultiBlockTileEntity(world, getSupportedBlockIDs(), x, y, z, metadata);
+		TileMultiBlockBase tmb = MultiBlockStructureHelper.FindFormedMultiBlockTileEntity(world, getSupportedBlocks(), x, y, z, metadata);
 		// TileMultiBlockBase tmb =
 		// MultiBlockStructureHelper.getFormedMultiBlockTileEntity(TileMultiBlockBase.class,
 		// world, getSupportedBlockIDs(), x, y, z, metadata);
@@ -97,9 +98,9 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 		}
 		if (hasTileEntity(metadata) && !(this instanceof BlockContainer))
 		{
-			world.removeBlockTileEntity(x, y, z);
+			world.removeTileEntity(x, y, z);
 		}
-		world.removeBlockTileEntity(x, y, z);
+		world.removeTileEntity(x, y, z);
 	}
 
 	@Override
@@ -127,9 +128,9 @@ public abstract class BlockMultiBlockBaseDummy extends BlockMultiBlockBase
 	}
 
 	@Override
-	public ArrayList<Integer> getSupportedBlockIDs()
+	public ArrayList<Block> getSupportedBlocks()
 	{
-		return realBlock.getSupportedBlockIDs();
+		return realBlock.getSupportedBlocks();
 	}
 
 	@Override

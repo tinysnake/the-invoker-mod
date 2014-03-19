@@ -1,5 +1,6 @@
 package snake.mcmods.theinvoker.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -12,9 +13,9 @@ import snake.mcmods.theinvoker.tileentities.TileMultiBlockBase;
 public abstract class BlockMultiBlockBase extends BlockContainer implements IMultiBlockStructure, ITileEntityProvider
 {
 
-	protected BlockMultiBlockBase(int par1, Material par2Material)
+	protected BlockMultiBlockBase(Material par2Material)
 	{
-		super(par1, par2Material);
+		super(par2Material);
 	}
 
 	@Override
@@ -22,10 +23,10 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 	{
 		if (player.isSneaking())
 			return false;
-		if (player.getHeldItem() != null && getSupportedBlockIDs().indexOf(player.getHeldItem().itemID) >= 0)
+		if (player.getHeldItem() != null && getSupportedBlocks().indexOf(null) >= 0)
 			return false;
 
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		if (te == null)
 			return false;
 
@@ -35,13 +36,13 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 		{
 			if (!tmb.getIsFormless())
 			{
-				MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlockIDs());
+				MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlocks());
 			}
 			else
 			{
 				if (MultiBlockStructureHelper.getIsFormable(world, x, y, z, this))
 				{
-					MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlockIDs());
+					MultiBlockStructureHelper.reformStructure(this, tmb, getSupportedBlocks());
 				}
 				else
 				{
@@ -54,21 +55,21 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	public void breakBlock(World world, int x, int y, int z, Block block, int metadata)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null && te instanceof TileMultiBlockBase)
 		{
 			TileMultiBlockBase tmb = (TileMultiBlockBase)te;
 			tmb.setIsFormless(true);
-			int[] dummyCoords = MultiBlockStructureHelper.getAdjacentDummyBlockCoords(world, getSupportedBlockIDs(), x, y, z, metadata);
+			int[] dummyCoords = MultiBlockStructureHelper.getAdjacentDummyBlockCoords(world, getSupportedBlocks(), x, y, z, metadata);
 			if (dummyCoords != null)
 			{
 				tmb.setBeginTransfer();
 				if (world.setBlockToAir(dummyCoords[0], dummyCoords[1], dummyCoords[2])&&
-						world.setBlock(dummyCoords[0], dummyCoords[1], dummyCoords[2], blockID, metadata, 2))
+						world.setBlock(dummyCoords[0], dummyCoords[1], dummyCoords[2], this, metadata, 2))
 				{
-					TileEntity teNew = world.getBlockTileEntity(dummyCoords[0], dummyCoords[1], dummyCoords[2]);
+					TileEntity teNew = world.getTileEntity(dummyCoords[0], dummyCoords[1], dummyCoords[2]);
 					if (teNew != null && teNew instanceof TileMultiBlockBase)
 					{
 						TileMultiBlockBase tmbNew = (TileMultiBlockBase)teNew;
@@ -79,6 +80,6 @@ public abstract class BlockMultiBlockBase extends BlockContainer implements IMul
 				tmb.setEndTransfer();
 			}
 		}
-		super.breakBlock(world, x, y, z, metadata, id);
+		super.breakBlock(world, x, y, z, block, metadata);
 	}
 }
