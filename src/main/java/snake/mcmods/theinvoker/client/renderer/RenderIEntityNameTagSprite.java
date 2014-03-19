@@ -5,16 +5,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import snake.mcmods.theinvoker.entities.EntitySoulStoneMonitor;
 import snake.mcmods.theinvoker.entities.IEntityNameTagSprite;
-import snake.mcmods.theinvoker.utils.Utils;
 
 public class RenderIEntityNameTagSprite extends Render
 {
@@ -100,9 +97,9 @@ public class RenderIEntityNameTagSprite extends Render
 	}
 
 	@Override
-	protected ResourceLocation func_110775_a(Entity entity)
-	{
-		return null;
-	}
+    protected ResourceLocation getEntityTexture(Entity var1)
+    {
+        return null;
+    }
 
 }

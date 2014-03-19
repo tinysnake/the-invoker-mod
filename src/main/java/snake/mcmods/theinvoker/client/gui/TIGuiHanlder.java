@@ -16,7 +16,7 @@ public class TIGuiHanlder implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		switch (ID)
 		{
 			case TIGuiID.SOUL_SMELTER:
@@ -34,7 +34,7 @@ public class TIGuiHanlder implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		switch (ID)
 		{
 			case TIGuiID.SOUL_SMELTER:

@@ -94,7 +94,7 @@ public class GuiSoulSmelter extends GuiContainer
 				start += h;
 			}
 			
-			this.mc.func_110434_K().func_110577_a(Textures.GUI_SOUL_SMELTER);
+			this.mc.renderEngine.bindTexture(Textures.GUI_SOUL_SMELTER);
 			this.drawTexturedModalRect(xStart + TANK_X, yStart + TANK_Y - TANK_HEIGHT, 178, 0, 8, TANK_HEIGHT);
 		}
 	}

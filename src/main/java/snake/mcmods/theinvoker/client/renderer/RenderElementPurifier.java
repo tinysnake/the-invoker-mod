@@ -52,11 +52,11 @@ public class RenderElementPurifier extends RenderTileBase
 			GL11.glTranslatef((float)x + 0.5F, (float)y + 1.5F, (float)z + 0.5F);
 			GL11.glScalef(1F, -1F, -1F);
 			GL11.glRotatef(angle, 0F, 1F, 0F);
-			Minecraft.getMinecraft().renderEngine.func_110577_a(Textures.MODEL_ELEMENT_PURIFIER);
+			Minecraft.getMinecraft().renderEngine.bindTexture(Textures.MODEL_ELEMENT_PURIFIER);
 			if (tep.hasWork)
 			{
-				float shockX = -.0125F + tep.worldObj.rand.nextFloat() * .025F;
-				float shockZ = -.0125F + tep.worldObj.rand.nextFloat() * .025F;
+				float shockX = -.0125F + tep.getWorldObj().rand.nextFloat() * .025F;
+				float shockZ = -.0125F + tep.getWorldObj().rand.nextFloat() * .025F;
 				GL11.glPushMatrix();
 				GL11.glTranslatef(shockX, 0F, shockZ);
 				model.renderPlate();
@@ -75,7 +75,7 @@ public class RenderElementPurifier extends RenderTileBase
 			{
 
 				GL11.glPushMatrix();
-				EntityItem ghostItem = new EntityItem(tep.worldObj);
+				EntityItem ghostItem = new EntityItem(tep.getWorldObj());
 				ghostItem.hoverStart = 0.0F;
 				ghostItem.setEntityItemStack(tep.getProcessItem());
 				// ghostItem.setEntityItemStack(new ItemStack(TIItems.totem, 1,
@@ -90,7 +90,7 @@ public class RenderElementPurifier extends RenderTileBase
 				GL11.glScalef(scaleFactor, scaleFactor, scaleFactor);
 				GL11.glRotatef(rotationAngle, 0, .8F, 0);
 				GL11.glTranslatef(0F, 0.06F * floatHeight, 0F);
-				ghostItemRenderer.doRenderItem(ghostItem, 0, 0, 0, 0, 0);
+				ghostItemRenderer.doRender(ghostItem, 0, 0, 0, 0, 0);
 				GL11.glPopMatrix();
 			}
 		}
