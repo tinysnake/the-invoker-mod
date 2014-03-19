@@ -47,23 +47,23 @@ public class GuiElementPurifier extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int x, int y)
 	{
 		String containerName = StatCollector.translateToLocal(tep.getInvName());
-		fontRenderer.drawString(containerName, 8, 6, 4210752);
+		fontRendererObj.drawString(containerName, 8, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.func_110434_K().func_110577_a(Textures.GUI_ELEMENT_PURIFIER);
+		this.mc.renderEngine.bindTexture(Textures.GUI_ELEMENT_PURIFIER);
 		int xStart = (width - xSize) / 2;
 		int yStart = (height - ySize) / 2;
 		this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
 		
-		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune.itemID, RuneType.NEUTRAL.ordinal())), 0);
-		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune.itemID, RuneType.ICE.ordinal())), 1);
-		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune.itemID, RuneType.FIRE.ordinal())), 2);
-		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune.itemID, RuneType.WIND.ordinal())), 3);
-		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune.itemID, RuneType.DARKNESS.ordinal())), 4);
+		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune, RuneType.NEUTRAL.ordinal())), 0);
+		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune, RuneType.ICE.ordinal())), 1);
+		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune, RuneType.FIRE.ordinal())), 2);
+		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune, RuneType.WIND.ordinal())), 3);
+		drawElementEnergyIndicator(tep.getEnergyContainer(ElementPurifierMisc.getEnergyID(TIItems.soulRune, RuneType.DARKNESS.ordinal())), 4);
 
 		if (tep.getIsProcessing())
 		{
@@ -91,13 +91,13 @@ public class GuiElementPurifier extends GuiContainer
 			int indYMax = indY+ENERGY_IND_SIZE;
 			if(mouseX>=indX&&mouseX<=indXMax&&mouseY>=indY&&mouseY<=indYMax)
 			{
-				int energyID = ElementPurifierMisc.getEnergyID(TIItems.soulRune.itemID, i);
+				int energyID = ElementPurifierMisc.getEnergyID(TIItems.soulRune, i);
 				
 				List arr = new ArrayList();
 				EnergyContainer con = tep.getEnergyContainer(energyID);
 				arr.add(EnumChatFormatting.WHITE + EnergyCenter.INSTANCE.getEnergyForce(energyID).getName()+ ": " + 
 						String.valueOf(con.getEnergyLevel()) + "/" + String.valueOf(con.getEnergyCapacity()));
-				drawHoveringText(arr, mouseX, mouseY, fontRenderer);
+				drawHoveringText(arr, mouseX, mouseY, fontRendererObj);
 			}
 		}
 		GL11.glEnable(GL11.GL_LIGHTING);

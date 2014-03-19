@@ -2,7 +2,7 @@ package snake.mcmods.theinvoker.client;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import snake.mcmods.theinvoker.CommonProxy;
 import snake.mcmods.theinvoker.client.renderer.RenderElementPurifier;
 import snake.mcmods.theinvoker.client.renderer.RenderIEntityNameTagSprite;
@@ -47,7 +47,7 @@ public class ClientProxy extends CommonProxy
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)
 	{
 		World world = player.worldObj;
-		TileTIBase tt = (TileTIBase)world.getBlockTileEntity(p.x, p.y, p.z);
+		TileTIBase tt = (TileTIBase)world.getTileEntity(p.x, p.y, p.z);
 		if (tt != null)
 		{
 			tt.xCoord = p.x;

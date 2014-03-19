@@ -19,7 +19,6 @@ import snake.mcmods.theinvoker.tileentities.TileSoulSmelter;
 import snake.mcmods.theinvoker.tileentities.TileSoulStone;
 import snake.mcmods.theinvoker.tileentities.TileTotem;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy
@@ -50,10 +49,10 @@ public class CommonProxy
 
 	public void registerTickHandlers()
 	{
-		TickRegistry.registerTickHandler(TotemCenter.INSTANCE, Side.SERVER);
-		TickRegistry.registerTickHandler(EnergyCenter.INSTANCE, Side.SERVER);
-		TickRegistry.registerTickHandler(GrimoireSystem.INSTANCE, Side.CLIENT);
-		TickRegistry.registerTickHandler(GrimoireHUD.INSTANCE, Side.CLIENT);
+//		TickRegistry.registerTickHandler(TotemCenter.INSTANCE, Side.SERVER);
+//		TickRegistry.registerTickHandler(EnergyCenter.INSTANCE, Side.SERVER);
+//		TickRegistry.registerTickHandler(GrimoireSystem.INSTANCE, Side.CLIENT);
+//		TickRegistry.registerTickHandler(GrimoireHUD.INSTANCE, Side.CLIENT);
 	}
 
 	public void handleTileEntityUpdate(PacketTileEntityUpdate p, EntityPlayer player)

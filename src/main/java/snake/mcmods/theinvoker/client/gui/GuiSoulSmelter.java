@@ -7,7 +7,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,17 +42,17 @@ public class GuiSoulSmelter extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int x, int y)
 	{
 		String containerName = StatCollector.translateToLocal(soulSmelter.getInvName());
-		fontRenderer.drawString(containerName, 8, 5, 4210752);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, 50, 4210752);
+		fontRendererObj.drawString(containerName, 8, 5, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, 50, 4210752);
 		String energyLevel = String.valueOf(soulSmelter.getEnergyContainer().getEnergyLevel());
-		fontRenderer.drawString(energyLevel, 32 + 8 - fontRenderer.getStringWidth(energyLevel) / 2, 40, 4210752);
+		fontRendererObj.drawString(energyLevel, 32 + 8 - fontRendererObj.getStringWidth(energyLevel) / 2, 40, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.func_110434_K().func_110577_a(Textures.GUI_SOUL_SMELTER);
+		this.mc.renderEngine.bindTexture(Textures.GUI_SOUL_SMELTER);
 		int xStart = (width - xSize) / 2;
 		int yStart = (height - ySize) / 2;
 		this.drawTexturedModalRect(xStart, yStart, 0, 0, xSize, ySize);
@@ -71,11 +71,11 @@ public class GuiSoulSmelter extends GuiContainer
 		FluidStack lq = soulSmelter.getLavaTank().getFluid();
 		if (lq != null && lq.amount > 0)
 		{
-			Icon lavaIcon = FluidRegistry.LAVA.getFlowingIcon();
+			IIcon lavaIcon = FluidRegistry.LAVA.getFlowingIcon();
 
 			int start = 0;
 			int lavaH = Utils.getScaledLiquidAmount(lq, soulSmelter.getLavaTank().getCapacity(), TANK_HEIGHT);
-			this.mc.renderEngine.func_110577_a(Textures.VANILLA_BLOCK_TEXTURE_SHEET);
+			this.mc.renderEngine.bindTexture(Textures.VANILLA_BLOCK_TEXTURE_SHEET);
 
 			while (lavaH > 0)
 			{
@@ -93,7 +93,7 @@ public class GuiSoulSmelter extends GuiContainer
 				this.drawTexturedModelRectFromIcon(xStart + TANK_X, yStart + TANK_Y - h - start, lavaIcon, 16, h);
 				start += h;
 			}
-
+			
 			this.mc.func_110434_K().func_110577_a(Textures.GUI_SOUL_SMELTER);
 			this.drawTexturedModalRect(xStart + TANK_X, yStart + TANK_Y - TANK_HEIGHT, 178, 0, 8, TANK_HEIGHT);
 		}
@@ -115,7 +115,7 @@ public class GuiSoulSmelter extends GuiContainer
 			String amount = soulSmelter.getLavaTank().getFluid() != null ? String.valueOf(soulSmelter.getLavaTank().getFluid().amount) : "0";
 			String capacity = String.valueOf(soulSmelter.getLavaTank().getCapacity());
 			arr.add(EnumChatFormatting.WHITE + amount + "/" + capacity);
-			drawHoveringText(arr, mouseX, mouseY, fontRenderer);
+			drawHoveringText(arr, mouseX, mouseY, fontRendererObj);
 		}
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);

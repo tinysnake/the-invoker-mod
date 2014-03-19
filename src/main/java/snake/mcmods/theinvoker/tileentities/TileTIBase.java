@@ -1,9 +1,9 @@
 package snake.mcmods.theinvoker.tileentities;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import snake.mcmods.theinvoker.net.PacketTypeHandler;
 import snake.mcmods.theinvoker.net.packet.PacketTileEntityUpdate;
 
@@ -46,8 +46,8 @@ public class TileTIBase extends TileEntity
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		// return super.getDescriptionPacket();
-		return PacketTypeHandler.serialize(new PacketTileEntityUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(), getOwnerName()));
+		 return super.getDescriptionPacket();
+//		return PacketTypeHandler.serialize(new PacketTileEntityUpdate(xCoord, yCoord, zCoord, getDirection().ordinal(), getOwnerName()));
 	}
 
 	@Override
