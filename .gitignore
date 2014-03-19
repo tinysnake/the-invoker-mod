@@ -1,2 +1,4 @@
-bin-release/
-build.properties
+/eclipse
+/.settings
+/build
+/bin
